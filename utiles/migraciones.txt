@@ -1,0 +1,25 @@
+﻿
+
+
+
+Migraciones
+
+Convencion
+php artisan make:migration create_nombretabla_table
+
+php artisan make:migration create_ _table
+
+
+php artisan make:migration create_Pproveedores_table
+php artisan make:migration create_Ccompras_table
+php artisan make:migration create_Ddetallecompras_table
+php artisan make:migration create_Pproductos_table
+php artisan make:migration create_Iinventario_table
+php artisan make:migration create_Ccategoriaproducto_table
+
+php artisan make:migration CreateRecepcionmaterialTable
+php artisan make:migration CreateDetallerecmatTable
+
+
+CONSULTAS	RECEPCION DE MATERIAL
+SELECT `detallerecmat`.`id`, `detallerecmat`.`recepcionmaterial_id`, `detallerecmat`.`producto_id`, `detallerecmat`.`cantidadprorecmat`, `_pproductos`.`descripcion`, `detallerecmat`.`id` FROM `detallerecmat` LEFT JOIN `_pproductos` ON `detallerecmat`.`producto_id` = `_pproductos`.`id` WHERE `detallerecmat`.`id` = '1';
