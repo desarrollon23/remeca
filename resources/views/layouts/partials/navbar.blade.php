@@ -13,7 +13,7 @@
         <i class="fas fa-bars" @php echo $texto; @endphp></i></a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
-      <a href="{{ route('admin.dashboard')}}" class="nav-link" style="color: white;">Tablero</a>
+      <a href="{{ route('admin.dashboard')}}" class="nav-link" style="color: white;">Inicio</a>
     </li>
     {{-- <li class="nav-item d-none d-sm-inline-block">
       <a href="#" class="nav-link">Contacto</a>
