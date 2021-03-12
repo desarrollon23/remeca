@@ -43,15 +43,15 @@
                     <div style="margin: 0; position: absolute; top: 50%; left: 25%;
                     margin: -25px 0 0 -25px; -ms-transform: translateY(-50%); transform: translateY(-50%); width: 300px; height: 300px;">
                       <label class="d-flex justify-content-center">Bienvenido a:</label>
-                      {{-- <img src="../../../../img/logov.png"> --}}
-                      <img src="../../../../img/logon.png">
+                      <img src="../../../../img/logov.png">
+                      {{-- <img src="../../../../img/logon.png"> --}}
                       {{-- <img src="../../../../img/logoa.png"> --}}
                     </div>
                   <!--/div>
                 </div-->
               </div>
-              {{-- <div class="col-lg-6 col-md-6 col-xs-4" style="background: #3f7819;"> --}}
-              <div class="col-lg-6 col-md-6 col-xs-4" style="background: #ad4d12;">
+              <div class="col-lg-6 col-md-6 col-xs-4" style="background: #3f7819;">
+              {{-- <div class="col-lg-6 col-md-6 col-xs-4" style="background: #ad4d12;"> --}}
               {{-- <div class="col-lg-6 col-md-6 col-xs-4" style="background: #336699;"> --}}
                 <!--div class="card card-success">
                   <div class="card-header"-->
