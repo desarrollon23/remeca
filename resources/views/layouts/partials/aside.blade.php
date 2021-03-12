@@ -94,9 +94,9 @@
             <i class="fas fa-clipboard-check"></i><p @php echo $textom; @endphp>LOGISTICA<i class="fas fa-angle-left right"></i></p>
           </a><ul class="nav nav-treeview">
             <li class="nav-item"><a href="{{ route('admin.users') }}" class="nav-link request()->is('admin/users') ? 'active' : '' "><i class="fas fa-clipboard-list"></i>
-            <p @php echo $textom; @endphp>Operaciones</p></a>
+            <p @php echo $textos; @endphp>Operaciones</p></a>
             <li class="nav-item"><a href="{{ route('admin.users') }}" class="nav-link request()->is('admin/users') ? 'active' : '' "><i class="fas fa-truck"></i>
-              <p @php echo $textom; @endphp>Transporte</p></a>
+              <p @php echo $textos; @endphp>Transporte</p></a>
           </li></ul>
         </li>{{-- ADMINISTRACION --}}
         <li class="nav-item">
