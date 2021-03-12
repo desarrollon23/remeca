@@ -15,12 +15,6 @@
     <li class="nav-item d-none d-sm-inline-block">
       <a href="{{ route('admin.dashboard')}}" class="nav-link" style="color: white;">Inicio</a>
     </li>
-    <li class="nav-item d-none d-sm-inline-block">
-      <a href="{{ route('admin.dashboardn')}}" class="nav-link" style="color: white;">Naranja</a>
-    </li>
-    <li class="nav-item d-none d-sm-inline-block">
-      <a href="{{ route('admin.dashboarda')}}" class="nav-link" style="color: white;">Azul</a>
-    </li>
     {{-- <li class="nav-item d-none d-sm-inline-block">
       <a href="#" class="nav-link">Contacto</a>
     </li> --}}
