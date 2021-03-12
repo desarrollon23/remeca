@@ -46,7 +46,7 @@
                   <!--/div>
                 </div-->
               </div>
-              <div class="col-lg-6 col-md-6 col-xs-4" style="background: #3f7819;">
+              <div class="col-lg-6 col-md-6 col-xs-4" style="background: #ad4d12;">
                 <!--div class="card card-success">
                   <div class="card-header"-->
                     <!--h3 class="card-title"><label class="d-flex justify-content-center">FECHA: { { date('d-m-Y') } }   |   # DE CIERRE</label></h3>

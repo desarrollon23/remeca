@@ -40,7 +40,8 @@
           </a>
         </li> --}}{{-- PRESIDENCIA --}}
         <li class="nav-item">
-          <a href="#" class="nav-link active">
+          <!--a href="#" class="nav-link active"-->
+          <a href="#" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt hover-opacity-6"></i>
             <p @php echo $textom; @endphp>PRESIDENCIA<i class="right fas fa-angle-left"></i></p></a>
             <ul class="nav nav-treeview">

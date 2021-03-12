@@ -10,7 +10,7 @@
                 {{ session('status') }}
             </div>
         @endif
-        <form method="POST" action="{{ route('login') }}">
+        <form method="POST" action="{{ route('loginn') }}">
             @csrf
             <div>
                 <x-jet-label for="email" value="{{ __('Email') }}" />

@@ -112,7 +112,8 @@
 @stack('modals')
 @livewireScripts
 <script src="/livewire/livewire.js?id=d9e06c155e467adb5de2" data-turbo-eval="false" data-turbolinks-eval="false"></script>
-<script data-turbo-eval="false" data-turbolinks-eval="false">
+{{-- Este SCRIPT que está comentado abajo genera el mensage de warnig --}}
+{{-- <script data-turbo-eval="false" data-turbolinks-eval="false">
     if (window.livewire) {
         console.warn('Livewire: It looks like Livewire\'s @livewireScripts JavaScript assets have already been loaded. Make sure you aren\'t loading them twice.')
     }
@@ -142,7 +143,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         window.livewire.start();
     });
-</script>
+</script> --}}
 <!-- DataTables  & Plugins -->
 <script src="{{ asset('backend/plugins/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('backend/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>

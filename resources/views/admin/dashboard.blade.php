@@ -111,6 +111,7 @@
             </section> --}}
             <!-- Calendar -->
             <div class="car border:1" style="justify-content: center">
+            {{-- <div style="margin: 0; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);"> --}}
               {{-- <div class="card-header border-0 hei"> --}}
                 <img src="{{ asset('img/logosf.png') }}" alt="REMECA" class="brand-image img-circle elevation-3" style="height: 40%; width: 50% margin: 0px; padding: 0px opacity: .8">
                 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
