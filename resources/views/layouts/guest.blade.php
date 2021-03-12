@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
+        <link rel="shortcut icon" href="../../.././favicons/favicon.ico" />
         <title>{{ config('app.name', 'REMECA') }}</title>
 
         <!-- Fonts -->
@@ -43,15 +44,15 @@
                     margin: -25px 0 0 -25px; -ms-transform: translateY(-50%); transform: translateY(-50%); width: 300px; height: 300px;">
                       <label class="d-flex justify-content-center">Bienvenido a:</label>
                       {{-- <img src="../../../../img/logov.png"> --}}
-                      {{-- <img src="../../../../img/logon.png"> --}}
-                      <img src="../../../../img/logoa.png">
+                      <img src="../../../../img/logon.png">
+                      {{-- <img src="../../../../img/logoa.png"> --}}
                     </div>
                   <!--/div>
                 </div-->
               </div>
               {{-- <div class="col-lg-6 col-md-6 col-xs-4" style="background: #3f7819;"> --}}
-              {{-- <div class="col-lg-6 col-md-6 col-xs-4" style="background: #ad4d12;"> --}}
-              <div class="col-lg-6 col-md-6 col-xs-4" style="background: #336699;">
+              <div class="col-lg-6 col-md-6 col-xs-4" style="background: #ad4d12;">
+              {{-- <div class="col-lg-6 col-md-6 col-xs-4" style="background: #336699;"> --}}
                 <!--div class="card card-success">
                   <div class="card-header"-->
                     <!--h3 class="card-title"><label class="d-flex justify-content-center">FECHA: { { date('d-m-Y') } }   |   # DE CIERRE</label></h3>

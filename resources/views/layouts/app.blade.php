@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" type="favicon" href="favicon.png"/>
   <link rel="stylesheet" href="http://filamentgroup.github.io/tablesaw/dist/tablesaw.css">
 	<link rel="stylesheet" href="http://filamentgroup.github.io/tablesaw/demo/demo.css">
 	<link rel="stylesheet" href="//filamentgroup.github.io/demo-head/demohead.css">
