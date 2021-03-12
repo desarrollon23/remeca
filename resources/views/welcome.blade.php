@@ -13,10 +13,10 @@
               -webkit-animation: spin 2s linear infinite; /* Safari */
               animation: spin 2s linear infinite;
               display:block;
-              /* margin:auto; */
+              margin:auto;
               vertical-align:middle;
 
-              margin: 0;
+              /* margin: 0; */
               position: absolute;
               top: 50%;
               -ms-transform: translateY(-50%);
