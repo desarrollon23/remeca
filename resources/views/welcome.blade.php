@@ -13,8 +13,14 @@
               -webkit-animation: spin 2s linear infinite; /* Safari */
               animation: spin 2s linear infinite;
               display:block;
-              margin:auto;
+              /* margin:auto; */
               vertical-align:middle;
+
+              margin: 0;
+              position: absolute;
+              top: 50%;
+              -ms-transform: translateY(-50%);
+              transform: translateY(-50%);
             }
             
             /* Safari */
@@ -154,7 +160,7 @@
                 </div>
             </div> --}}
         </div>
-        <div class="loader"></div>
+        <div class="loader" {{-- style="margin: 0; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);" --}}></div>
     </body>
 
 </html>
