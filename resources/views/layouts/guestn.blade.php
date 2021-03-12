@@ -39,8 +39,9 @@
                     <h3 class="card-title"><label class="d-flex justify-content-center">FECHA: { { date('d-m-Y') } }   |   # DE CIERRE</label></h3>
                   </div>
                   <div-->
-                    <div style="margin: 0; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);">
-                      {{-- <label class="d-flex justify-content-center">BIENVENIDO al sistema REMECA</label> --}}
+                    <div style="margin: 0; position: absolute; top: 50%; left: 25%;
+                    margin: -25px 0 0 -25px; -ms-transform: translateY(-50%); transform: translateY(-50%); width: 300px; height: 300px;">
+                      <label class="d-flex justify-content-center">Bienvenido a:</label>
                       <img src="../../../../img/logov.png" class="center">
                     </div>
                   <!--/div>

@@ -18,7 +18,9 @@
 
               /* margin: 0; */
               position: absolute;
-              top: 50%;
+              top: 45%;
+              left: 45%;
+              margin: -25px 0 0 -25px;
               -ms-transform: translateY(-50%);
               transform: translateY(-50%);
             }

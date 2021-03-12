@@ -1,9 +1,25 @@
 @php
-  $fondoc='style="background: #c3d69b;"';
-  $fondoo='style="background: #3f7819;"';
+  /* para fondo verde */
+  /* $fondoc='style="background: #c3d69b;"';
+  $fondoo='style="background: #3f7819;"'; */
+
+  /* para fondo naranja */
+  /*   $fondoo='style="background: #ad4d12;"'; */
+  /* $fondoc='style="background: #eb8647;"'; */
+
+  /* para fondo azul */
+  /* $fondoc='style="background: #6699cc;"'; */
+  $fondoo='style="background: #336699;"';
+  
+ /*  $texto='style="color: white;"';
+  $textom='style="color: white; hover-opacity-6; font-weight: bold;"';
+  $textos='style="color: white; hover-opacity-6;"'; */
+
+  /* para fondo blanco */
+  $fondoc='style="background: white;"';
   $texto='style="color: white;"';
-  $textom='style="color: #3f7819; hover-opacity-6"';
-  $textos='style="color: black; text-over: white; hover-opacity-6,"';
+  $textom='style="color: black; font-weight: bold;"';
+  $textos='style="color: black;"';
 @endphp
 <!--aside class="main-sidebar sidebar-dark-primary elevation-4" -->
   <aside class="main-sidebar elevation-4" @php echo $fondoo; @endphp>
@@ -59,80 +75,82 @@
         <li class="nav-item">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-copy"></i>
-            <p @php echo $textom; @endphp>AUDITORIA<i class="fas fa-angle-left right"></i></p></a>
+            <p @php echo $textom; @endphp>FINANZAS<i class="fas fa-angle-left right"></i></p></a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
               <a href="#" class="nav-link">
-                <i class="far fa-circle nav-icon"></i><p>Administración</p></a>
+                <i class="far fa-circle nav-icon"></i><p @php echo $textos; @endphp>Administración</p></a>
             </li><li class="nav-item">
               <a href="#" class="nav-link">
-                <i class="far fa-circle nav-icon"></i><p>Logística</p></a>
+                <i class="far fa-circle nav-icon"></i><p @php echo $textos; @endphp>Logística</p></a>
             </li><li class="nav-item">
               <a href="#" class="nav-link">
-                <i class="far fa-circle nav-icon"></i><p>Almacen</p></a>
+                <i class="far fa-circle nav-icon"></i><p @php echo $textos; @endphp>Almacen</p></a>
           </li></ul>
         </li>{{-- LOGÍSTICA --}}
         <li class="nav-item">
           <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-copy"></i><p>LOGISTICA<i class="fas fa-angle-left right"></i></p>
+            <i class="nav-icon fas fa-copy"></i><p @php echo $textom; @endphp>LOGISTICA<i class="fas fa-angle-left right"></i></p>
           </a><ul class="nav nav-treeview">
             <li class="nav-item"><a href="{{ route('admin.users') }}" class="nav-link request()->is('admin/users') ? 'active' : '' "><i class="far fa-circle nav-icon"></i>
-            <p>Traslados</p></a>
+            <p @php echo $textom; @endphp>Operaciones</p></a>
+            <li class="nav-item"><a href="{{ route('admin.users') }}" class="nav-link request()->is('admin/users') ? 'active' : '' "><i class="far fa-circle nav-icon"></i>
+              <p @php echo $textom; @endphp>Transporte</p></a>
           </li></ul>
         </li>{{-- ADMINISTRACION --}}
         <li class="nav-item">
           <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-copy"></i><p>ADMINISTRACION<i class="fas fa-angle-left right"></i></p>
+            <i class="nav-icon fas fa-copy"></i><p @php echo $textom; @endphp>ADMINISTRACION<i class="fas fa-angle-left right"></i></p>
           </a><ul class="nav nav-treeview">
             <li class="nav-item">
               <a href="#" class="nav-link request()->is('admin/users') ? 'active' : '' ">
-                <i class="far fa-circle nav-icon"></i><p>Compras</p></a>
+                <i class="far fa-circle nav-icon"></i><p @php echo $textos; @endphp>Compras</p></a>
             </li><li class="nav-item">
               <a href="#" class="nav-link request()->is('admin/users') ? 'active' : '' ">
-                <i class="far fa-circle nav-icon"></i><p>Ventas</p></a>
+                <i class="far fa-circle nav-icon"></i><p @php echo $textos; @endphp>Ventas</p></a>
           </li></ul>
         </li>{{-- ALMACEN --}}
         <li class="nav-item">
           <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-copy"></i><p>ALMACEN<i class="fas fa-angle-left right"></i></p>
+            <i class="nav-icon fas fa-copy"></i><p @php echo $textom; @endphp>ALMACEN<i class="fas fa-angle-left right"></i></p>
           </a><ul class="nav nav-treeview">
             <li class="nav-item">
               <a href="{{ route('almacen.material-reception') }}" 
                 class="nav-link request()->is('livewire/almacen/material-reception') ? 'active' : '' ">
-                <i class="far fa-circle nav-icon"></i><p>Recepción</p></a>
+                <i class="far fa-circle nav-icon"></i><p @php echo $textos; @endphp>Recepción</p></a>
             </li>
             <li class="nav-item">
               <a href="#{{-- {{ route('admin.users') }} --}}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
-                <i class="far fa-circle nav-icon"></i><p>Entrega</p></a>
+                <i class="far fa-circle nav-icon"></i><p @php echo $textos; @endphp>Entrega</p></a>
           </li></ul>
         </li>{{-- MANTENIMIENTOS --}}
         <li class="nav-item">
           <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-copy"></i><p>MANTENIMIENTOS<i class="fas fa-angle-left right"></i></p>
+            <i class="nav-icon fas fa-copy"></i><p @php echo $textom; @endphp>MANTENIMIENTOS<i class="fas fa-angle-left right"></i></p>
           </a><ul class="nav nav-treeview">
             <li class="nav-item">
               <a href="{{ route('livewire.pproveedores') }}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i><p>Proveedores</p></a>
+                <i class="far fa-circle nav-icon"></i><p @php echo $textos; @endphp>Proveedores</p></a>
             </li>
             <li class="nav-item">
               <a href="#" class="nav-link">
-                <i class="far fa-circle nav-icon"></i><p>Clientes</p></a>
+                <i class="far fa-circle nav-icon"></i><p @php echo $textos; @endphp>Clientes</p></a>
             </li>
             <li class="nav-item">
               <a href="{{ route('livewire.productos') }}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i><p>Materiales</p></a>
+                <i class="far fa-circle nav-icon"></i><p @php echo $textos; @endphp>Materiales</p></a>
             </li>
             <li class="nav-item">
               <a href="{{ route('livewire.sucursales') }}" class="nav-link request()->is('livewire/sucursales') ? 'active' : '' ">
-                <i class="far fa-circle nav-icon"></i><p>Sucursales</p></a>
+                <i class="far fa-circle nav-icon"></i><p @php echo $textos; @endphp>Sucursales</p></a>
             </li>
             <li class="nav-item">
               <a href="#" class="nav-link">
-                <i class="far fa-circle nav-icon"></i><p>Vehículos</p></a>
+                <i class="far fa-circle nav-icon"></i><p @php echo $textos; @endphp>Vehículos</p></a>
             </li>
             <li class="nav-item">
               <a href="{{ route('admin.users') }}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
-                <i class="nav-icon fas fa-users"></i><p>Usuarios</p></a>
+                <i class="nav-icon fas fa-users"></i><p @php echo $textos; @endphp>Usuarios</p></a>
           </li></ul>
         </li>
       </ul>
