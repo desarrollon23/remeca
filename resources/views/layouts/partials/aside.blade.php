@@ -1,11 +1,11 @@
 @php
   /* para fondo verde */
-  /* $fondoc='style="background: #c3d69b;"';
-  $fondoo='style="background: #3f7819;"'; */
+  /* $fondoc='style="background: #c3d69b;"'; */
+  $fondoo='style="background: #3f7819;"';
 
   /* para fondo naranja */
   /* $fondoc='style="background: #eb8647;"'; */
-    $fondoo='style="background: #ad4d12;"';
+  /* $fondoo='style="background: #ad4d12;"'; */
 
   /* para fondo azul */
   /* $fondoc='style="background: #6699cc;"'; */

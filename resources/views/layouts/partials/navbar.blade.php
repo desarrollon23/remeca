@@ -1,6 +1,6 @@
 @php
-  /* $fondo='style="background: #3f7819;"'; */
-  $fondo='style="background: #ad4d12;"';
+  $fondo='style="background: #3f7819;"';
+  /* $fondo='style="background: #ad4d12;"'; */
   /* $fondo='style="background: #336699;"'; */
   $texto='style="color: white;"';
 @endphp
