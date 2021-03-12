@@ -25,7 +25,8 @@
   <aside class="main-sidebar elevation-4" @php echo $fondoo; @endphp>
   <!-- LOGO -->
   <a href="{{ route('admin.dashboard') }}" class="brand-link">
-    <img src="{{ asset('backend/dist/img/AdminLTELogo.png') }}" alt="REMECA" class="brand-image img-circle elevation-3" style="opacity: .8">
+    {{-- <img src="{{ asset('backend/dist/img/AdminLTELogo.png') }}" alt="REMECA" class="brand-image img-circle elevation-3" style="opacity: .8"> --}}
+    <img src="{{ asset('../img/logo.png') }}" alt="REMECA" class="brand-image">
     <!--span class="brand-text font-weight-light">REMECA</span-->
     <span class="brand-text" @php echo $texto; @endphp>REMECA</span>
   </a>

@@ -16,6 +16,7 @@
       <script src="http://filamentgroup.github.io/tablesaw/dist/tablesaw-init.js"></script>
       <script src="//filamentgroup.github.io/demo-head/loadfont.js"></script>
   <!-- AQUÍ VA EL FAVICONS -->
+  <link rel="shortcut icon" href="../favicons/favicon.ico" />
   <title>REMECA</title>
   <!-- INICIO ESTILOS ADMINLTEMASTER-->
   <!-- Ionicons -->  {{-- <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> --}}
