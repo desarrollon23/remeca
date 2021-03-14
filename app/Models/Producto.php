@@ -12,4 +12,9 @@ class Producto extends Model
     use HasFactory;
 
     protected $fillable = ['descripcion', 'precio', 'cantidad'];
+
+    //Relacion uno a muchos con  recepcion de material
+    public function almacens(){
+        return $this->hasMany(Almacen::class);
+    }
 }

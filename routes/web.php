@@ -12,6 +12,7 @@ use App\Http\Livewire\ProductosComponent;
 use App\Http\Livewire\Almacen;
 use App\Http\Livewire\Almacen\MaterialReception;
 use App\Http\Livewire\AlmacenComponent;
+use App\Http\Controllers\Admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,8 @@ Route::get('/', function () {
 });
 
 Route::get('admin/dashboard', DashBoardController::class)->name('admin.dashboard');
+
+Route::resource('users', UserController::class)->names('admin.users');
 
 //LO DE ABAJO ESTÁ BUENO
 /* Route::get('/', function () {return view('welcome');})->name('home'); *

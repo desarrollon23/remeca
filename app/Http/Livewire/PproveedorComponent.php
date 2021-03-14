@@ -61,7 +61,7 @@ class PproveedorComponent extends Component
             'telefono' => $this->telefono,
             'correo' => $this->correo
         ]);
-        $this->reset(['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'accion', 'pproveedo_id']);
+        $this->reset(['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'accion', 'pproveedor_id']);
     }
 
     public function edit(Proveedores $pproveedor)    {
@@ -86,7 +86,7 @@ class PproveedorComponent extends Component
             'correo' => $this->correo
             /* 'visible' => $this->visible */
         ]);
-        $this->reset(['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'accion', 'pproveedo_id']);
+        $this->reset(['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'accion', 'pproveedor_id']);
     }
 
     public function destroy(Proveedores $pproveedor)    {
@@ -96,6 +96,6 @@ class PproveedorComponent extends Component
     }
     
     public function default()    {
-        $this->reset(['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'accion', 'pproveedo_id']);
+        $this->reset(['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'accion', 'pproveedor_id']);
     }
 }

@@ -9,32 +9,32 @@
               <h3 class="card-title"><label class="d-flex justify-content-center">FECHA: {{ date('d-m-Y') }}   |   # DE CIERRE {{$recepcionmaterial_id}}</label></h3>
             </div>
             <div class="card-body">
-                
               <div class="form-group">
-                <label for="cedula" style="width: 30%">Cédula</label><label>
-                  <div class="input-group mb-3" style="width: 80%"> 
-                    <input wire:model="cedula" id="cedula" type="text" class="form-control" placeholder="Ingrese la Cédula" name="cedula">
-                    <div class="input-group-prepend">
-                        <button  wire:click.prevent="buspro(cedula)" type="button" class="btn btn-danger">Buscar</button>
-                      </div>
-                      @error('cedula')<p ass="text-x text-red-500 italic">{{$message}}</p>@enderror
-                  </div>
+                <label for="cedula" style="width: 30%">Cédula o Rif</label><label>
+                  {{-- <div class="input-group mb-3" style="width: 80%"> --}}
+                    <input wire:model="cedula" wire:keyup="busproc" style="width: 100%" id="cedula" class="form-control" type="text" name="cedula" placeholder="Ingrese la Cédula">
+                    {{-- <div class="input-group-prepend">
+                      <button  wire:click.prevent="buspro(cedula)" type="button" class="btn btn-danger">Buscar</button>
+                    </div> --}}
+                    @error('cedula')<p ass="text-x text-red-500 italic">{{$message}}</p>@enderror
+                  {{-- </div> --}}
                 </label>
                 <label for="nombre" style="width: 30%">Nombre</label><label>
-                <input wire:model="nombre" style="width: 100%" id="nombre" class="form-control" type="text" name="nombre" >@error('nombre')<p class="text-x text-red-500 alic">{{$message}}</p>@enderror</label>
+                <input wire:model="nombre" wire:keyup="buspron" style="width: 100%" id="nombre" class="form-control" type="text" name="nombre" placeholder="Ingrese el Nombre">
+                @error('nombre')<p class="text-x text-red-500 alic">{{$message}}</p>@enderror</label>
                 <label for="idlugar" style="width: 30%">Lugar</label><label>
                 <select name="idlugar" wire:model="idlugar" id="idlugar" class="form-control">
-                  <option value="NULL" selected style="width: 100%">(SELECCIONE UN LUGAR)</option>
+                  <option value="NULL" style="width: 100%" selected>(SELECCIONE LUGAR)</option>
                   @foreach ($lugares as $lugar)
                     <option value="{{$lugar->id}}">{{$lugar->descripcion}}</option>
                   @endforeach
                 </select></label>
                 <label for="pesofull" style="width: 30%">Peso FULL</label><label>
-                <input wire:model="pesofull" wire:keyup="calpeso" style="width: 100%" id="pesofull" class="form-control" type="text" name="pesofull" placeholder="Ingrese Peso FULL"></label>
+                <input wire:model="pesofull" wire:keyup="calpeso" style="width: 100%" id="pesofull" class="form-control" type="number" name="pesofull" placeholder="Ingrese Peso FULL"></label>
                 <label for="pesovacio" style="width: 30%">Peso VACIO</label><label>
-                <input wire:model="pesovacio" wire:keyup="calpeso" style="width: 100%" id="pesovacio" class="form-control" type="text" name="pesovacio" placeholder="Ingrese Peso VACIO"></label>
+                <input wire:model="pesovacio" wire:keyup="calpeso" style="width: 100%" id="pesovacio" class="form-control" type="number" name="pesovacio" placeholder="Ingrese Peso VACIO"></label>
                 <label for="pesoneto" style="width: 30%">Peso NETO</label><label>
-                <input disabled wire:model="pesoneto" style="width: 100%" wire:model="pesoneto" id="pesoneto" class="form-control" type="text" name="pesoneto" placeholder="Ingrese Peso NETO"></label>
+                <input disabled wire:model="pesoneto" style="width: 100%" id="pesoneto" class="form-control" type="text" name="pesoneto" placeholder="Ingrese Peso NETO"></label>
                 <label for="Observaciones">Observaciones</label>
                 <textarea rows="2" class="form-control" id="exampleFormControlTextarea1" placeholder="Ingrese las Observaciones"></textarea><br>
                 <div class="d-flex justify-content-center mb-3">

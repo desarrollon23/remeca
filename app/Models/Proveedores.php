@@ -11,4 +11,8 @@ class Proveedores extends Model
 
     protected $fillable = ['cedula', 'nombre'];
 
+    //Relacion uno a muchos con  recepcion de material
+    public function almacens(){
+        return $this->hasMany(Almacen::class);
+    }
 }

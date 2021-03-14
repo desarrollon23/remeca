@@ -25,7 +25,7 @@ class CreateDetallerecmatTable extends Migration
             $table->decimal('cantidadprorecmat', $precision = 8, $scale = 2)->nullable($value = true);
             $table->string('operacion')->nullable($value = true);
             $table->foreign('recepcionmaterial_id')->references('id')->on('recepcionmaterial')->ondelete('cascade');
-            $table->foreign('producto_id')->references('id')->on('_pproductos')->ondelete('cascade');
+            //$table->foreign('producto_id')->references('id')->on('_pproductos')->ondelete('cascade');
             $table->timestamps();
         });
     }

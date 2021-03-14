@@ -89,12 +89,28 @@ class MaterialReception extends Component
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Usuario Eliminado!']);
     }
 
-    public function calpeso(){
-        $this->pesoneto=$this->pesofull-$this->pesovacio;
+    public function calpeso(){ //CALCULA EL PESO NETO
+        if($this->pesofull<>NULL and $this->pesovacio<>NULL){
+            if($this->pesofull>0 or $this->pesovacio>0){
+                if($this->pesofull>$this->pesovacio){ $this->pesoneto=$this->pesofull-$this->pesovacio;
+                }else{ $this->pesoneto="PESO FULL <= PESO VACIO"; }
+            }
+        }
+        if($this->pesofull==NULL){ $this->pesoneto="Ingrese PESO FULL"; }
+        if($this->pesovacio==NULL){ $this->pesoneto=$this->pesofull; }
     }
     
-    public function buspro(){
+    public function busproc(){ //BUSCA LOS PROVEEDORES
+        $probc=Proveedores::where('cedula',$this->cedula)->get()->pluck('nombre');
+        /* if ($prob==NULL) { $this->nombre = "NO EXISTE";
+        }else{ $this->nombre = $prob; } */
+        //dd($prob);
+        $this->nombre = isset($probc) ? $probc : "NO EXISTE";
+    }
 
+    public function buspron(){ //BUSCA LOS PROVEEDORES
+        $probn=Proveedores::where('nombre',$this->nombre)->get()->pluck('cedula');
+        $this->cedula = isset($probn) ? $probn : "NO EXISTE";
     }
 
     public function guardar(){ //AQUÍ SE GUARDA LA RECEPCION DESPUES SE GUARDAN LOS MATERIALES

@@ -55,7 +55,13 @@
           <a href="#" class="nav-link active">
             <i class="nav-icon fas fa-tachometer-alt"></i><p>TABLERO</p>
           </a>
-        </li> --}}{{-- PRESIDENCIA --}}
+        </li> --}}{{-- CRUD DE USUARIOS --}}
+        <li class="nav-item">
+          <!--a href="#" class="nav-link active"-->
+          <a href="{{ route('admin.users.index') }}" class="nav-link">
+            <i class="nav-icon fas fa-users hover-opacity-6"></i>
+            <p @php echo $textom; @endphp>USUARIOS</p></a>
+        </li>{{-- PRESIDENCIA --}}
         <li class="nav-item">
           <!--a href="#" class="nav-link active"-->
           <a href="#" class="nav-link">
