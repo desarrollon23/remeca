@@ -13,6 +13,7 @@ use App\Http\Livewire\Almacen;
 use App\Http\Livewire\Almacen\MaterialReception;
 use App\Http\Livewire\AlmacenComponent;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +32,11 @@ Route::get('/', function () {
 
 Route::get('admin/dashboard', DashBoardController::class)->name('admin.dashboard');
 
-Route::resource('users', UserController::class)->names('admin.users');
+//este controlador se crea con php artisan make:controller Adnim\UserController -r
+Route::resource('users', UserController::class)/* ->middleware('can:admin.users') */->names('admin.users');
+
+//este controlador se crea con php artisan make:controller Adnim\RoleController -r
+Route::resource('roles', RoleController::class)->names('admin.roles'); 
 
 //LO DE ABAJO ESTÁ BUENO
 /* Route::get('/', function () {return view('welcome');})->name('home'); *

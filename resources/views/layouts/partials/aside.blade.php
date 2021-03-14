@@ -55,7 +55,7 @@
           <a href="#" class="nav-link active">
             <i class="nav-icon fas fa-tachometer-alt"></i><p>TABLERO</p>
           </a>
-        </li> --}}{{-- PRESIDENCIA --}}
+        </li> --}}{{-- PRESIDENCIA --}}@role('Admin|Auditor|Presidencia')
         <li class="nav-item">
           <!--a href="#" class="nav-link active"-->
           <a href="#" class="nav-link">
@@ -64,101 +64,108 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="fas fa-money-bill-wave"></i><p class="hover-color " @php echo $textos; @endphp>Administración</p></a>
+                  <i class="nav-icon fas fa-money-bill-wave"></i><p class="hover-color " @php echo $textos; @endphp>Administración</p></a>
               </li><li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="fas fa-clipboard-check"></i><p class="hover-color " @php echo $textos; @endphp>Logística</p></a>
+                  <i class="nav-icon fas fa-clipboard-check"></i><p class="hover-color " @php echo $textos; @endphp>Logística</p></a>
               </li><li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="fas fa-warehouse"></i><p class="hover-color " @php echo $textos; @endphp>Almacen</p></a>
+                  <i class="nav-icon fas fa-warehouse"></i><p class="hover-color " @php echo $textos; @endphp>Almacen</p></a>
             </li></ul>
-        </li>{{-- AUDITORIA --}}
+        </li>@endrole<div></div>{{-- FINANZAS --}}@role('Admin|Auditor|Finanzas')
         <li class="nav-item">
           <a href="#" class="nav-link">
-            <i class="fas fa-dollar-sign"></i>
+            <i class="nav-icon fas fa-dollar-sign"></i>
             <p @php echo $textom; @endphp>FINANZAS<i class="fas fa-angle-left right"></i></p></a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
               <a href="#" class="nav-link">
-                <i class="fas fa-money-bill-wave"></i><p @php echo $textos; @endphp>Administración</p></a>
+                <i class="nav-icon fas fa-money-bill-wave"></i><p @php echo $textos; @endphp>Administración</p></a>
             </li><li class="nav-item">
               <a href="#" class="nav-link">
-                <i class="fas fa-clipboard-check"></i><p @php echo $textos; @endphp>Logística</p></a>
+                <i class="nav-icon fas fa-clipboard-check"></i><p @php echo $textos; @endphp>Logística</p></a>
             </li><li class="nav-item">
               <a href="#" class="nav-link">
-                <i class="fas fa-warehouse"></i><p @php echo $textos; @endphp>Almacen</p></a>
+                <i class="nav-icon fas fa-warehouse"></i><p @php echo $textos; @endphp>Almacen</p></a>
           </li></ul>
-        </li>{{-- LOGÍSTICA --}}
+        </li>@endrole<div></div>{{-- LOGÍSTICA --}}@role('Admin|Auditor|Logistica')
         <li class="nav-item">
           <a href="#" class="nav-link">
-            <i class="fas fa-clipboard-check"></i><p @php echo $textom; @endphp>LOGISTICA<i class="fas fa-angle-left right"></i></p>
-          </a><ul class="nav nav-treeview">
-            <li class="nav-item"><a href="{{ route('admin.users') }}" class="nav-link request()->is('admin/users') ? 'active' : '' "><i class="fas fa-clipboard-list"></i>
-            <p @php echo $textos; @endphp>Operaciones</p></a>
-            <li class="nav-item"><a href="{{ route('admin.users') }}" class="nav-link request()->is('admin/users') ? 'active' : '' "><i class="fas fa-truck"></i>
-              <p @php echo $textos; @endphp>Transporte</p></a>
+            <i class="nav-icon fas fa-clipboard-check"></i>
+            <p @php echo $textom; @endphp>LOGISTICA<i class="fas fa-angle-left right"></i></p></a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-clipboard-list"></i><p @php echo $textos; @endphp>Operaciones</p></a>
+            </li><li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-truck"></i><p @php echo $textos; @endphp>Transporte</p></a>
           </li></ul>
-        </li>{{-- ADMINISTRACION --}}
+        </li>@endrole<div></div>{{-- ADMINISTRACION --}}@role('Admin|Auditor|Administracion')
         <li class="nav-item">
           <a href="#" class="nav-link">
-            <i class="fas fa-money-bill-wave"></i><p @php echo $textom; @endphp>ADMINISTRACION<i class="fas fa-angle-left right"></i></p>
+            <i class="nav-icon fas fa-money-bill-wave"></i><p @php echo $textom; @endphp>ADMINISTRACION<i class="fas fa-angle-left right"></i></p>
           </a><ul class="nav nav-treeview">
             <li class="nav-item">
               <a href="#" class="nav-link request()->is('admin/users') ? 'active' : '' ">
-                <i class="fas fa-cart-plus"></i><p @php echo $textos; @endphp>Compras</p></a>
+                <i class="nav-icon fas fa-cart-plus"></i><p @php echo $textos; @endphp>Compras</p></a>
             </li><li class="nav-item">
               <a href="#" class="nav-link request()->is('admin/users') ? 'active' : '' ">
-                <i class="fas fa-cart-arrow-down"></i></i><p @php echo $textos; @endphp>Ventas</p></a>
+                <i class="nav-icon fas fa-cart-arrow-down"></i></i><p @php echo $textos; @endphp>Ventas</p></a>
           </li></ul>
-        </li>{{-- ALMACEN --}}
+        </li>@endrole<div></div>{{-- ALMACEN --}}@role('Admin|Auditor|Almacen')
         <li class="nav-item">
           <a href="#" class="nav-link">
-            <i class="fas fa-warehouse"></i><p @php echo $textom; @endphp>ALMACEN<i class="fas fa-angle-left right"></i></p>
+            <i class="nav-icon fas fa-warehouse"></i><p @php echo $textom; @endphp>ALMACEN<i class="fas fa-angle-left right"></i></p>
           </a><ul class="nav nav-treeview">
             <li class="nav-item">
               <a href="{{ route('almacen.material-reception') }}" 
                 class="nav-link request()->is('livewire/almacen/material-reception') ? 'active' : '' ">
-                <i class="fas fa-dolly"></i><p @php echo $textos; @endphp>Recepción</p></a>
+                <i class="nav-icon fas fa-dolly"></i><p @php echo $textos; @endphp>Recepción</p></a>
             </li>
             <li class="nav-item">
               <a href="#{{-- {{ route('admin.users') }} --}}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
-                <i class="fas fa-people-carry"></i><p @php echo $textos; @endphp>Entrega</p></a>
+                <i class="nav-icon fas fa-people-carry"></i><p @php echo $textos; @endphp>Entrega</p></a>
           </li></ul>
-        </li>{{-- MANTENIMIENTOS --}}
+        </li>@endrole<div></div>{{-- MANTENIMIENTOS --}}@role('Admin|Auditor|Mantenimiento')
         <li class="nav-item">
           <a href="#" class="nav-link">
-            <i class="fas fa-wrench"></i><p @php echo $textom; @endphp>MANTENIMIENTOS<i class="fas fa-angle-left right"></i></p>
+            <i class="nav-icon fas fa-wrench"></i><p @php echo $textom; @endphp>MANTENIMIENTOS<i class="fas fa-angle-left right"></i></p>
           </a><ul class="nav nav-treeview">
             <li class="nav-item">
               <a href="{{ route('livewire.pproveedores') }}" class="nav-link">
-                <i class="fas fa-user-tie"></i><p @php echo $textos; @endphp>Proveedores</p></a>
+                <i class="nav-icon fas fa-user-tie"></i><p @php echo $textos; @endphp>Proveedores</p></a>
             </li>
             <li class="nav-item">
               <a href="#" class="nav-link">
-                <i class="fas fa-id-card"></i><p @php echo $textos; @endphp>Clientes</p></a>
+                <i class="nav-icon fas fa-id-card"></i><p @php echo $textos; @endphp>Clientes</p></a>
             </li>
             <li class="nav-item">
               <a href="{{ route('livewire.productos') }}" class="nav-link">
-                <i class="fas fa-truck-loading"></i><p @php echo $textos; @endphp>Materiales</p></a>
+                <i class="nav-icon fas fa-truck-loading"></i><p @php echo $textos; @endphp>Materiales</p></a>
             </li>
             <li class="nav-item">
               <a href="{{ route('livewire.sucursales') }}" class="nav-link request()->is('livewire/sucursales') ? 'active' : '' ">
-                <i class="fas fa-store"></i><p @php echo $textos; @endphp>Sucursales</p></a>
+                <i class="nav-icon fas fa-store"></i><p @php echo $textos; @endphp>Sucursales</p></a>
             </li>
             <li class="nav-item">
               <a href="#" class="nav-link">
-                <i class="fas fa-truck"></i><p @php echo $textos; @endphp>Vehículos</p></a>
+                <i class="nav-icon fas fa-truck"></i><p @php echo $textos; @endphp>Vehículos</p></a>
             </li>{{-- CRUD DE USUARIOS --}}
             <li class="nav-item">
               <a href="{{ route('admin.users.index') }}" class="nav-link">
-                <i class="nav-icon fas fa-users"></i><p @php echo $textom; @endphp>Usuarios</p></a>
+                <i class="nav-icon nav-icon fas fa-users"></i><p @php echo $textos; @endphp>Usuarios</p></a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('admin.roles.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-users-cog"></i><p @php echo $textos; @endphp>Roles de Usuarios</p></a>
             </li>
             {{-- <li class="nav-item">
               <a href="{{ route('admin.users') }}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
                 <i class="nav-icon fas fa-users"></i><p @php echo $textos; @endphp>Usuarios</p></a>
             </li> --}}
           </ul>
-        </li>
+        </li>@endrole
       </ul>
     </nav>
   </div>

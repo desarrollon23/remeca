@@ -32,6 +32,6 @@ class UserSeeder extends Seeder
             'password' => bcrypt('mantenimiento')
         ])->assignRole('Mantenimiento');
 
-        User::factory(5)->create();
+        User::factory(20)->create();
     }
 }
