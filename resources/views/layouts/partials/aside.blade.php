@@ -1,28 +1,28 @@
-@php
-  /* para fondo verde */
-  /* $fondoc='style="background: #c3d69b;"'; */
-  $fondoo='style="background: #3f7819;"';
-
-  /* para fondo naranja */
-  /* $fondoc='style="background: #eb8647;"'; */
-  /* $fondoo='style="background: #ad4d12;"'; */
-
-  /* para fondo azul */
-  /* $fondoc='style="background: #6699cc;"'; */
-  /* $fondoo='style="background: #336699;"'; */
-  
- /*  $texto='style="color: white;"';
-  $textom='style="color: white; hover-opacity-6; font-weight: bold;"';
-  $textos='style="color: white; hover-opacity-6;"'; */
-
-  /* para fondo blanco */
-  $fondoc='style="background: white;"';
-  $texto='style="color: white;"';
-  $textom='style="color: black; font-weight: bold;"';
-  $textos='style="color: black;"';
-@endphp
+<aside class="main-sidebar elevation-4" style="background: #3f7819;">
 <!--aside class="main-sidebar sidebar-dark-primary elevation-4" -->
-  <aside class="main-sidebar elevation-4" @php echo $fondoo; @endphp>
+    @php
+    /* para fondo verde */
+    /* $fondoc='style="background: #c3d69b;"'; */
+    $fondoo='style="background: #3f7819;"';
+  
+    /* para fondo naranja */
+    /* $fondoc='style="background: #eb8647;"'; */
+    /* $fondoo='style="background: #ad4d12;"'; */
+  
+    /* para fondo azul */
+    /* $fondoc='style="background: #6699cc;"'; */
+    /* $fondoo='style="background: #336699;"'; */
+    
+   /*  $texto='style="color: white;"';
+    $textom='style="color: white; hover-opacity-6; font-weight: bold;"';
+    $textos='style="color: white; hover-opacity-6;"'; */
+  
+    /* para fondo blanco */
+    $fondoc='style="background: white;"';
+    $texto='style="color: white;"';
+    $textom='style="color: black; font-weight: bold;"';
+    $textos='style="color: black;"';
+  @endphp
   <!-- LOGO -->
   <a href="{{ route('admin.dashboard') }}" class="brand-link">
     {{-- <img src="{{ asset('backend/dist/img/AdminLTELogo.png') }}" alt="REMECA" class="brand-image img-circle elevation-3" style="opacity: .8"> --}}
@@ -32,7 +32,7 @@
   </a>
   <div class="sidebar" @php echo $fondoc; @endphp>
     <!-- PANEL DEL USUARIO -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    {{-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
         <img src="{{ asset('img/pkc16x16.jpg') }}" class="img-circle elevation-2" alt="User Image">
       </div>
@@ -47,7 +47,7 @@
           </x-jet-dropdown-link>
         </form>
       </div>
-    </div>
+    </div> --}}
     <!-- MENU GENERAL -->
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">

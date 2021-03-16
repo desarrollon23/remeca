@@ -42,9 +42,11 @@ class ProductosComponent extends Component
             'cantidad' => 'required|max:8'
         ]);
         Producto::create([
+            'idcate' => 1,       // SE DEBE CREAR UN LISTBOX CON LAS CATEGORÍAS
             'descripcion' => $this->descripcion,
             'precio' => $this->precio,
             'cantidad' =>  $this->cantidad
+            
         ]);
         $this->reset(['descripcion', 'precio', 'cantidad']);
     }

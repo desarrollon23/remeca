@@ -16,7 +16,7 @@
                 </label>
                 <label for="nombre" style="width: 30%">Nombre</label><label>
                 <input x-bind:disabled="!open" wire:model="nombre" wire:keyup="buspron" style="width: 100%" id="nombre" class="form-control" type="text" name="nombre" placeholder="Ingrese el Nombre">
-                @error('nombre')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</label>
+                @error('nombre')<p class="text-x text-red-500 alic">{{$message}}</p>@enderror</label>
                 <label for="idlugar" style="width: 30%">Lugar</label><label>
                 <select x-bind:disabled="!open" name="idlugar" wire:model="idlugar" id="idlugar" class="form-control">
                   <option value="NULL" style="width: 100%" selected>(SELECCIONE LUGAR)</option>
@@ -32,18 +32,16 @@
                 <input disabled wire:model="pesoneto" style="width: 100%" id="pesoneto" class="form-control" type="text" name="pesoneto" placeholder="Ingrese Peso NETO"></label>
                 <label for="observaciones">Observaciones</label>
                 <textarea x-bind:disabled="!open" wire:model="observaciones" rows="1" id="observaciones" class="form-control" name="observaciones" placeholder="Ingrese las Observaciones"></textarea><br>
-                {{-- <div>@php if(isset($nopuedeguardar)<>null){ echo '<p class="text-x text-red-500 italic">'.$nopuedeguardar.'</p>'; } @endphp</div> --}}
-                <div wire:model="nopuedeguardar" class="text-x text-red-500 italic"></div>
-                <div class="d-flex justify-content-center mb-1">
-                  
-                <button x-show="open" x-on:click="{ open = !open }" wire:click="default({{ $recepcionmaterial_id }})" class="btn btn-secondary mb-1 mr-2"><i class="fa fa-times mr-1"></i> CANCELAR</button>
+                <div class="d-flex justify-content-center mb-3">
+                <button x-show="open" x-on:click="{ open = !open }" wire:click="default({{ $recepcionmaterial_id }})" class="btn btn-secondary mb-3"><i class="fa fa-times mr-1"></i> CANCELAR</button>                
                   <div x-show="open">
-                    <button x-on:click="{ open = !open }" id="btn-guardar" wire:click="update({{ $recepcionmaterial_id }})" class="btn btn-primary mb-1"><i class="fa fa-save mr-1"></i> GUARDAR</button>
-                  </div>
+                    <button x-on:click="{ open = !open }" id="btn-guardar" wire:click="update({{ $recepcionmaterial_id }})" class="btn btn-primary mb-3"><i class="fa fa-save mr-1"></i> GUARDAR</button>
+                  </div>                
                   <div x-show="!open">
-                    <button x-on:click="{ open = !open }" id="btn-generar" wire:click="generar" class="btn btn-primary mb-1"><i class="fa fa-save mr-1"></i> GENERAR</button>
+                    <button x-on:click="{ open = !open }" id="btn-generar" wire:click="generar" class="btn btn-primary mb-3"><i class="fa fa-save mr-1"></i> GENERAR</button>
                   </div>
                 </div>                
+                {{-- </div> --}}
               </div>
             </div>
           </div>
@@ -74,43 +72,31 @@
                       return $descmat;
                     }
                   @endphp
-                  @foreach ($productosrecepcion as $productorecepcion)
+                  @foreach ($materiales as $material)
                   <tr><th scope="row">{{ $loop->iteration }}</th>
-                    <td>{{ traematerial($productorecepcion->producto_id) }}</td>
-                    <td>{{ $productorecepcion->cantidadprorecmat }}</td>
+                    <td>{{ traematerial($material->producto_id) }}</td>
+                    <td>{{ $material->cantidadprorecmat }}</td>
                     <td>
                     @php 
-                        if ($productorecepcion->operacion=="RESTA") {
+                        if ($material->operacion=="RESTA") {
                             echo '<a><i class="fas fa-minus text-danger"></i></a>';
-                        }if ($productorecepcion->operacion=="SUMA") {
+                        }if ($material->operacion=="SUMA") {
                             echo '<a><i class="color danger fas fa-plus text-success"></i></a>';
                      }@endphp
                     </td>
                     <td>
-                      <a href="" wire:click.prevent="edit({{ $productorecepcion }})"><i class="fa fa-edit mr-2"></i></a>
-                      <a href="" wire:click.prevent="confirmUserRemoval({{ $productorecepcion->id }})"><i class="fa fa-trash text-danger"></i></a>
+                      <a href="" wire:click.prevent="edit({{ $material }})"><i class="fa fa-edit mr-2"></i></a>
+                      <a href="" wire:click.prevent="confirmUserRemoval({{ $material->id }})"><i class="fa fa-trash text-danger"></i></a>
                       @php 
-                        if ($productorecepcion->operacion=="RESTA") {
-                            $acumulado=$acumulado-$productorecepcion->cantidadprorecmat;
-                            $pesodisponible=$pesodisponible+$acumulado;
-                            $pesodisponiblec=$pesodisponible;
-                            $acumuladoc=$acumulado;
-                        }if ($productorecepcion->operacion=="SUMA") {
-                            $acumulado=$acumulado+$productorecepcion->cantidadprorecmat;
-                            $pesodisponible=$pesodisponible-$acumulado;
-                            $pesodisponiblec=$pesodisponible;
-                            $acumuladoc=$acumulado;
-                        }
+                        if ($material->operacion=="RESTA") {
+                            $acumulado=$acumulado-$material->cantidadprorecmat;
+                        }if ($material->operacion=="SUMA") {
+                            $acumulado=$acumulado+$material->cantidadprorecmat;}
                       @endphp
                   </td></tr>@endforeach</tbody>
                   <tfoot><tr><td colspan="2">
                     <label>TOTAL</label></td>
                     <td><label><h1 style="font-weight:900; color:red" id="pesocalculado">{{ $acumulado }}</h1><input style="border:0 font-weight: 900" type="hidden" id="pesocalculado" value="{{ $acumulado }}" disabled/></label></td><td></td></tr>
-                      <tr><td colspan="2">
-                        <label for="pesodisponible" style="width: 30%">FALTA</label></td><td><label>
-                          <h1 style="font-weight:900; color:red" id="pesocalculado">{{ $pesodisponible }}</h1>
-                          {{-- <input disabled wire:model="pesodisponible" style="width: 100%" id="pesodisponible" class="form-control" type="text" name="pesodisponible"> --}}</label>
-                      </td></tr>
                   </tfoot>
               </table>
             </div>
@@ -147,18 +133,11 @@
                  </select>
             </div>              
             <div class="form-group">
-              <label for="cantidadprorecmat" style="width: 30%">Peso</label><label>
-              <input type="number" wire:model.defer="state.cantidadprorecmat" wire:keyup="verificarpeso"  style="width: 100%" class="form-control" id="cantidadprorecmat" aria-describedby="cantidadprorecmatHelp" placeholder="Ingrese la cantidad">
+              <label for="cantidadprorecmat">Peso</label>
+              <input type="text" wire:model.defer="state.cantidadprorecmat" class="form-control" id="cantidadprorecmat" aria-describedby="cantidadprorecmatHelp" placeholder="Ingrese la cantidad">
               @error('cantidadprorecmat') <div class="invalid-feedback">{{ $message }}</div>@enderror
-              <small id="emailHelp" class="form-text text-muted"></small></label>
-
-              <label for="acumuladoc" style="width: 30%">TOTAL</label><label>
-              <input disabled wire:model="acumuladoc" style="width: 100%" id="acumuladoc" class="form-control" type="text" name="acumuladoc"></label>
-
-              <label for="pesodisponiblec" style="width: 30%">FALTA</label><label>
-              <input disabled wire:model="pesodisponiblec" style="width: 100%" id="pesodisponiblec" class="form-control" type="text" name="pesodisponiblec"></label>
+              <small id="emailHelp" class="form-text text-muted"></small>
             </div>
-            
             <div class="form-group">
               <label for="exampleInputEmail2">Material</label>
               <select name="operacion" wire:model.defer="state.operacion" id="operacion" placeholder="SELECCIONE LA OPERACION">
@@ -167,14 +146,14 @@
               @error('operacion') <div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times mr-1"></i>Cancelar</button>
-            <button type="submit" class="btn btn-primary"><i class="fa fa-save mr-1"></i>
-              @if ($showEditModal)
-                <span>Guardar Cambios</span>
-              @else
-                <span>Guardar</span>
-              @endif
-            </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times mr-1"></i>Cancelar</button>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-save mr-1"></i>
+            @if ($showEditModal)
+              <span>Guardar Cambios</span>
+            @else
+              <span>Guardar</span>
+            @endif
+          </button>
           </div>
         </div>
       </form>

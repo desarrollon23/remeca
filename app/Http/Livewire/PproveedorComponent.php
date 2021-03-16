@@ -41,7 +41,7 @@ class PproveedorComponent extends Component
         'correo.max' => 'Ingrese un Correo con el siguiente formato nombre@dominio.com.'
     ];
 
-    public function render()    {
+    public function render(){
         $pproveedores = Proveedores::all();
         return view('livewire.pproveedor-component', compact('pproveedores'));
     }

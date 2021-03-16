@@ -14,15 +14,15 @@ class CreateRecepcionmaterialTable extends Migration
     public function up()
     {
         Schema::create('recepcionmaterial', function (Blueprint $table) {
-            $table->id();
-            $table->string('fecha', 10);
-            $table->string('cedula', 15);
-            $table->integer('idlugar');
-            $table->decimal('pesofull', $precision = 8, $scale = 2);
-            $table->decimal('pesovacio', $precision = 8, $scale = 2);
-            $table->decimal('pesoneto', $precision = 8, $scale = 2);
-            $table->decimal('pesocalculado', $precision = 8, $scale = 2);
-            $table->string('observaciones', 250);
+            $table->id(); //QUE NO SEA AUTOINCREMENT
+            $table->string('fecha', 10)->nullable($value = true);
+            $table->string('cedula', 15)->nullable($value = true);
+            $table->integer('idlugar')->nullable($value = true);
+            $table->decimal('pesofull', $precision = 8, $scale = 2)->nullable($value = true);
+            $table->decimal('pesovacio', $precision = 8, $scale = 2)->nullable($value = true);
+            $table->decimal('pesoneto', $precision = 8, $scale = 2)->nullable($value = true);
+            $table->decimal('pesocalculado', $precision = 8, $scale = 2)->nullable($value = true);
+            $table->string('observaciones', 250)->nullable($value = true);
             $table->timestamps();
         });
     }

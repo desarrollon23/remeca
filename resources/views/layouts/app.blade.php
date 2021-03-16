@@ -3,6 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <link rel="shortcut icon" href="../favicons/favicon.ico" />
+  <title>{{ config('app.name', 'REMECA') }}</title> 
+  <meta http-equiv="X-UA-Compatible" content="ie=edge"> {{--   <title>REMECA</title> --}}<!-- Fonts -->
+  <link rel="stylesheet" href="{{asset('css/app.css')}}"> <!-- Font -->
   <link rel="stylesheet" href="http://filamentgroup.github.io/tablesaw/dist/tablesaw.css">
 	<link rel="stylesheet" href="http://filamentgroup.github.io/tablesaw/demo/demo.css">
 	<link rel="stylesheet" href="//filamentgroup.github.io/demo-head/demohead.css">
@@ -15,8 +20,8 @@
       <script src="http://filamentgroup.github.io/tablesaw/dist/tablesaw-init.js"></script>
       <script src="//filamentgroup.github.io/demo-head/loadfont.js"></script>
   <!-- AQUÍ VA EL FAVICONS -->
-  <link rel="shortcut icon" href="../favicons/favicon.ico" />
-  <title>REMECA</title>
+  {{-- <link rel="shortcut icon" href="../favicons/favicon.ico" />
+  <title>REMECA</title> --}}
   <!-- INICIO ESTILOS ADMINLTEMASTER-->
   <!-- Ionicons -->  {{-- <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> --}}
     <!-- Tempusdominus Bootstrap 4 -->    {{-- <link rel="stylesheet" href="{{ asset('backend/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}"> --}}
@@ -41,23 +46,28 @@
   <link href="{{ asset('backend/plugins/toastr/toastr.min.css') }}" rel="stylesheet"/>
    <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{{ asset('backend/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+  <link rel="stylesheet" href="{{ mix('css/app.css')}}">
   @livewireStyles
+  <script src="{{ mix('js/app.js') }}" defer></script>
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed antialiased">
 <div class="wrapper">
+{{-- <body class="font-sans antialiased">
+  <div class="min-h-screen bg-gray-100"> --}}
 
   <!-- Navbar -->
-  @include('layouts.partials.navbar')
+  {{-- @include('layouts.partials.navbar') --}}
+  @livewire('navigation')
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
   @include('layouts.partials.aside')
-  
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper" style="background: white;">
-
-    {{ $slot }}
-
+    <main>
+      {{ $slot }}
+    </main>
   </div>
   <!-- /.content-wrapper -->
 

@@ -36,7 +36,7 @@ Route::get('admin/dashboard', DashBoardController::class)->name('admin.dashboard
 Route::resource('users', UserController::class)/* ->middleware('can:admin.users') */->names('admin.users');
 
 //este controlador se crea con php artisan make:controller Adnim\RoleController -r
-Route::resource('roles', RoleController::class)->names('admin.roles'); 
+Route::resource('roles', RoleController::class)->except('show')->names('admin.roles'); 
 
 //LO DE ABAJO ESTÁ BUENO
 /* Route::get('/', function () {return view('welcome');})->name('home'); *

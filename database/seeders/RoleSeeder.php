@@ -30,16 +30,16 @@ class RoleSeeder extends Seeder
         /* Permission::create(['name' => 'home'])->syncRoles([$role1, $role2, $role3, $role4, $role5, $role6, $role7, $role8]); */
         Permission::create(['name' => 'admin.dashboard',
                             'description' =>'Ver la Página Principal'])->syncRoles([$role1, $role2, $role3, $role4, $role5, $role6, $role7, $role8]);
-        
+
         //******************PERMISOS DE ALMACEN
-        /* Permission::create(['name' => 'livewire.almacen.material-reception.index',
+        Permission::create(['name' => 'livewire.almacen.material-reception.index',
                             'description' =>'Ver la Lista de '])->syncRoles([$role1, $role2, $role4, $role8]);
         Permission::create(['name' => 'livewire.almacen.material-reception.create',
                             'description' =>'Crear un '])->syncRoles([$role1, $role2, $role4, $role8]);
         Permission::create(['name' => 'livewire.almacen.material-reception.edit',
                             'description' =>'Editar un '])->syncRoles([$role1, $role2, $role4, $role8]);
         Permission::create(['name' => 'livewire.almacen.material-reception.destroy',
-                            'description' =>'Eliminar un '])->syncRoles([$role1, $role2, $role4, $role8]); */
+                            'description' =>'Eliminar un '])->syncRoles([$role1, $role2, $role4, $role8]);
 
         //******************PERMISOS DE MANTENIMIENTOS
         //PROVEEDORES
@@ -96,6 +96,15 @@ class RoleSeeder extends Seeder
                             'description' =>'Editar un Usuario'])->syncRoles([$role1, $role2, $role3]);
         Permission::create(['name' => 'admin.users.update',
                             'description' =>'Eliminar un Usuario'])->syncRoles([$role1, $role2, $role3]);
+        //ROLES
+        Permission::create(['name' => 'admin.roles.index',
+                            'description' =>'Ver la Lista de Roles'])->syncRoles([$role1, $role2, $role3, $role4]);
+        Permission::create(['name' => 'admin.roles.create',
+                            'description' =>'Crear un Rol'])->syncRoles([$role1, $role2], $role3);
+        Permission::create(['name' => 'admin.roles.edit',
+                            'description' =>'Editar un Rol'])->syncRoles([$role1, $role2, $role3]);
+        Permission::create(['name' => 'admin.roles.destroy',
+                            'description' =>'Eliminar un Rol'])->syncRoles([$role1, $role2, $role3]);
 
     }
 }
