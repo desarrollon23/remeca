@@ -31,6 +31,7 @@ class PproveedorComponent extends Component
     protected $messages = [
         'cedula.required' => 'Por favor ingrese la Cédula o Rif.',
         'cedula.max' => 'La Cédula o Rif no puede tener más de 15 caracteres.',
+        /* 'cedula.unique' => 'La Cédula o Rif ya exixte.', */
         'nombre.required' => 'Por favor ingrese el Nombre.',
         'nombre.max' => 'El Nombre no puede tener más de 100 caracteres.',
         'direccion.required' => 'Por favor ingrese la Dirección.',
@@ -70,7 +71,7 @@ class PproveedorComponent extends Component
         $this->direccion = $pproveedor->direccion;
         $this->telefono = $pproveedor->telefono;
         $this->correo = $pproveedor->correo;
-        /* $this->visible = $pproveedor->visible; */
+        $this->visible = 'SI';
         $this->pproveedor_id = $pproveedor->id;
         $this->accion = "update";
     }
@@ -83,8 +84,8 @@ class PproveedorComponent extends Component
             'nombre' => $this->nombre,
             'direccion' => $this->direccion,
             'telefono' => $this->telefono,
-            'correo' => $this->correo
-            /* 'visible' => $this->visible */
+            'correo' => $this->correo,
+            $this->visible = 'SI'
         ]);
         $this->reset(['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'accion', 'pproveedor_id']);
     }

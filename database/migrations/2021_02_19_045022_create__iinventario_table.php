@@ -16,10 +16,10 @@ class CreateIinventarioTable extends Migration
         Schema::create('_iinventario', function (Blueprint $table) {
             $table->id();
             $table->string('fecha', 10);
-            $table->string('hora', 10);
+            $table->string('hora', 10)->nullable($value = true);
             $table->integer('idproducto');
-            $table->integer('comprados');
-            $table->integer('vendidos');
+            $table->integer('comprados')->nullable($value = true);
+            $table->integer('vendidos')->nullable($value = true);
             $table->integer('existencia');
             $table->timestamps();
         });

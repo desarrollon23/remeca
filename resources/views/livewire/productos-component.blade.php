@@ -1,11 +1,11 @@
-<div class="pt-1">
+<div class="pt-1">@php $fondoo='style="background: #336699;"'; @endphp
   <div class="card-header"><h3 class="card-title">MANTENIMIENTO DE MATERIALES</h3></div>
   <div class="content">
     <div class="container-fluid">
       <div class="row aling: center">
         <div class="col-lg-5 col-md-6 col-xs-6 mt-2">
           <div class="card">
-            <div class="card-header" style="background: #3f7819;">
+            <div class="card-header" @php echo $fondoo; @endphp>
               <h3 class="card-title" style="color: #fff;">
                 <label class="d-flex justify-content-center">Material</label></h3>
             </div>
@@ -18,13 +18,13 @@
                   <label for="cantidad" style="width: 30%">Cantidad</label>
                   <input wire:model="cantidad" style="width: 100%" id="cantidad" class="form-control" type="text" placeholder="Ingrese El Cantidad" name="cantidad">@error('cantidad')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror
                 </div>
-                  <div class="d-flex justify-content-center -3">
+                  <div class="d-flex justify-content-center mt-2">
                     {{-- <button wire:click="default" class="btn btn-secondary mb-3"><i class="fa fa-times mr-1"></i> CANCELAR</button> --}}
                     @if ($accion == "store")
-                      <button wire:click="store" class="btn btn-primary mt-3"><i class="fa fa-save mr-1"></i>Crear</button>
+                      <button wire:click="store" class="btn btn-primary mt-2"><i class="fa fa-save mr-1"></i>Crear</button>
                     @else
-                      <button wire:click="update" class="btn btn-primary mt-3"><i class="fa fa-save mr-1"></i>Modificar</button>
-                      <button wire:click="default" class="btn btn-secondary mt-3"><i class="fa fa-times mr-1"></i>Cancelar</button>
+                      <button wire:click="update" class="btn btn-primary mt-2"><i class="fa fa-save mr-1"></i>Modificar</button>
+                      <button wire:click="default" class="btn btn-secondary mt-2"><i class="fa fa-times mr-1"></i>Cancelar</button>
                     @endif
                   {{-- </div> --}}
                 {{-- </div> --}}
@@ -34,7 +34,7 @@
         </div>{{-- Lista de Materiales a Recibir --}}
         <div class="col-lg-7 col-md-6 col-xs-6 mt-2">
           <div class="card">
-            <div class="card-header" style="background: #3f7819;"><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center">Lista de Materiales</label></h3></div>
+            <div class="card-header" @php echo $fondoo; @endphp><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center">Lista de Materiales</label></h3></div>
             <div class="card-body">
               <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
                     <th scope="col">#</th>

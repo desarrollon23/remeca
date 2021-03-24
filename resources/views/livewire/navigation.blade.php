@@ -1,4 +1,5 @@
-<nav x-data="{ open: false }" class="main-header navbar navbar-expand navbar-light" style="background: #3f7819;">
+<nav x-data="{ open: false }" class="main-header navbar navbar-expand navbar-light" style="background: #336699;">
+{{-- <nav x-data="{ open: false }" class="main-header navbar navbar-expand navbar-light" style="background: #3f7819;"> --}}
 {{-- <nav class="bg-gray-800"> --}}
   <ul class="navbar-nav">
     <li class="nav-item">

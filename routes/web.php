@@ -14,6 +14,9 @@ use App\Http\Livewire\Almacen\MaterialReception;
 use App\Http\Livewire\AlmacenComponent;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Livewire\Client;
+use App\Http\Controllers\Livewire\PurchaseController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +41,13 @@ Route::resource('users', UserController::class)/* ->middleware('can:admin.users'
 //este controlador se crea con php artisan make:controller Adnim\RoleController -r
 Route::resource('roles', RoleController::class)->except('show')->names('admin.roles'); 
 
+Route::resource('purchases', PurchaseController::class)->names('livewire.purchases'); 
+
+//Route::resource('almacen', MaterialReception::class)->except('show')->names('livewire.almacen');
+
+
+/* Route::resource('livewire/client', Client::class)->names('livewire.client'); */
+
 //LO DE ABAJO ESTÁ BUENO
 /* Route::get('/', function () {return view('welcome');})->name('home'); *
 
@@ -57,10 +67,17 @@ Route::resource('roles', RoleController::class)->except('show')->names('admin.ro
 Route::get('livewire/sucursales', SucursalComponent::class)->name('livewire.sucursales');
 //Route::get('livewire/sucursales', SucursalComponent::class)->name('livewire.sucursales');
 Route::get('livewire/proveedores', PproveedorComponent::class)->name('livewire.pproveedores');
-Route::get('livewire/compra', CompradorComponent::class)->name('livewire.compra');
+Route::get('livewire/client', Client::class)->name('livewire.client');
+
+/* Route::get('livewire/compra', CompradorComponent::class)->name('livewire.compra'); */
 Route::get('livewire/productos', ProductosComponent::class)->name('livewire.productos');
 Route::get('livewire/almacen', AlmacenComponent::class)->name('livewire.almacen');
 Route::get('livewire/almacen/material-reception', MaterialReception::class)->name('almacen.material-reception');
+Route::put('livewire/almacen/material-reception{material}', [MaterialReception::class, 'updatematerial'])->name('almacen.material-reception.updatematerial');
+Route::delete('livewire/almacen/material-reception{material}', [MaterialReception::class, 'destroy'])->name('almacen.material-reception.destroy');
+
+
+Route::get('livewire/comprador-component', CompradorComponent::class)->name('livewire.comprador-component');
 
 //Route::get('/', Vehiculos::class); //Para el Componente Full Page, trabaja con la plantilla appCFP.blade.php que debe ser renombrada por app.blade.php
 

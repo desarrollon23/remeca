@@ -1,17 +1,15 @@
-<div class="pt-1">
+<div class="pt-1">@php $fondoo='style="background: #336699;"'; @endphp
   <div class="card-header"><h3 class="card-title">MANTENIMIENTO DE PROVEEDORES</h3></div>
-  <div class="content">
     <div class="container-fluid">
       <div class="row aling: center">
-        <div class="col-lg-5 col-md-6 col-xs-6 mt-2">
-          <div class="card card-primary">
-            <div class="card-header">
-              <h3 class="card-title">
+        <div class="col-lg-4 col-md-4 col-xs-4 mt-2">
+          <div class="card">
+            <div class="card-header" @php echo $fondoo; @endphp>
+              <h3 class="card-title" style="color: #fff; margin-right: 2px;">
                 <label class="d-flex justify-content-center">Proveedores</label></h3>
             </div>
             <div class="card-body">
               <div class="form-group">
-
                 <label for="cedula" style="width: 30%">Cédula</label>{{-- <label> --}}
                   <input wire:model="cedula" style="width: 100%" id="cedula" type="text" class="form-control" placeholder="Ingrese la Cédula" name="cedula">
                   @error('cedula')<p ass="text-x text-red-500 italic">{{$message}}</p>@enderror
@@ -27,22 +25,22 @@
                 <label for="correo" style="width: 30%">Correo</label>
                   <input wire:model="correo" style="width: 100%" id="correo" class="form-control" type="email" placeholder="Ingrese el Correo" name="correo">@error('correo')<p class="text-x text-red-500 alic">{{$message}}</p>
                   @enderror
-                <div class="d-flex justify-content-center -3">
+                <div class="d-flex justify-content-center mt-2">
                 {{-- <button wire:click="default" class="btn btn-secondary mb-3"><i class="fa fa-times mr-1"></i> CANCELAR</button> --}}
                 @if ($accion == "store")
-                  <button wire:click="store" class="btn btn-primary mb-3"><i class="fa fa-save mr-1"></i>Crear</button>
+                  <button wire:click="store" class="btn btn-primary mt-2"><i class="fa fa-save mr-1"></i>Crear</button>
                 @else
-                  <button wire:click="update" class="btn btn-primary mb-3"><i class="fa fa-save mr-1"></i>Modificar</button>
-                  <button wire:click="default" class="btn btn-secondary mb-3"><i class="fa fa-times mr-1"></i>Cancelar</button>
+                  <button wire:click="update" class="btn btn-primary mt-2"><i class="fa fa-save mr-1"></i>Modificar</button>
+                  <button wire:click="default" class="btn btn-secondary mt-2"><i class="fa fa-times mr-1"></i>Cancelar</button>
                 @endif
                 </div>
               </div>
             </div>
           </div>
         </div>{{-- Lista de Proveedores --}}
-        <div class="col-lg-7 col-md-6 col-xs-6 mt-2">
-          <div class="card card-primary">
-            <div class="card-header"><h3 class="card-title"><label>Lista de Proveedores</label></h3></div>
+        <div class="col-lg-8 col-md-6 col-xs-4 mt-2">
+          <div class="card">
+            <div class="card-header" @php echo $fondoo; @endphp><h3 class="card-title" style="color: #fff; margin-right: 2px;"><label>Lista de Proveedores</label></h3></div>
             <div class="card-body">
               <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
                     <th scope="col">#</th>
@@ -71,7 +69,7 @@
         </div>
       </div>
     </div>
-  </div>{{-- ELIMINAR MATERIAL --}}
+  {{-- ELIMINAR MATERIAL --}}
   <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
     <div class="modal-dialog" role="document">
       <div class="modal-content">

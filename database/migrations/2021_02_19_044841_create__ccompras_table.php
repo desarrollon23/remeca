@@ -25,10 +25,7 @@ class CreateCcomprasTable extends Migration
             $table->decimal('totalcomra', $precision = 8, $scale = 2)->nullable($value = true);
             $table->decimal('totalpagado', $precision = 8, $scale = 2)->nullable($value = true);
             $table->decimal('diferenciapago', $precision = 8, $scale = 2)->nullable($value = true);
-
-
-
-
+            $table->string('observacionesc', 250)->nullable($value = true);
             $table->timestamps();
         });
     }

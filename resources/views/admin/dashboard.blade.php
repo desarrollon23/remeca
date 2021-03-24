@@ -44,7 +44,7 @@
             <div class="small-box bg-success">
               <div class="inner">
                 <h3>33<sup style="font-size: 20px"></sup></h3>
-                <p>Entrega de Material</p>
+                <p>Despacho de Material</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>

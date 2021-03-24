@@ -16,7 +16,7 @@ class CreateCcategoriaproductoTable extends Migration
         Schema::create('_ccategoriaproducto', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion', 45);
-            $table->string('visible', 2);
+            $table->string('visible', 2)->nullable($value = true);
             $table->timestamps();
         });
     }

@@ -17,10 +17,10 @@ class CreatePproveedoresTable extends Migration
             $table->id();
             $table->string('cedula', 15);
             $table->string('nombre', 100);
-            $table->string('direccion', 250)->nullable();
-            $table->string('telefono',30)->nullable();
-            $table->string('correo', 100)->nullable();
-            $table->string('visible', 2)->nullable();
+            $table->string('direccion', 250)->nullable($value = true);
+            $table->string('telefono',30)->nullable($value = true);
+            $table->string('correo', 100)->nullable($value = true);
+            $table->string('visible', 2)->nullable($value = true);
             $table->timestamps();
         });
     }

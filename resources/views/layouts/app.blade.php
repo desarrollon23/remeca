@@ -154,6 +154,18 @@
         window.livewire.start();
     });
 </script> --}}
+{{-- validar numeros --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.0.2/cleave.min.js"></script>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function (){
+    $('body').on('keyup','.numeric', function(){
+      new Cleave('.numeric', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand'
+      });
+    })
+  })
+</script>
 <!-- DataTables  & Plugins -->
 <script src="{{ asset('backend/plugins/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('backend/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -234,5 +246,6 @@
   })
 </script>
 <script>$.widget.bridge('uibutton', $.ui.button)</script>
+@yield('js')
 </body>
 </html>

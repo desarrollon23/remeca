@@ -1,9 +1,9 @@
-<aside class="main-sidebar elevation-4" style="background: #3f7819;">
+<aside class="main-sidebar elevation-4" style="background: #336699;">
 <!--aside class="main-sidebar sidebar-dark-primary elevation-4" -->
     @php
     /* para fondo verde */
-    /* $fondoc='style="background: #c3d69b;"'; */
-    $fondoo='style="background: #3f7819;"';
+    /* $fondoc='style="background: #c3d69b;"'; */#336699
+    /* $fondoo='style="background: #3f7819;"'; */
   
     /* para fondo naranja */
     /* $fondoc='style="background: #eb8647;"'; */
@@ -11,7 +11,7 @@
   
     /* para fondo azul */
     /* $fondoc='style="background: #6699cc;"'; */
-    /* $fondoo='style="background: #336699;"'; */
+    $fondoo='style="background: #336699;"';
     
    /*  $texto='style="color: white;"';
     $textom='style="color: white; hover-opacity-6; font-weight: bold;"';
@@ -49,7 +49,7 @@
       </div>
     </div> --}}
     <!-- MENU GENERAL -->
-    <nav class="mt-2">
+    <nav class="mt-2" style="background-color: #d9d9d9">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         {{-- <li class="nav-item">
           <a href="#" class="nav-link active">
@@ -107,7 +107,7 @@
             <i class="nav-icon fas fa-money-bill-wave"></i><p @php echo $textom; @endphp>ADMINISTRACION<i class="fas fa-angle-left right"></i></p>
           </a><ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="#" class="nav-link request()->is('admin/users') ? 'active' : '' ">
+              <a href="{{ route('livewire.comprador-component') }}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
                 <i class="nav-icon fas fa-cart-plus"></i><p @php echo $textos; @endphp>Compras</p></a>
             </li><li class="nav-item">
               <a href="#" class="nav-link request()->is('admin/users') ? 'active' : '' ">
@@ -137,7 +137,7 @@
                 <i class="nav-icon fas fa-user-tie"></i><p @php echo $textos; @endphp>Proveedores</p></a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="{{ route('livewire.client') }}" class="nav-link">
                 <i class="nav-icon fas fa-id-card"></i><p @php echo $textos; @endphp>Clientes</p></a>
             </li>
             <li class="nav-item">

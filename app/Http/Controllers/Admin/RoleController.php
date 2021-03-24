@@ -20,7 +20,7 @@ class RoleController extends Controller
 
     public function index()
     {
-        if(request()->page){    //MANEJO DE CACHE PARA AHORRAR RECURSOS DEL SERVIDOR
+        /* if(request()->page){    //MANEJO DE CACHE PARA AHORRAR RECURSOS DEL SERVIDOR
             $key = 'roles' . request()->page;
         }else{
             $key = 'roles';
@@ -30,7 +30,8 @@ class RoleController extends Controller
         }else{
             $roles = Role::all();
             Cache::put($key, $roles);
-        }                       //FIN MANEJO DE CACHE PARA AHORRAR RECURSOS DEL SERVIDOR
+        }   */                     //FIN MANEJO DE CACHE PARA AHORRAR RECURSOS DEL SERVIDOR
+        $roles = Role::all();
         return view('admin.roles.index', compact('roles'));
     }
 

@@ -15,12 +15,12 @@ class CreatePproductosTable extends Migration
     {
         Schema::create('_pproductos', function (Blueprint $table) {
             $table->id();
-            $table->integer('idcate');
+            $table->integer('idcate')->nullable($value = true);
             $table->string('descripcion', 100);
-            $table->decimal('precio', $precision = 8, $scale = 2);
-            $table->integer('cantidad');
-            $table->string('visiblecom', 2);
-            $table->string('visibleven', 2);
+            $table->decimal('precio', $precision = 8, $scale = 2)->nullable($value = true);
+            $table->integer('cantidad')->nullable($value = true);
+            $table->string('visiblecom', 2)->nullable($value = true);
+            $table->string('visibleven', 2)->nullable($value = true);
             $table->timestamps();
         });
     }

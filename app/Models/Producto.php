@@ -13,8 +13,13 @@ class Producto extends Model
 
     protected $fillable = ['idcate', 'descripcion', 'precio', 'cantidad'];
 
-    //Relacion uno a muchos con  recepcion de material
+    //Relacion uno a muchos con recepcion de material
     public function almacens(){
         return $this->hasMany(Almacen::class);
+    }
+
+    //Relacion uno a muchos con Compra de material
+    public function purchases(){
+        return $this->hasMany(Compras::class);
     }
 }
