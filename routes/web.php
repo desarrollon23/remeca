@@ -41,7 +41,7 @@ Route::resource('users', UserController::class)/* ->middleware('can:admin.users'
 //este controlador se crea con php artisan make:controller Adnim\RoleController -r
 Route::resource('roles', RoleController::class)->except('show')->names('admin.roles'); 
 
-Route::resource('purchases', PurchaseController::class)->names('livewire.purchases'); 
+//Route::resource('purchases', PurchaseController::class)->names('livewire.purchases'); 
 
 //Route::resource('almacen', MaterialReception::class)->except('show')->names('livewire.almacen');
 
@@ -76,8 +76,15 @@ Route::get('livewire/almacen/material-reception', MaterialReception::class)->nam
 Route::put('livewire/almacen/material-reception{material}', [MaterialReception::class, 'updatematerial'])->name('almacen.material-reception.updatematerial');
 Route::delete('livewire/almacen/material-reception{material}', [MaterialReception::class, 'destroy'])->name('almacen.material-reception.destroy');
 
+/* livewire.purchases.index
+livewire.sales.index
+livewire.inventory.index */
 
 Route::get('livewire/comprador-component', CompradorComponent::class)->name('livewire.comprador-component');
+Route::get('livewire/purchases/index', CompradorComponent::class)->name('livewire.purchases.index');
+Route::get('livewire/purchases/show', CompradorComponent::class)->name('livewire.purchases.show');
+Route::put('livewire/purchases/edit', CompradorComponent::class)->name('livewire.purchases.edit');
+Route::delete('livewire/purchases/delete', CompradorComponent::class)->name('livewire.purchases.delete');
 
 //Route::get('/', Vehiculos::class); //Para el Componente Full Page, trabaja con la plantilla appCFP.blade.php que debe ser renombrada por app.blade.php
 

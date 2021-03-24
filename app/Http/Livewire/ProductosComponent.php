@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Inventario;
 use Livewire\Component;
 use App\Models\Producto;
 
@@ -48,6 +49,18 @@ class ProductosComponent extends Component
             'cantidad' =>  $this->cantidad
             
         ]);
+        //guardar el producto en el inventario
+        //buscar la existena del producto en la tabla producto
+        $fechacomprau = date('d-m-Y');
+        $existenciapro=Producto::latest('id')->first();
+        $datosInventario = Inventario::create([
+            'fecha' => $fechacomprau,
+            'hora' => date("H:i:s"), //COLOCAR LA HORA DE VENEZUELA
+            'idproducto' => $existenciapro->id,
+            'comprados' => 0,
+            'vendidos' => 0,
+            'existencia' => $this->cantidad
+        ]);
         $this->reset(['descripcion', 'precio', 'cantidad']);
     }
 
@@ -66,6 +79,18 @@ class ProductosComponent extends Component
             'descripcion' => $this->descripcion,
             'precio' => $this->precio,
             'cantidad' => $this->cantidad
+        ]);
+        //guardar el producto en el inventario
+        //buscar la existena del producto en la tabla producto
+        $fechacomprau = date('d-m-Y');
+        $existenciapro=Producto::find($this->producto_id);
+        $datosInventario = Inventario::create([
+            'fecha' => $fechacomprau,
+            'hora' => date("H:i:s"), //COLOCAR LA HORA DE VENEZUELA
+            'idproducto' => $existenciapro->id,
+            'comprados' => 0,
+            'vendidos' => 0,
+            'existencia' => $this->cantidad
         ]);
         $this->reset(['descripcion', 'precio', 'cantidad', 'accion', 'producto_id']);
     }

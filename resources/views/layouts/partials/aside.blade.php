@@ -79,7 +79,7 @@
             <p @php echo $textom; @endphp>FINANZAS<i class="fas fa-angle-left right"></i></p></a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="{{ route('livewire.purchases.show') }}" class="nav-link">
                 <i class="nav-icon fas fa-money-bill-wave"></i><p @php echo $textos; @endphp>Administración</p></a>
             </li><li class="nav-item">
               <a href="#" class="nav-link">

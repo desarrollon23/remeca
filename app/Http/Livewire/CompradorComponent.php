@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Cache;
 use App\Http\Livewire\Input;
 use App\Models\Inventario;
 use Illuminate\Http\Request;
+use App\Http\Livewire\Compras;
 
 use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
@@ -42,55 +43,41 @@ class CompradorComponent extends Component
     public $toprodacum, $diferenciadepago;
     public $compra_id, $compra;
     public $datalcl, $fechacomprau;
-    public $i = 0, $precio, $preciopro, $totalpro, $toprod;
+    public $i, $precio = [], $preciopro, $totalpro, $toprod = [];
     public $idestatuspagoc, $idtipopagoc;
     public $datosInventario, $datosc, $datosdc, $nexistencia;
     public $verificaoperacion;
+    public $cantidadp1, $cantidadp2, $cantidadp3, $cantidadp4, $cantidadp5, $cantidadp6, $cantidadp7, $cantidadp8, $cantidadp9, $cantidadp10;
+    public $precio1, $precio2, $precio3, $precio4, $precio5, $precio6, $precio7, $precio8, $precio9, $precio10;
+    public $toprod1, $toprod2, $toprod3, $toprod4, $toprod5, $toprod6, $toprod7, $toprod8, $toprod9, $toprod10;
+    public $cantpro, $totalcalculado, $sobregiro, $vpeso;
 
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
     public $state = [];
+    public $calculos = [];
     public $user;
     public $showEditModal = false;
     public $userIdBeingRemoved = null;
 
     protected $rules = [
-        'cedula' => 'required',
-        'idlugar' => 'required',
-        'pesofull' => 'required',
-        'pesovacio' => 'required',
-        'pesoneto' => 'required',
-        'pesocalculado' => 'required',
-        'producto_id' => 'required',
-        'cantidadprorecmat' => 'required'
+        'idestatuspago' => 'required',
+        'idtipopago' => 'required',
+        'observacionesc' => 'required'
     ];
 
     protected $validationattributs = [
-        'cedula' => 'Cédula',
-        'idlugar' => 'Lugar',
-        'pesofull' => 'Peso FULL',
-        'pesovacio' => 'Peso VACIO',
-        'pesoneto' => 'Peso NETO',
-        'producto_id' => 'Material', 
-        'cantidadprorecmat' => 'Cantidad de Material',
-        'cantidadprorecmat' => 'Cantidad'
+        'idestatuspago' => 'Estatus de Pago',
+        'idtipopago' => 'Tipo de Pago',
+        'observacionesc' => 'Observaciones'
     ];
 
     protected $messages = [
-        'cedula.required' => 'Por favor ingrese la Cédula.',
-        'cedula.max' => 'La Cédula no puede tener más de 12 caracteres.',
-        'idlugar.required' => 'Por favor Seleccione el Lugar.',
-        'pesofull.required' => 'Por favor ingrese el Peso FULL.',
-        'pesofull.max' => 'El Peso FULL no puede tener más de 8 cifras.',
-        'pesovacio.required' => 'Por favor ingrese el Peso VACIO.',
-        'pesovacio.max' => 'El Peso VACIO no puede tener más de 8 cifras.',
-        'pesoneto.required' => 'Por favor ingrese el Peso NETO.',
-        'pesoneto.max' => 'El Peso NETO no puede tener más de 8 cifras.',
-        'observaciones.max' => 'Las Observaciones no pueden tener más de 250 caracteres.',
-        'cantidadprorecmat.required' => 'Por favor ingrese la Cantidad de Material.',
-        'cantidadprorecmat.max' => 'La Cédula no puede tener más de 8 cifras.'
+        'idestatuspago.required' => 'Por favor seleccione el Estatus de Pago.',
+        'idtipopago.required' => 'Por favor seleccione el Tipo de Pago.',
+        'observacionesc.required' => 'Por favor ingrese las Observaciones.',
+        'observacionesc.max' => 'Las Observaciones no puede tener más de 250 letras.',
     ];
-
 
     public function addNew(){
         $this->state = [];
@@ -157,17 +144,36 @@ class CompradorComponent extends Component
             $this->pesodisponible=$this->pesofull; 
             $this->pesodisponiblec=$this->pesodisponible; }
     }
+    /* public function calpreind(){
+        //$variable[$numero] = "numero".$numero;
+        /* if(is_numeric($this->numero.$numero)){ * /
+        if(is_numeric($this->precio1)){
+            $this->toprod1 = (double)$this->cantidadp1 * (double)$this->precio1;
+        }
+    } */
+
+    public function calpreind($numero, $cantpro){
+        (double)$this->totalcalculado=0;
+        if(is_numeric($this->{"precio".$numero})){
+            (double)$this->{"toprod".$numero}=(double)$this->{"cantidadp".$numero} * (double)$this->{"precio".$numero};
+            for($i=1;$i<=$cantpro;$i++){
+                (double)$this->totalcalculado=(double)$this->totalcalculado+$this->{"toprod".$i};
+            }
+        }
+    }
 
     public function caldiferencia($toprodacum){ //CALCULA LA DIFERENCIA DE PAGO
-    /* public function caldiferencia(){ //CALCULA LA DIFERENCIA DE PAGO */
-        /* if($this->state['totalpagado']<>0){
-            if($this->state['totalpagado']>=1){ */
-            if(is_numeric($this->state['totalpagado'])){
-                $this->state['diferenciapago'] = $toprodacum - (double)$this->state['totalpagado'];
-                //$this->state['diferenciapago'] = session('toprodacum') - $this->state['totalpagado'];
+        if(is_numeric($this->state['totalpagado'])){
+            (double)$this->state['diferenciapago'] = (double)$toprodacum - (double)$this->state['totalpagado'];
+            if((double)$this->state['totalpagado']<=(double)$this->totalcalculado){
+                //(double)$this->state['diferenciapago'] = 0;
+                $this->vpeso = "false";
+                $this->sobregiro=" ";
+            }else{
+                $this->vpeso = "true";
+                $this->sobregiro="NO DEBE PAGAR MAS DEL TOTAL";
             }
-            //}else{ $this->state['totalpagado']=0; }
-        //}//else{ $this->state['totalpagado']=0; }
+        }
     }
     
     public function verificarpeso(){ //CALCULA EL PESO DISPONIBLE
@@ -239,6 +245,11 @@ class CompradorComponent extends Component
     public function update($compra, $productosrecepcion, $toprodacum){
         /* dd($this->state['totalpagado']);
         if ($this->state['totalpagado']==null) { $this->state['totalpagado']=1; } */
+        $validateData = Validator::make($this->state, [
+            'idestatuspago' => 'required',
+            'idtipopago' => 'required',
+            'observacionesc' => 'max:250'
+        ])->validate();
         $fechacomprau = date('d-m-Y');
         $recepcion = Almacen::find($this->recepcionmaterial_id);
         $datosc = Compra::find($compra);
@@ -253,8 +264,7 @@ class CompradorComponent extends Component
             'totalcomra' => $toprodacum,
             'totalpagado' => (double)$this->state['totalpagado'],
             'diferenciapago' => $this->state['diferenciapago'],
-            'observacionesc' => " "
-            //'observacionesc' => $this->state['observacionesc']
+            'observacionesc' => $this->state['observacionesc']
         ]);
         foreach ($productosrecepcion as $productocompra){
             $this->i=$this->i+1;
@@ -263,8 +273,8 @@ class CompradorComponent extends Component
                'idproducto' => $productocompra['producto_id'],
                'cantidadpro' => $productocompra['cantidadprorecmat'],
                'operacion' => $productocompra['operacion'],
-               'preciopro' => $this->precio, //FALTA QUE GUARDE ESTO
-               'totalpro' => $this->toprod //FALTA QUE GUARDE ESTO
+               'preciopro' => $this->{"precio".$this->i},
+               'totalpro' => $this->{"toprod".$this->i}
             ]);
             //guardar la compra en el inventario
             //buscar la existena del producto en la tabla producto
@@ -294,6 +304,11 @@ class CompradorComponent extends Component
         $compra->delete();
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Compra de Material Eliminada!']);
         $this->reset(['compra', 'cedula', 'idlugar', 'pesofull', 'pesovacio', 'pesoneto', 'pesocalculado', 'almacen_id', 'producto_id', 'cantidadprorecmat', "recepcionmaterial_id", 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', ]);
+    }
+
+    public function show(){
+        $compras = Compra::all();
+        return view('livewire.purchases.show', compact('compras'));
     }
 
     public function render()

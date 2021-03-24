@@ -22,8 +22,8 @@ class CreateDdetallecomprasTable extends Migration
             $table->Integer('idproducto',);
             $table->decimal('cantidadpro', $precision = 8, $scale = 2);
             $table->string('operacion')->nullable($value = true);
-            $table->decimal('preciopro', $precision = 8, $scale = 2);
-            $table->decimal('totalpro', $precision = 8, $scale = 2);
+            $table->decimal('preciopro', $precision = 8, $scale = 2)->nullable($value = true);;
+            $table->decimal('totalpro', $precision = 8, $scale = 2)->nullable($value = true);;
             //$table->foreign('idcompra')->references('id')->on('_ccompras')->ondelete('cascade');
             $table->timestamps();
         });

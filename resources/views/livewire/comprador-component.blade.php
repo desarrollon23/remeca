@@ -1,6 +1,6 @@
 <div class="pt-1">@php $fondoo='style="background: #336699;"'; @endphp
   <div class="card-header"><h3 class="card-title">COMPRA DE MATERIAL</h3></div>
-  <div x-data="{ open: false }" class="content">
+  <div x-data="{ open: false, vpeso: false }" class="content">
     <div class="container-fluid">
       <div class="row aling: center" >
         <div class="col-lg-12 col-md-6 col-xs-6 mt-2">
@@ -81,6 +81,22 @@
                     <td>{{ traemateriald($productorecepcion->producto_id) }}</td>
                     <td>
                       {{-- <input type="text" wire:model="cantidadp[{{ $loop->iteration }}]" value="{{ $productorecepcion->cantidadprorecmat }}"> --}}
+                      @php
+                          //$cantidadp1 = $productorecepcion->cantidadprorecmat;
+                          /* echo <input type="text" wire:model="cantidadp{{ $loop->iteration }}" value="{{ $productorecepcion->cantidadprorecmat }}"> */
+                          /* echo '<input type="text" wire:model="cantidadp1" value="'. (double)$productorecepcion->cantidadprorecmat.'">'; */
+    $cantpro=$productosrecepcion->count();
+    //dd($cantpro);
+
+    $estilocalculos='style="color: red; width: 80px; font-weight: 900;"';
+
+echo '<input type="number" wire:model="cantidadp'.$loop->iteration.'" value="'.(double)$productorecepcion->cantidadprorecmat.'" '.$estilocalculos.'>';
+
+                          //echo '<input type="text" wire:model="cantidadp'.$loop->iteration.'" value="'. (double)$productorecepcion->cantidadprorecmat.'">';
+                          
+                          //echo '<input type="text" id="cantidadp'.$loop->iteration.'" value="'. (double)$productorecepcion->cantidadprorecmat.'">';
+                      @endphp
+                      {{-- <input type="text" wire:model="cantidadp1" value="{{ (double)$productorecepcion->cantidadprorecmat }}"> --}}
                       {{ $productorecepcion->cantidadprorecmat }}</td>
                     <td>
                     @php 
@@ -94,10 +110,14 @@
                           //$toprod = $productorecepcion->cantidadprorecmat * $precio;
                           $toprodacum = (double)$toprodacum + (double)$toprod;
                           session(['toprodacum', $toprodacum]);
-                          /* $precio[$loop->iteration] = array(); $toprod[$loop->iteration] = array();
-                          $precio[$loop->iteration] = traematerialp($productorecepcion->producto_id);
-                          $toprod[$loop->iteration] = $productorecepcion->cantidadprorecmat * $precio[$loop->iteration];
-                          $toprodacum = $toprodacum + $toprod[$loop->iteration]; */
+                          //$precio[$loop->iteration] = array(); $toprod[$loop->iteration] = array();
+                          //$precio[$loop->iteration] = traematerialp($productorecepcion->producto_id);
+                          //$toprod[$loop->iteration] = $productorecepcion->cantidadprorecmat * $precio[$loop->iteration];
+                          //echo '<input type="text" id="$precio['.$loop->iteration.']" value="'.traematerialp($productorecepcion->producto_id).'">';
+
+                          //dd((double)$productorecepcion->cantidadprorecmat * (double)traematerialp($productorecepcion->producto_id));
+
+                          //$toprodacum = $toprodacum + $toprod[$loop->iteration];
                           $totalpagado = $toprodacum;
                         }
                      @endphp
@@ -106,7 +126,12 @@
                     /* if ($verificaoperacion=="SUMA"){  */
                     if ($productorecepcion->operacion=="SUMA") {
                     /* <td>echo $precio[$loop->iteration]; } */
-                      echo $precio;
+                      //echo $precio;
+                      /* echo '<input type="text" wire:model="precio1" wire:keyup="calpreind">'; */
+echo '<input type="number" wire:model="precio'.$loop->iteration.'" wire:keyup="calpreind('.$loop->iteration.', '.$cantpro.')" '.$estilocalculos.'>';
+                      //echo '<input type="text" wire:model="precio'.$loop->iteration.'" wire:keyup="calpreind">';
+
+                      echo (double)traematerialp($productorecepcion->producto_id);
                       /* echo '<td><input style="width: 100px; border:0 font-weight: 900" type="text" id="precio['.$loop->iteration.']" value="'.isset($precio[$loop->iteration]).'" disabled/></td>'; }else{ echo "<td></td>"; */ }
                     @endphp</td>
                     <td>
@@ -121,8 +146,14 @@
                     //$verificaoperacion=isset($productorecepcion->operacion) ? "RESTA" : "SUMA";
                     //dd($verificaoperacion);
                     /* if ($verificaoperacion=="SUMA"){  */
+                      /* echo '<input type="text" wire:model="toprod1">'; */
+                      
+echo '<input type="number" wire:model="toprod'.$loop->iteration.'" '.$estilocalculos.' disabled>';
+                      //echo '<input type="text" wire:model="toprod'.$loop->iteration.'">';
+                      echo (double)$productorecepcion->cantidadprorecmat * (double)traematerialp($productorecepcion->producto_id);
+
                     if ($productorecepcion->operacion=="SUMA") {
-                      echo $toprod;
+                      //echo $toprod;
                       /* echo isset($toprod[$loop->iteration]); */ } 
                     @endphp
                     <input style="border:0 font-weight: 900" type="hidden" id="toprod" value="{{ isset($toprod[$loop->iteration]) }}" disabled/></td>
@@ -147,19 +178,24 @@
                   <tfoot><tr><td colspan="2">
                     <label>TOTAL</label></td>
                     <td><label><h1 style="font-weight:900; color:red" id="pesocalculado"><i class="fa fa-usd"></i>{{ $acumulado }}</h1><input style="border:0 font-weight: 900" wire:model="pesocalculado" type="hidden" id="pesocalculado" value="{{ $acumulado }}" disabled/></label></td><td></td><td></td>
-                    <td></td><td><h1 style="font-weight:900; color:red" id="pesocalculado"><i class="fa fa-usd"></i>{{ $toprodacum }}</h1></td></tr>
+                    <td></td><td><h1 style="font-weight:900; color:red" id="pesocalculado"><i class="fa fa-usd"></i>{{ $toprodacum }}</h1>
+
+<input type="number" wire:model="totalcalculado" style="width: 80px; color:red; font-weight: 900; border: 0px;" disabled></td></tr>
+
                     <tr><td colspan="3">{{-- defer="state.observacionesc" --}}
                       <label>TOTAL PAGADO</label></td>
-                      <td></td><td></td>
-                      <td></td><td><div style="">
+
+<td colspan="3"><h1 style="font-weight:900; color:red">{{ $sobregiro }}</h1></td>
+
+                      <td><div style="">
                   <h1 style="font-weight:900; color:red">{{-- {{ $toprodacum }} --}}</h1>
-  <input x-bind:disabled="!open" style="width: 110px; font-weight: 900; color: green;" wire:model.defer="state.totalpagado" {{-- wire:keyup="caldiferencia"  --}}wire:keyup="caldiferencia({{ $toprodacum }})" x-show="open" type="text" {{-- id="totalpagado" value="{{ $toprodacum }}" --}} {{-- class="numeric" --}} /></div></td></tr>
+<input x-bind:disabled="!open" style="width: 110px; color: green;font-weight:900;" wire:model.defer="state.totalpagado" {{-- wire:keyup="caldiferencia"  --}}wire:keyup="caldiferencia({{ $toprodacum }})" x-show="open" type="number" {{-- id="totalpagado" value="{{ $toprodacum }}" --}} {{-- class="numeric" --}} /></div></td></tr>
                     <tr><td colspan="3">
                       <label>DIFERENCIA</label></td>
                       <td></td><td></td>
                       <td></td><td><div style="width: 50px;">
                   <h1 style=" font-weight:900; color:red">{{-- {{ $diferenciapago }} --}}</h1>
-  <input style="width: 110px; border:0; font-weight: 900; color: red;" wire:model.defer="state.diferenciapago" x-show="open" type="number" {{-- id="diferenciapago" --}} disabled{{-- value="{{ $toprodacum }}" --}} /></div></td></tr>
+<input style="width: 110px; border:0; font-weight: 900; color: red;" wire:model.defer="state.diferenciapago" x-show="open" type="number" {{-- id="diferenciapago" --}} disabled{{-- value="{{ $toprodacum }}" --}} /></div></td></tr>
                   </tfoot>
               </table>
             </div>
@@ -188,8 +224,10 @@
             <div style="width: 80%; display: flex; flex-wrap: wrap;">
               <div style="width: 400px; margin-right: 2px;"><label>
                 <button x-show="open" x-on:click="{ open = !open }" wire:click="default({{ $compra }})" class="btn btn-secondary ml-2 mr-2"><i class="fa fa-times mr-1"></i> CANCELAR</button>
-                <button x-show="open" x-on:click="{ open = !open }" id="btn-guardar" wire:click="update({{ $compra.','.$productosrecepcion.','.$toprodacum.','.$totalpagado/* .','.$observacionesc  */}})" class="btn btn-primary  ml-2 mr-2"><i class="fa fa-save mr-1"></i> GUARDAR</button>
-                <button x-show="!open" x-on:click="{ open = !open }" id="btn-generar" wire:click="generar" class="btn btn-primary  ml-2 mr-2"><i class="fa fa-save mr-1"></i> GENERAR</button></label>
+
+<button x-show="open" x-on:click="{ open = !open }" id="btn-guardar" wire:click="update({{ $compra.','.$productosrecepcion.','.$toprodacum.','.$totalpagado/* .','.$observacionesc  */}})" class="btn btn-primary  ml-2 mr-2"><i class="fa fa-save mr-1"></i> GUARDAR</button>
+
+<button x-show="!open" x-on:click="{ open = !open }" id="btn-generar" wire:click="generar" class="btn btn-primary  ml-2 mr-2"><i class="fa fa-save mr-1"></i> GENERAR</button></label>
               </div>
             </div>
           </div>

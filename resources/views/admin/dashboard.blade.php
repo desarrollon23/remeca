@@ -113,6 +113,7 @@
             </section> --}}
             <!-- Calendar -->
             <div class="car border:1">
+              AQUÍ
             {{-- <div class="car border:1" style="justify-content: center; position: absolute;
             top: 75%; left: 35%; margin: -25px 0 0 -25px;"> --}}
             {{-- <div style="margin: 0; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);"> --}}
