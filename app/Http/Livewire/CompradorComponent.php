@@ -161,10 +161,12 @@ class CompradorComponent extends Component
             }
         }
     }
-
-    public function caldiferencia($toprodacum){ //CALCULA LA DIFERENCIA DE PAGO
+    
+    public function caldiferencia(){ //CALCULA LA DIFERENCIA DE PAGO
+        (double)$this->state['diferenciapago']=0;
         if(is_numeric($this->state['totalpagado'])){
-            (double)$this->state['diferenciapago'] = (double)$toprodacum - (double)$this->state['totalpagado'];
+            //(double)$this->state['diferenciapago'] = (double)$toprodacum - (double)$this->state['totalpagado'];
+            (double)$this->state['diferenciapago'] = (double)$this->totalcalculado - (double)$this->state['totalpagado'];
             if((double)$this->state['totalpagado']<=(double)$this->totalcalculado){
                 //(double)$this->state['diferenciapago'] = 0;
                 $this->vpeso = "false";
@@ -243,8 +245,6 @@ class CompradorComponent extends Component
     }
 
     public function update($compra, $productosrecepcion, $toprodacum){
-        /* dd($this->state['totalpagado']);
-        if ($this->state['totalpagado']==null) { $this->state['totalpagado']=1; } */
         $validateData = Validator::make($this->state, [
             'idestatuspago' => 'required',
             'idtipopago' => 'required',
@@ -296,14 +296,14 @@ class CompradorComponent extends Component
         }
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Compra de Material Realizada!']);
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Se actualizó el Inventário!']);
-        $this->reset(['compra', 'cedula', 'nombre', 'idlugar', 'pesofull', 'pesovacio', 'pesoneto', 'observaciones', 'pesocalculado', 'almacen_id', 'producto_id', 'cantidadprorecmat', "recepcionmaterial_id", 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', 'fecharecepcion', 'fechacompra', 'fechacomprau', 'idlugar', 'datalcl', 'idestatuspago', 'idtipopago', 'totalcomra', 'totalpagado', 'diferenciapago', 'idestatuspago', 'idtipopago', 'idestatuspagoc', 'idtipopagoc', 'observacionesc', 'datos', 'state', 'nexistencia']);
+        $this->reset(['compra', 'cedula', 'nombre', 'idlugar', 'pesofull', 'pesovacio', 'pesoneto', 'observaciones', 'pesocalculado', 'almacen_id', 'producto_id', 'cantidadprorecmat', "recepcionmaterial_id", 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', 'fecharecepcion', 'fechacompra', 'fechacomprau', 'idlugar', 'datalcl', 'idestatuspago', 'idtipopago', 'totalcomra', 'totalpagado', 'diferenciapago', 'idestatuspago', 'idtipopago', 'idestatuspagoc', 'idtipopagoc', 'observacionesc', 'datos', 'state', 'nexistencia', 'diferenciapago', 'totalpagado', 'totalcalculado', 'acumulado']);
     }
     
     public function default($compra)    {
         $compra = Compra::findOrFail($compra);
         $compra->delete();
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Compra de Material Eliminada!']);
-        $this->reset(['compra', 'cedula', 'idlugar', 'pesofull', 'pesovacio', 'pesoneto', 'pesocalculado', 'almacen_id', 'producto_id', 'cantidadprorecmat', "recepcionmaterial_id", 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', ]);
+        $this->reset(['compra', 'cedula', 'nombre', 'idlugar', 'pesofull', 'pesovacio', 'pesoneto', 'pesocalculado', 'obsercaciones', 'almacen_id', 'producto_id', 'cantidadprorecmat', "recepcionmaterial_id", 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', ]);
     }
 
     public function show(){

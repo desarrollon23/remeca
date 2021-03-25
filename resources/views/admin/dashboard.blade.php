@@ -84,76 +84,109 @@
         </div>
         <!-- /.row -->
         <div class="row">
-          <div class="col-lg-12 col-6">
-            {{-- <section class="col-lg-5 connectedSortable">
-
-              <!-- Map card -->
-              <div class="card bg-gradient-primary">
-                <div class="card-header border-0">
-                  <h3 class="card-title">
-                    <i class="fas fa-map-marker-alt mr-1"></i>
-                    Visitors
-                  </h3>
-                  <!-- card tools -->
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-primary btn-sm daterange" title="Date range">
-                      <i class="far fa-calendar-alt"></i>
-                    </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
-                      <i class="fas fa-minus"></i>
-                    </button>
-                  </div>
-                  <!-- /.card-tools -->
-                </div>
-                <div class="card-body">
-                  <div id="world-map" style="height: 250px; width: 100%;"></div>
-                </div>
-                <!-- /.card-body-->
+          @php
+            function conn(){
+              $conn=mysqli_connect("localhost", "root", '') or trigger_error(mysqli_error(),E_USER_ERROR);
+              mysqli_select_db($conn,'remeca');
+              return $conn;
+            }
+            function traesuma($campos, $tabla, $criterio, $buscar){
+              $sqltrol='SELECT '.$campos.' FROM '.$tabla.' WHERE '.$criterio.'='.$buscar;
+              $restrol=mysqli_query(conn(),$sqltrol) or die('FALLO LA CONSULTA: '.mysqli_error(conn()));
+              $datrol=mysqli_fetch_array($restrol);
+              $descmat=$datrol[0];
+              mysqli_free_result($restrol);
+              return $descmat;
+            }
+            function traeresumen($campos, $tabla, $criterio, $buscar){
+              $sqltrol='SELECT '.$campos.' FROM '.$tabla.' WHERE '.$criterio.'='.$buscar;
+              $restrol=mysqli_query(conn(),$sqltrol) or die('FALLO LA CONSULTA: '.mysqli_error(conn()));
+              $datrol=mysqli_fetch_array($restrol);
+              $descmat=$datrol;
+              mysqli_free_result($restrol);
+              //dd($descmat);
+              return $datrol;
+            }
+            //CUENTAS POR PAGAR
+            //$ccpp=traeresumen('proveedores.nombre, _ccompras.diferenciapago', '_ccompras INNER JOIN proveedores ON proveedores.cedula = _ccompras.cedula', 'idestatuspago', '2 GROUP BY _ccompras.id');
+          @endphp{{-- INVENTARIO --}}
+          <div class="col-lg-4 col-md-4 col-xs-4 mt-2">
+            <div class="card">
+              <div class="card-header bg-warning" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center">Inventario&nbsp;
+                {{-- <h2>{{ traesuma('SUM(totalcomra)', '_ccompras', 'idestatuspago', '2') }}</h2> --}} </label></h3>
               </div>
-            </section> --}}
-            <!-- Calendar -->
-            <div class="car border:1">
-              AQUÍ
-            {{-- <div class="car border:1" style="justify-content: center; position: absolute;
-            top: 75%; left: 35%; margin: -25px 0 0 -25px;"> --}}
-            {{-- <div style="margin: 0; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);"> --}}
-              {{-- <div class="card-header border-0 hei"> --}}
-                {{-- <img src="{{ asset('img/logosf.png') }}" alt="REMECA" class="brand-image img-circle elevation-3" style="height: 40%; width: 50% margin: 0px; padding: 0px opacity: .8"> --}}
-              {{-- </div> --}}
-              {{-- <div class="card-header border-0">
-
-                <h3 class="card-title">
-                  <i class="far fa-calendar-alt"></i>
-                  Calendario
-                </h3>
-                <div class="card-tools">
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" data-offset="-52">
-                      <i class="fas fa-bars"></i>
-                    </button>
-                    <div class="dropdown-menu" role="menu">
-                      <a href="#" class="dropdown-item">Add new event</a>
-                      <a href="#" class="dropdown-item">Clear events</a>
-                      <div class="dropdown-divider"></div>
-                      <a href="#" class="dropdown-item">View calendar</a>
-                    </div>
-                  </div>
-                  <button type="button" class="btn btn-success btn-sm" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-success btn-sm" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-              </div> --}}
-              {{-- <div class="card-body pt-0">
-                <div id="calendar" style="width: 100%"></div>
-              </div> --}}
+              <div class="card-body">
+                <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
+                    <th scope="col">#</th>
+                    <th scope="col">Material</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col"></th>
+                  </tr></thead><tbody>
+                  @foreach ($inventarios as $inventario)<tr class="hover:bg-green-200">
+                    <td scope="row" class="px-1 py-1">{{$loop->iteration}}</td>
+                    <td class="px-1 py-1">{{$inventario->descripcion}}</td>
+                    <td class="px-1 py-1">{{$inventario->cantidad}}</td>
+                    <td class="px-1 py-1">
+                      <a href="" wire:click.prevent="edit({{ $inventario->id }})"><i class="fa fa-edit mr-2"></i></a>
+                      {{-- <a href="" wire:click.prevent="{ {-- confirmUserRemoval({{ $producto->id } }) --} }destroy({ { $producto->id } })"><i class="fa fa-trash text-danger"></i></a> --}}
+                    </td></tr>
+                  @endforeach</tbody>
+                </table>
+              </div>
+            </div>
+          </div>{{-- CUENTAS POR PAGAR --}}
+          <div class="col-lg-4 col-md-4 col-xs-4 mt-2">
+            <div class="card">
+              <div class="card-header bg-danger" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center">Cuentas por Pagar&nbsp;
+                <h2>{{ traesuma('SUM(totalcomra)', '_ccompras', 'idestatuspago', '2') }}</h2> </label></h3>
+              </div>
+              <div class="card-body">
+                <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
+                    <th scope="col">#</th>
+                    <th scope="col">Proveedor</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col"></th>
+                  </tr></thead><tbody>
+                  @foreach ($ccpp as $cp)<tr class="hover:bg-green-200">
+                    <td scope="row" class="px-1 py-1">{{$loop->iteration}}</td>
+                    <td class="px-1 py-1">{{$cp->nombre}}</td>
+                    <td class="px-1 py-1">{{$cp->diferenciapago}}</td>
+                    <td class="px-1 py-1">
+                      <a href="" wire:click.prevent="edit({{ $cp }})"><i class="fa fa-edit mr-2"></i></a>
+                      {{-- <a href="" wire:click.prevent="{ {-- confirmUserRemoval({{ $producto->id } }) --} }destroy({ { $producto->id } })"><i class="fa fa-trash text-danger"></i></a> --}}
+                    </td></tr>
+                  @endforeach</tbody>
+                </table>
+              </div>
+            </div>
+          </div>{{-- CUENTAS POR COBRAR --}}
+          <div class="col-lg-4 col-md-4 col-xs-4 mt-2">
+            <div class="card">
+              <div class="card-header bg-info" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center">Cuentas por Cobrar&nbsp;
+                <h2>{{ traesuma('SUM(totalcomra)', '_ccompras', 'idestatuspago', '2') }}</h2> </label></h3>
+              </div>
+              <div class="card-body">
+                <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
+                    <th scope="col">#</th>
+                    <th scope="col">Proveedor</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col"></th>
+                  </tr></thead><tbody>
+                  @foreach ($ccpp as $cp)<tr class="hover:bg-green-200">
+                    <td scope="row" class="px-1 py-1">{{$loop->iteration}}</td>
+                    <td class="px-1 py-1">{{$cp->nombre}}</td>
+                    <td class="px-1 py-1">{{$cp->diferenciapago}}</td>
+                    <td class="px-1 py-1">
+                      <a href="" wire:click.prevent="edit({{ $cp }})"><i class="fa fa-edit mr-2"></i></a>
+                      {{-- <a href="" wire:click.prevent="{ {-- confirmUserRemoval({{ $producto->id } }) --} }destroy({ { $producto->id } })"><i class="fa fa-trash text-danger"></i></a> --}}
+                    </td></tr>
+                  @endforeach</tbody>
+                </table>
+              </div>
             </div>
           </div>
-          </div>
-        </div>
+        </div>    
       </div>
-    </div>    
+    </div>
   </div>
 </x-admin-layout>

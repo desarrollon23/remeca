@@ -14,7 +14,13 @@ class CreateNegociacionVentasTable extends Migration
     public function up()
     {
         Schema::create('negociacion_ventas', function (Blueprint $table) {
-            $table->id();
+            $table->id(); //QUE NO SEA AUTOINCREMENT
+            $table->string('fechan', 10)->nullable($value = true);
+            $table->string('cedulan', 15)->nullable($value = true);
+            $table->integer('idlugarn')->nullable($value = true);
+            $table->integer('idtipopagon',)->nullable($value = true);
+            $table->integer('idtipoabonon',)->nullable($value = true);
+            $table->string('observaciones', 250)->nullable($value = true);
             $table->timestamps();
         });
     }

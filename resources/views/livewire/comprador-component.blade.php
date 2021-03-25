@@ -88,7 +88,7 @@
     $cantpro=$productosrecepcion->count();
     //dd($cantpro);
 
-    $estilocalculos='style="color: red; width: 80px; font-weight: 900;"';
+    $estilocalculos='style="color: red; width: 110px; font-weight: 900;"';
 
 echo '<input type="number" wire:model="cantidadp'.$loop->iteration.'" value="'.(double)$productorecepcion->cantidadprorecmat.'" '.$estilocalculos.'>';
 
@@ -177,10 +177,10 @@ echo '<input type="number" wire:model="toprod'.$loop->iteration.'" '.$estilocalc
                   </td></tr>@endforeach</tbody>
                   <tfoot><tr><td colspan="2">
                     <label>TOTAL</label></td>
-                    <td><label><h1 style="font-weight:900; color:red" id="pesocalculado"><i class="fa fa-usd"></i>{{ $acumulado }}</h1><input style="border:0 font-weight: 900" wire:model="pesocalculado" type="hidden" id="pesocalculado" value="{{ $acumulado }}" disabled/></label></td><td></td><td></td>
+                    <td><label><h1 style="font-weight:900; color:red" id="pesocalculado"><i class="fa fa-usd"></i>{{ $acumulado }}{{-- </h1><input style="border:0 font-weight: 900" wire:model="pesocalculado" type="hidden" id="pesocalculado" value="{{ $acumulado }}" disabled/> --}}</label></td><td></td><td></td>
                     <td></td><td><h1 style="font-weight:900; color:red" id="pesocalculado"><i class="fa fa-usd"></i>{{ $toprodacum }}</h1>
 
-<input type="number" wire:model="totalcalculado" style="width: 80px; color:red; font-weight: 900; border: 0px;" disabled></td></tr>
+<input type="number" wire:model="totalcalculado" style="width: 110px; color:red; font-weight: 900; border: 0px;" disabled class="numeric"></td></tr>
 
                     <tr><td colspan="3">{{-- defer="state.observacionesc" --}}
                       <label>TOTAL PAGADO</label></td>
@@ -189,13 +189,13 @@ echo '<input type="number" wire:model="toprod'.$loop->iteration.'" '.$estilocalc
 
                       <td><div style="">
                   <h1 style="font-weight:900; color:red">{{-- {{ $toprodacum }} --}}</h1>
-<input x-bind:disabled="!open" style="width: 110px; color: green;font-weight:900;" wire:model.defer="state.totalpagado" {{-- wire:keyup="caldiferencia"  --}}wire:keyup="caldiferencia({{ $toprodacum }})" x-show="open" type="number" {{-- id="totalpagado" value="{{ $toprodacum }}" --}} {{-- class="numeric" --}} /></div></td></tr>
+<input x-bind:disabled="!open" style="width: 110px; color: green;font-weight:900;" wire:model.defer="state.totalpagado" wire:keyup="caldiferencia" x-show="open" type="number" {{-- class="numeric" --}} /></div></td></tr>
                     <tr><td colspan="3">
                       <label>DIFERENCIA</label></td>
                       <td></td><td></td>
                       <td></td><td><div style="width: 50px;">
                   <h1 style=" font-weight:900; color:red">{{-- {{ $diferenciapago }} --}}</h1>
-<input style="width: 110px; border:0; font-weight: 900; color: red;" wire:model.defer="state.diferenciapago" x-show="open" type="number" {{-- id="diferenciapago" --}} disabled{{-- value="{{ $toprodacum }}" --}} /></div></td></tr>
+<input style="width: 110px; border:0; font-weight: 900; color: red;" wire:model.defer="state.diferenciapago" x-show="open" type="number" {{-- id="diferenciapago" --}} disabled{{-- value="{{ $toprodacum }}" --}} class="numeric"/></div></td></tr>
                   </tfoot>
               </table>
             </div>
