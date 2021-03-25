@@ -5,8 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Illuminate\Database\Eloquent\Model; //saltarnos las protecciones ESTO SE DEBE ELIMINAR
-use App\Book;                           //saltarnos las protecciones ESTO SE DEBE ELIMINAR
+//use Illuminate\Database\Eloquent\Model; //saltarnos las protecciones ESTO SE DEBE ELIMINAR
+//use App\Book;                           //saltarnos las protecciones ESTO SE DEBE ELIMINAR
 
 class RoleSeeder extends Seeder
 {
@@ -17,7 +17,7 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        Model::unguard();   //saltarnos las protecciones ESTO SE DEBE ELIMINAR
+        //Model::unguard();   //saltarnos las protecciones ESTO SE DEBE ELIMINAR
         
         //ROLES
         $role1 = Role::create(['name' => 'Admin']);
