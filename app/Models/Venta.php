@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Venta extends Model
 {
-    public $table = "venta";
+    public $table = "ventas";
     use HasFactory;
     protected $fillable = ['id', 'fechaventa', 'horaventa', 'cedulav', 'idlugarv', 'pesofullv', 'pesovaciov', 'pesonetov', 'pesocalculadov', 'idestatuspagov', 'idtipopagov', 'totalcomrav', 'totalpagadov', 'diferenciapagov', 'ajusteporpesov', 'observacionesv'];
 

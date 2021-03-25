@@ -304,7 +304,7 @@ class MaterialReception extends Component
         $user->delete();
         session(['pt' => 0]); session(['pf' => 0]);
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Recepción de Material Eliminada!']);
-        $this->reset(['cedula', 'idlugar', 'pesofull', 'pesovacio', 'pesoneto', 'pesocalculado', 'almacen_id', 'producto_id', 'cantidadprorecmat', "recepcionmaterial_id", 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', 'state', 'cantidadprorecmat']);
+        $this->reset(['cedula', 'idlugar', 'nombre', 'pesofull', 'pesovacio', 'pesoneto', 'pesocalculado', 'almacen_id', 'producto_id', 'cantidadprorecmat', "recepcionmaterial_id", 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', 'state', 'cantidadprorecmat']);
     }
 
     public function render()
@@ -316,7 +316,7 @@ class MaterialReception extends Component
         $productos = Producto::all();
         $recepcion = Almacen::latest('id')->first(); //AQUÍ SE COLOCA EL ID DEL ALMACEN
         $materiales = Material::all();
-        $este=$this->recepcion;
+        $este=$this->recepcion;                                    
         $productosrecepcion=Detallealmacen::all()->where('recepcionmaterial_id',$this->recepcionmaterial_id);
 
         $traesuma=Detallealmacen::where('recepcionmaterial_id',$this->recepcionmaterial_id)

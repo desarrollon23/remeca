@@ -12,11 +12,11 @@
             <div class="card-body">              
                 <div class="input-group mb-3"> 
                   <label for="descripcion" style="width: 30%">Descripción</label>                
-                  <input wire:model="descripcion" style="width: 100%" id="descripcion" class="form-control" type="text" placeholder="Ingrese la Descripción" name="descripcion">@error('descripcion')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror
+                  <input wire:model="descripcion" style="width: 100%; text-transform: uppercase;" id="descripcion" class="form-control" type="text" placeholder="Ingrese la Descripción" name="descripcion">@error('descripcion')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror
                   <label for="precio" style="width: 30%">Precio</label>
-                  <input wire:model="precio" style="width: 100%" id="precio" class="form-control" type="text" placeholder="Ingrese El Precio" name="precio">@error('precio')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror
+                  <input wire:model="precio" style="width: 100%; text-transform: uppercase;" id="precio" class="form-control" type="number" placeholder="Ingrese El Precio" name="precio">@error('precio')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror
                   <label for="cantidad" style="width: 30%">Cantidad</label>
-                  <input wire:model="cantidad" style="width: 100%" id="cantidad" class="form-control" type="text" placeholder="Ingrese El Cantidad" name="cantidad">@error('cantidad')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror
+                  <input wire:model="cantidad" style="width: 100%; text-transform: uppercase;" id="cantidad" class="form-control" type="number" placeholder="Ingrese El Cantidad" name="cantidad">@error('cantidad')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror
                 </div>
                   <div class="d-flex justify-content-center mt-2">
                     {{-- <button wire:click="default" class="btn btn-secondary mb-3"><i class="fa fa-times mr-1"></i> CANCELAR</button> --}}
@@ -36,6 +36,7 @@
           <div class="card">
             <div class="card-header" @php echo $fondoo; @endphp><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center">Lista de Materiales</label></h3></div>
             <div class="card-body">
+              @if ($productos->count())
               <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
                     <th scope="col">#</th>
                     <th scope="col">Descripción</th>
@@ -54,6 +55,9 @@
                     </td></tr>
                   @endforeach</tbody>
               </table>
+              @else
+                  {{ "No existen Materiales para mostrar" }}
+              @endif
             </div>
           </div>
         </div>

@@ -13,11 +13,11 @@
               <div class="form-group">
                 <label for="descripcion" style="width: 30%">Descripción</label>{{-- <label> --}}
                   <div class="input-group mb-3" style="width: 100%"> 
-                    <input wire:model="descripcion" id="descripcion" type="text" class="form-control" placeholder="Ingrese la Descripción" name="descripcion"></div>
+                    <input wire:model="descripcion" id="descripcion" type="text" class="form-control" placeholder="Ingrese la Descripción" name="descripcion" style="text-transform: uppercase;"></div>
                     @error('descripcion')<p ass="text-x text-red-500 italic">{{$message}}</p>@enderror
                 {{-- </label> --}}
                 <label for="direccion" style="width: 30%">Dirección</label>{{-- <label> --}}
-                <input wire:model="direccion" style="width: 100%" id="direccion" class="form-control" type="text" placeholder="Ingrese la Dirección" name="direccion">@error('direccion')<p class="text-x text-red-500 alic">{{$message}}</p>@enderror{{-- </label> --}}
+                <input wire:model="direccion" id="direccion" class="form-control" type="text" placeholder="Ingrese la Dirección" name="direccion" style="text-transform: uppercase;">@error('direccion')<p class="text-x text-red-500 alic">{{$message}}</p>@enderror{{-- </label> --}}
                 <div class="d-flex justify-content-center mb-2">
                 {{-- <button wire:click="default" class="btn btn-secondary mb-2"><i class="fa fa-times mr-1"></i> CANCELAR</button> --}}
                 @if ($accion == "store")
@@ -30,11 +30,12 @@
               </div>
             </div>
           </div>
-        </div>{{-- Lista de Materiales a Recibir --}}
+        </div>{{-- Lista de Sucursales --}}
         <div class="col-lg-7 col-md-6 col-xs-6 mt-2">
           <div class="card card-primary">
             <div class="card-header" @php echo $fondoo; @endphp><h3 class="card-title"><label>Lista de Sucursales</label></h3></div>
             <div class="card-body">
+              @if ($sucursales->count())
               <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
                     <th scope="col">#</th>
                     <th scope="col">Descripción</th>
@@ -51,7 +52,10 @@
                       <a href="" wire:click.prevent="{{-- confirmUserRemoval({{ $sucursal->id }}) --}}destroy({{ $sucursal->id }})"><i class="fa fa-trash text-danger"></i></a>
                     </td></tr>
                   @endforeach</tbody>
-              </table>
+              </table>    
+              @else
+                  {{ "No existen Sucursales para mostrar" }}
+              @endif
             </div>
           </div>
         </div>

@@ -11,19 +11,19 @@
               <div class="card-body">
                 <div class="form-group">
                   <label for="cedulac" style="width: 30%">Cédula</label>{{-- <label> --}}
-                    <input wire:model="cedulac" style="width: 100%" id="cedulac" type="text" class="form-control" placeholder="Ingrese la Cédula" name="cedulac">
+                    <input wire:model="cedulac" style="width: 100%; text-transform: uppercase;" id="cedulac" type="text" class="form-control" placeholder="Ingrese la Cédula" name="cedulac">
                     @error('cedulac')<p ass="text-x text-red-500 italic">{{$message}}</p>@enderror
                   <label for="nombrec" style="width: 30%">Nombre</label>
-                    <input wire:model="nombrec" style="width: 100%" id="nombrec" class="form-control" type="text" placeholder="Ingrese el Número de Nombre" name="nombrec">
+                    <input wire:model="nombrec" style="width: 100%; text-transform: uppercase;" id="nombrec" class="form-control" type="text" placeholder="Ingrese el Número de Nombre" name="nombrec">
                     @error('nombrec')<p class="text-x text-red-500 alic">{{$message}}</p>@enderror
                   <label for="direccionc" style="width: 30%">Dirección</label>
-                    <input wire:model="direccionc" style="width: 100%" id="direccionc" type="text" class="form-control" placeholder="Ingrese la Dirección" name="direccionc">
+                    <input wire:model="direccionc" style="width: 100%; text-transform: uppercase;" id="direccionc" type="text" class="form-control" placeholder="Ingrese la Dirección" name="direccionc">
                     @error('direccionc')<p ass="text-x text-red-500 italic">{{$message}}</p>@enderror
                   <label for="telefonoc" style="width: 30%">Teléfono</label>
-                    <input wire:model="telefonoc" style="width: 100%" id="telefonoc" class="form-control" type="text" placeholder="Ingrese el Número de Teléfono" name="telefonoc">
+                    <input wire:model="telefonoc" style="width: 100%; text-transform: uppercase;" id="telefonoc" class="form-control" type="tel" {{-- pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" --}} placeholder="Ingrese el Número de Teléfono" name="telefonoc">
                     @error('telefonoc')<p class="text-x text-red-500 alic">{{$message}}</p>@enderror
                   <label for="correoc" style="width: 30%">Correo</label>
-                    <input wire:model="correoc" style="width: 100%" id="correoc" class="form-control" type="email" placeholder="Ingrese el Correo" name="correoc">@error('correoc')<p class="text-x text-red-500 alic">{{$message}}</p>
+                    <input wire:model="correoc" style="width: 100%" id="correoc" class="form-control" type="email" placeholder="INGRESE EL CORREO" name="correoc">@error('correoc')<p class="text-x text-red-500 alic">{{$message}}</p>
                     @enderror
                   <div class="d-flex justify-content-center mt-2">
                   {{-- <button wire:click="default" class="btn btn-secondary mb-3"><i class="fa fa-times mr-1"></i> CANCELAR</button> --}}
@@ -42,6 +42,7 @@
             <div class="card">
               <div class="card-header" @php echo $fondoo; @endphp><h3 class="card-title" style="color: #fff; margin-right: 2px;"><label>Lista de Clientes</label></h3></div>
               <div class="card-body">
+                @if ($clientes->count())
                 <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
                       <th scope="col">#</th>
                       <th scope="col">Cédula</th>
@@ -63,7 +64,10 @@
                         <a href="" wire:click.prevent="{{-- confirmUserRemoval({{ $cliente->id }}) --}}destroy({{ $cliente->id }})"><i class="fa fa-trash text-danger"></i></a>
                       </td></tr>
                     @endforeach</tbody>
-                </table>
+                </table> 
+                @else
+                    {{ "No existen Clientes para mostrar" }}
+                @endif
               </div>
             </div>
           </div>

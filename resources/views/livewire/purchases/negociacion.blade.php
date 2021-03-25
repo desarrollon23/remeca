@@ -1,5 +1,5 @@
 <div class="pt-1">
-  <div class="card-header"><h3 class="card-title">RECEPCION DE MATERIAL</h3></div>
+  <div class="card-header"><h3 class="card-title">NEGOCIACION</h3></div>
   {{-- <div x-data="{ open: false }" class="content"> --}}{{-- <div x-data="pdisponible()"> --}}
   <div x-data="main()" class="content">
     <div class="container-fluid">

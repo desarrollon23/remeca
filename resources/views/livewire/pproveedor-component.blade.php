@@ -11,19 +11,19 @@
             <div class="card-body">
               <div class="form-group">
                 <label for="cedula" style="width: 30%">Cédula</label>{{-- <label> --}}
-                  <input wire:model="cedula" style="width: 100%" id="cedula" type="text" class="form-control" placeholder="Ingrese la Cédula" name="cedula">
+                  <input wire:model="cedula" style="width: 100%; text-transform: uppercase;" id="cedula" type="text" class="form-control" placeholder="Ingrese la Cédula" name="cedula">
                   @error('cedula')<p ass="text-x text-red-500 italic">{{$message}}</p>@enderror
                 <label for="nombre" style="width: 30%">Nombre</label>
-                  <input wire:model="nombre" style="width: 100%" id="nombre" class="form-control" type="text" placeholder="Ingrese el Número de Nombre" name="nombre">
+                  <input wire:model="nombre" style="width: 100%; text-transform: uppercase;" id="nombre" class="form-control" type="text" placeholder="Ingrese el Número de Nombre" name="nombre">
                   @error('nombre')<p class="text-x text-red-500 alic">{{$message}}</p>@enderror
                 <label for="direccion" style="width: 30%">Dirección</label>
-                  <input wire:model="direccion" style="width: 100%" id="direccion" type="text" class="form-control" placeholder="Ingrese la Dirección" name="direccion">
+                  <input wire:model="direccion" style="width: 100%; text-transform: uppercase;" id="direccion" type="text" class="form-control" placeholder="Ingrese la Dirección" name="direccion">
                   @error('direccion')<p ass="text-x text-red-500 italic">{{$message}}</p>@enderror
                 <label for="telefono" style="width: 30%">Teléfono</label>
-                  <input wire:model="telefono" style="width: 100%" id="telefono" class="form-control" type="text" placeholder="Ingrese el Número de Teléfono" name="telefono">
+                  <input wire:model="telefono" style="width: 100%; text-transform: uppercase;" id="telefono" class="form-control" type="tel" placeholder="Ingrese el Número de Teléfono" name="telefono">
                   @error('telefono')<p class="text-x text-red-500 alic">{{$message}}</p>@enderror
                 <label for="correo" style="width: 30%">Correo</label>
-                  <input wire:model="correo" style="width: 100%" id="correo" class="form-control" type="email" placeholder="Ingrese el Correo" name="correo">@error('correo')<p class="text-x text-red-500 alic">{{$message}}</p>
+                  <input wire:model="correo" style="width: 100%" id="correo" class="form-control" type="email" placeholder="INGRESE EL CORREO" name="correo">@error('correo')<p class="text-x text-red-500 alic">{{$message}}</p>
                   @enderror
                 <div class="d-flex justify-content-center mt-2">
                 {{-- <button wire:click="default" class="btn btn-secondary mb-3"><i class="fa fa-times mr-1"></i> CANCELAR</button> --}}
@@ -42,6 +42,7 @@
           <div class="card">
             <div class="card-header" @php echo $fondoo; @endphp><h3 class="card-title" style="color: #fff; margin-right: 2px;"><label>Lista de Proveedores</label></h3></div>
             <div class="card-body">
+              @if ($pproveedores->count())
               <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
                     <th scope="col">#</th>
                     <th scope="col">Cédula</th>
@@ -64,6 +65,9 @@
                     </td></tr>
                   @endforeach</tbody>
               </table>
+              @else
+                  {{ "No existen Proveedores para mostrar" }}
+              @endif
             </div>
           </div>
         </div>

@@ -29,7 +29,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>50</h3>
+                <h3>{{ $emd }}</h3>
                 <p>Entrada de Material</p>
               </div>
               <div class="icon">
@@ -43,7 +43,7 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>33<sup style="font-size: 20px"></sup></h3>
+                <h3>0 {{-- {{ 0 }} --}}<sup style="font-size: 20px"></sup></h3>
                 <p>Despacho de Material</p>
               </div>
               <div class="icon">
@@ -57,7 +57,7 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>15</h3>
+                <h3>{{ $inventarios->count() }}</h3>
                 <p>INVENTARIO</p>
               </div>
               <div class="icon">
@@ -71,8 +71,8 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>65</h3>
-                <p>FINANZAS</p>
+                <h3>{{ $ccpp->count() }}</h3>
+                <p>P/Pagar</p>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
@@ -116,6 +116,7 @@
                 {{-- <h2>{{ traesuma('SUM(totalcomra)', '_ccompras', 'idestatuspago', '2') }}</h2> --}} </label></h3>
               </div>
               <div class="card-body">
+                @if ($inventarios->count())
                 <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
                     <th scope="col">#</th>
                     <th scope="col">Material</th>
@@ -132,6 +133,9 @@
                     </td></tr>
                   @endforeach</tbody>
                 </table>
+                @else
+                    {{ 'No tiene Materiales en Inventario' }}
+                @endif
               </div>
             </div>
           </div>{{-- CUENTAS POR PAGAR --}}
@@ -141,6 +145,7 @@
                 <h2>{{ traesuma('SUM(totalcomra)', '_ccompras', 'idestatuspago', '2') }}</h2> </label></h3>
               </div>
               <div class="card-body">
+                @if ($ccpp->count())
                 <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
                     <th scope="col">#</th>
                     <th scope="col">Proveedor</th>
@@ -157,31 +162,38 @@
                     </td></tr>
                   @endforeach</tbody>
                 </table>
+                @else
+                    {{ 'No tiene Cuentas por Pagar'}}
+                @endif
               </div>
             </div>
           </div>{{-- CUENTAS POR COBRAR --}}
           <div class="col-lg-4 col-md-4 col-xs-4 mt-2">
             <div class="card">
               <div class="card-header bg-info" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center">Cuentas por Cobrar&nbsp;
-                <h2>{{ traesuma('SUM(totalcomra)', '_ccompras', 'idestatuspago', '2') }}</h2> </label></h3>
+                <h2>{{ traesuma('SUM(totalcomrav)', 'ventas', 'idestatuspagov', '2') }}</h2> </label></h3>
               </div>
               <div class="card-body">
+                @if ($ccpc->count())
                 <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
                     <th scope="col">#</th>
                     <th scope="col">Proveedor</th>
                     <th scope="col">Cantidad</th>
                     <th scope="col"></th>
                   </tr></thead><tbody>
-                  @foreach ($ccpp as $cp)<tr class="hover:bg-green-200">
+                  @foreach ($ccpc as $pc)<tr class="hover:bg-green-200">
                     <td scope="row" class="px-1 py-1">{{$loop->iteration}}</td>
-                    <td class="px-1 py-1">{{$cp->nombre}}</td>
-                    <td class="px-1 py-1">{{$cp->diferenciapago}}</td>
+                    <td class="px-1 py-1">{{$pc->nombre}}</td>
+                    <td class="px-1 py-1">{{$pc->diferenciapago}}</td>
                     <td class="px-1 py-1">
-                      <a href="" wire:click.prevent="edit({{ $cp }})"><i class="fa fa-edit mr-2"></i></a>
+                      <a href="" wire:click.prevent="edit({{ $pc }})"><i class="fa fa-edit mr-2"></i></a>
                       {{-- <a href="" wire:click.prevent="{ {-- confirmUserRemoval({{ $producto->id } }) --} }destroy({ { $producto->id } })"><i class="fa fa-trash text-danger"></i></a> --}}
                     </td></tr>
                   @endforeach</tbody>
                 </table>
+                @else
+                    {{ 'No tiene Cuentas por Cobrar'}}
+                @endif
               </div>
             </div>
           </div>
