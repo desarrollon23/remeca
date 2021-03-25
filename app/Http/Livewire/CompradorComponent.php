@@ -51,6 +51,7 @@ class CompradorComponent extends Component
     public $precio1, $precio2, $precio3, $precio4, $precio5, $precio6, $precio7, $precio8, $precio9, $precio10;
     public $toprod1, $toprod2, $toprod3, $toprod4, $toprod5, $toprod6, $toprod7, $toprod8, $toprod9, $toprod10;
     public $cantpro, $totalcalculado, $sobregiro, $vpeso;
+    public $probc, $muesdesmaterial;
 
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
@@ -217,6 +218,18 @@ class CompradorComponent extends Component
     public function buspron(){ //BUSCA LOS PROVEEDORES
         $probn=Proveedores::where('nombre',$this->nombre)->get()->pluck('cedula');
         $this->cedula = isset($probn) ? $probn : "";
+    }
+
+    public function traedesmaterial($id){
+        $probc=Producto::find($id);
+        $this->muesdesmaterial=$probc['descripcion'];
+        return $this->muesdesmaterial;
+    }
+
+    public function traeprematerial($id){
+        $probc=Producto::find($id);
+        $this->muesdesmaterial=$probc['precio'];
+        return $this->muesdesmaterial;
     }
 
     public function generar(){ //AQUÍ SE GUARDA LA RECEPCION DESPUES SE GUARDAN LOS MATERIALES       

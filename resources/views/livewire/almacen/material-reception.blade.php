@@ -104,24 +104,12 @@
                 <th scope="col"> </th>
                 <th scope="col">Opciones</th>
               </tr></thead><tbody>
-              @php
-                function traematerial($a){
-                  $conn=mysqli_connect("localhost", "root", '') or trigger_error(mysqli_error(),E_USER_ERROR);
-                  mysqli_select_db($conn,'remeca');
-                  $sqltrol='SELECT descripcion FROM _pproductos WHERE id='.$a;
-                  $restrol=mysqli_query($conn,$sqltrol) or die('FALLO LA CONSULTA: '.mysqli_error($conn));
-                  $datrol=mysqli_fetch_array($restrol);
-                  $descmat=$datrol[0];
-                  mysqli_free_result($restrol);
-                  return $descmat;
-                }
-              @endphp
               @foreach ($productosrecepcion as $productorecepcion)
               <tr><th scope="row">{{ $loop->iteration }}</th>
-                <td>{{ traematerial($productorecepcion->producto_id) }}</td>
+                <td>{{ $this->traedesmaterial($productorecepcion->producto_id) }}</td>
                 <td>{{ $productorecepcion->cantidadprorecmat }}</td>
                 <td>
-                @php 
+                @php
                 if ($productorecepcion->operacion=="RESTA") {
                     echo '<a><i class="fas fa-minus text-danger"></i></a>';
                     }if ($productorecepcion->operacion=="SUMA") {

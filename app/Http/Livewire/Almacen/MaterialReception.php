@@ -47,7 +47,7 @@ class MaterialReception extends Component
     public $pesodisponible = 0;
     public $pesodisponiblec = 0;
     public $pesodisponi;
-    public $close;
+    public $close, $muesdesmaterial;
     public $vclose, $vpeso = "false", $pesoi;
     public $ptg, $ptf, $pmm;
     public $editm_id, $traesuma='NO';
@@ -249,6 +249,12 @@ class MaterialReception extends Component
         $this->cedula = isset($probn) ? $probn : "NO EXISTE";
     }
 
+    public function traedesmaterial($id){
+        $probc=Producto::find($id);
+        $this->muesdesmaterial=$probc['descripcion'];
+        return $this->muesdesmaterial;
+    }
+
     public function generar(){ //AQUÍ SE GUARDA LA RECEPCION DESPUES SE GUARDAN LOS MATERIALES       
         $nrm = Almacen::count();       
         if($nrm==0){ $nrm = 1; }else{ ++$nrm; }       
@@ -306,7 +312,7 @@ class MaterialReception extends Component
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Recepción de Material Eliminada!']);
         $this->reset(['cedula', 'idlugar', 'nombre', 'pesofull', 'pesovacio', 'pesoneto', 'pesocalculado', 'almacen_id', 'producto_id', 'cantidadprorecmat', "recepcionmaterial_id", 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', 'state', 'cantidadprorecmat']);
     }
-
+    
     public function render()
     {
         //$recepcionmaterial_id=10;

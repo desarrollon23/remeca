@@ -49,7 +49,7 @@
                     <th scope="col"></th>
                     <th scope="col">TOTAL</th>
                   </tr></thead><tbody>
-                  @php
+                  {{-- @php
                     function conn(){
                       $conn=mysqli_connect("localhost", "root", '') or trigger_error(mysqli_error(),E_USER_ERROR);
                       mysqli_select_db($conn,'remeca');
@@ -66,8 +66,8 @@
                       return $descmat;
                     }
                     function traematerialp($a){
-                      /* $conn=mysqli_connect("localhost", "root", '') or trigger_error(mysqli_error(),E_USER_ERROR);
-                      mysqli_select_db($conn,'remeca'); */
+                      / * $conn=mysqli_connect("localhost", "root", '') or trigger_error(mysqli_error(),E_USER_ERROR);
+                      mysqli_select_db($conn,'remeca'); * /
                       $sqltrol='SELECT precio FROM _pproductos WHERE id='.$a;
                       $restrol=mysqli_query(conn(),$sqltrol) or die('FALLO LA CONSULTA: '.mysqli_error(conn()));
                       $datrol=mysqli_fetch_array($restrol);
@@ -75,10 +75,11 @@
                       mysqli_free_result($restrol);
                       return $descmat;
                     }
-                  @endphp
+                  @endphp --}}
                   @foreach ($productosrecepcion as $productorecepcion)
                   <tr><th scope="row">{{ $loop->iteration }}</th>
-                    <td>{{ traemateriald($productorecepcion->producto_id) }}</td>
+                    {{-- <td>{{ traemateriald($productorecepcion->producto_id) }}</td> --}}
+                    <td>{{ $this->traedesmaterial($productorecepcion->producto_id) }}</td>
                     <td>
                       {{-- <input type="text" wire:model="cantidadp[{{ $loop->iteration }}]" value="{{ $productorecepcion->cantidadprorecmat }}"> --}}
                       @php
@@ -89,14 +90,18 @@
     //dd($cantpro);
 
     $estilocalculos='style="color: red; width: 110px; font-weight: 900;"';
+    $estilocalculosprecio='style="color: red; width: 80px; font-weight: 900;"';
 
-echo '<input type="number" wire:model="cantidadp'.$loop->iteration.'" value="'.(double)$productorecepcion->cantidadprorecmat.'" '.$estilocalculos.'>';
+/* echo '<input type="number" wire:model="cantidadp'.$loop->iteration.'" value="'.(double)$productorecepcion->cantidadprorecmat.'" '.$estilocalculos.'>'; */
+echo '<input type="number" wire:model="cantidadp'.$loop->iteration.'" wire:keyup="calpreind('.$loop->iteration.', '.$cantpro.')" '.$estilocalculosprecio.'>';
 
                           //echo '<input type="text" wire:model="cantidadp'.$loop->iteration.'" value="'. (double)$productorecepcion->cantidadprorecmat.'">';
                           
                           //echo '<input type="text" id="cantidadp'.$loop->iteration.'" value="'. (double)$productorecepcion->cantidadprorecmat.'">';
                       @endphp
                       {{-- <input type="text" wire:model="cantidadp1" value="{{ (double)$productorecepcion->cantidadprorecmat }}"> --}}
+                      
+                      {{-- NO BORRAR EL DE ABAJO, IMPRIME LA CANTIDAD DE LOS PRODUCTOS --}}
                       {{ $productorecepcion->cantidadprorecmat }}</td>
                     <td>
                     @php 
@@ -105,8 +110,13 @@ echo '<input type="number" wire:model="cantidadp'.$loop->iteration.'" value="'.(
                         }if ($productorecepcion->operacion=="SUMA") {
                           echo '<a><i class="color danger fas fa-asterisk text-success"></i></a>';
                           //echo '<h1 style="color:red">*</h1>';
-                          $precio = traematerialp($productorecepcion->producto_id);
-                          $toprod = $productorecepcion->cantidadprorecmat * traematerialp($productorecepcion->producto_id);
+
+                          //$precio = traematerialp($productorecepcion->producto_id);
+      $precio = $this->traeprematerial($productorecepcion->producto_id);
+
+                          /* $toprod = $productorecepcion->cantidadprorecmat * traematerialp($productorecepcion->producto_id); */
+      $toprod = $productorecepcion->cantidadprorecmat * $precio;
+
                           //$toprod = $productorecepcion->cantidadprorecmat * $precio;
                           $toprodacum = (double)$toprodacum + (double)$toprod;
                           session(['toprodacum', $toprodacum]);
@@ -128,10 +138,14 @@ echo '<input type="number" wire:model="cantidadp'.$loop->iteration.'" value="'.(
                     /* <td>echo $precio[$loop->iteration]; } */
                       //echo $precio;
                       /* echo '<input type="text" wire:model="precio1" wire:keyup="calpreind">'; */
-echo '<input type="number" wire:model="precio'.$loop->iteration.'" wire:keyup="calpreind('.$loop->iteration.', '.$cantpro.')" '.$estilocalculos.'>';
+echo '<input type="number" wire:model="precio'.$loop->iteration.'" wire:keyup="calpreind('.$loop->iteration.', '.$cantpro.')" '.$estilocalculosprecio.'>';
                       //echo '<input type="text" wire:model="precio'.$loop->iteration.'" wire:keyup="calpreind">';
 
-                      echo (double)traematerialp($productorecepcion->producto_id);
+                      //echo (double)traematerialp($productorecepcion->producto_id);
+
+        //NO BORRAR EL DE ABAJO, IMPRIME EL PRECIO DE LOS PRODUCTOS
+        //echo (double)$precio;
+
                       /* echo '<td><input style="width: 100px; border:0 font-weight: 900" type="text" id="precio['.$loop->iteration.']" value="'.isset($precio[$loop->iteration]).'" disabled/></td>'; }else{ echo "<td></td>"; */ }
                     @endphp</td>
                     <td>
@@ -150,7 +164,12 @@ echo '<input type="number" wire:model="precio'.$loop->iteration.'" wire:keyup="c
                       
 echo '<input type="number" wire:model="toprod'.$loop->iteration.'" '.$estilocalculos.' disabled>';
                       //echo '<input type="text" wire:model="toprod'.$loop->iteration.'">';
-                      echo (double)$productorecepcion->cantidadprorecmat * (double)traematerialp($productorecepcion->producto_id);
+
+                      //echo (double)$productorecepcion->cantidadprorecmat * (double)traematerialp($productorecepcion->producto_id);
+                      
+      //NO BORRAR EL DE ABAJO, IMPRIME EL TOTAL CALCULADO DE LOS PRODUCTOS
+      //echo (double)$productorecepcion->cantidadprorecmat * (double)$precio;
+                      
 
                     if ($productorecepcion->operacion=="SUMA") {
                       //echo $toprod;
@@ -178,7 +197,7 @@ echo '<input type="number" wire:model="toprod'.$loop->iteration.'" '.$estilocalc
                   <tfoot><tr><td colspan="2">
                     <label>TOTAL</label></td>
                     <td><label><h1 style="font-weight:900; color:red" id="pesocalculado"><i class="fa fa-usd"></i>{{ $acumulado }}{{-- </h1><input style="border:0 font-weight: 900" wire:model="pesocalculado" type="hidden" id="pesocalculado" value="{{ $acumulado }}" disabled/> --}}</label></td><td></td><td></td>
-                    <td></td><td><h1 style="font-weight:900; color:red" id="pesocalculado"><i class="fa fa-usd"></i>{{ $toprodacum }}</h1>
+                    <td></td><td>{{-- <h1 style="font-weight:900; color:red" id="pesocalculado"><i class="fa fa-usd"></i>{{ $toprodacum }}</h1> --}}
 
 <input type="number" wire:model="totalcalculado" style="width: 110px; color:red; font-weight: 900; border: 0px;" disabled class="numeric"></td></tr>
 
