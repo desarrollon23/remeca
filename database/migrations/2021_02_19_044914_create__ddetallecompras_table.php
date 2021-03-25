@@ -15,9 +15,20 @@ class CreateDdetallecomprasTable extends Migration
     {
         Schema::create('_ddetallecompras', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('idcompra');
+            $table->unsignedBigInteger('idproducto');
+            $table->decimal('cantidadpro', $precision = 8, $scale = 2);
+            $table->string('operacion')->nullable($value = true);
+            $table->decimal('preciopro', $precision = 8, $scale = 2)->nullable($value = true);;
+            $table->decimal('totalpro', $precision = 8, $scale = 2)->nullable($value = true);;
+            $table->foreign('idcompra')->references('id')->on('_ccompras')->ondelete('cascade');
+            $table->timestamps();
+        });
+        /* Schema::create('_ddetallecompras', function (Blueprint $table) {
+            $table->id();
             $table->Integer('idcompra');
-            /* $table->string('fecha', 10)->nullable($value = true);
-            $table->string('hora', 10)->nullable($value = true); */
+            / * $table->string('fecha', 10)->nullable($value = true);
+            $table->string('hora', 10)->nullable($value = true); * /
             //$table->unsignedBigInteger('idproducto', 15);
             $table->Integer('idproducto',);
             $table->decimal('cantidadpro', $precision = 8, $scale = 2);
@@ -26,7 +37,7 @@ class CreateDdetallecomprasTable extends Migration
             $table->decimal('totalpro', $precision = 8, $scale = 2)->nullable($value = true);;
             //$table->foreign('idcompra')->references('id')->on('_ccompras')->ondelete('cascade');
             $table->timestamps();
-        });
+        }); */
     }
 
     /**

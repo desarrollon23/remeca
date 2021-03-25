@@ -15,9 +15,22 @@ class CreateDetalleVentasTable extends Migration
     {
         Schema::create('detalle_ventas', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('idventa');
+            $table->unsignedBigInteger('idproductov');
+            $table->decimal('cantidadprov', $precision = 8, $scale = 2);
+            $table->string('operacionv')->nullable($value = true);
+            $table->decimal('precioprov', $precision = 8, $scale = 2);
+            $table->decimal('totalprov', $precision = 8, $scale = 2);
+            $table->foreign('idventa')->references('id')->on('ventas')->ondelete('cascade');
+            $table->timestamps();
+        });
+        /* Schema::create('detalle_ventas', function (Blueprint $table) {
+            $table->id();
             $table->Integer('idventa');
-            /* $table->string('fecha', 10)->nullable($value = true);
-            $table->string('hora', 10)->nullable($value = true); */
+            $table->unsignedBigInteger('recepcionmaterial_id');
+            $table->unsignedBigInteger('producto_idv');
+            / * $table->string('fecha', 10)->nullable($value = true);
+            $table->string('hora', 10)->nullable($value = true); * /
             $table->Integer('idproductov',);
             $table->decimal('cantidadprov', $precision = 8, $scale = 2);
             $table->string('operacionv')->nullable($value = true);
@@ -25,7 +38,7 @@ class CreateDetalleVentasTable extends Migration
             $table->decimal('totalprov', $precision = 8, $scale = 2);
             //$table->foreign('idventa')->references('id')->on('ventas')->ondelete('cascade');
             $table->timestamps();
-        });
+        }); */
     }
 
     /**

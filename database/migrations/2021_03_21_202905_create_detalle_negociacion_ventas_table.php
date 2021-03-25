@@ -20,8 +20,6 @@ class CreateDetalleNegociacionVentasTable extends Migration
             $table->decimal('cantidadprorecmatn', $precision = 8, $scale = 2)->nullable($value = true);
             $table->string('operacionn')->nullable($value = true);
             $table->foreign('negociacion_id')->references('id')->on('negociacion_ventas')->ondelete('cascade');
-            //$table->foreign('producto_id')->references('id')->on('_pproductos')->ondelete('cascade');
-            $table->timestamps();
             $table->timestamps();
         });
     }
