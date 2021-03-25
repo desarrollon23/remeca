@@ -86,8 +86,7 @@
         <div class="row">{{-- INVENTARIO --}}
           <div class="col-lg-4 col-md-4 col-xs-4 mt-2">
             <div class="card">
-              <div class="card-header bg-warning" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center">Inventario&nbsp;
-                {{-- <h2>{{ traesuma('SUM(totalcomra)', '_ccompras', 'idestatuspago', '2') }}</h2> --}} </label></h3>
+              <div class="card-header bg-warning" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center">Inventario&nbsp;</label></h3>
               </div>
               <div class="card-body">
                 @if ($inventarios->count())
@@ -115,15 +114,15 @@
           </div>{{-- CUENTAS POR PAGAR --}}
           <div class="col-lg-4 col-md-4 col-xs-4 mt-2">
             <div class="card">
-              <div class="card-header bg-danger" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center">Cuentas por Pagar&nbsp;
-                <h2>{{ traesuma('SUM(totalcomra)', '_ccompras', 'idestatuspago', '2') }}</h2> </label></h3>
+              <div class="card-header bg-danger" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center">Total Cuentas por Pagar:&nbsp;
+                <h2>{{ $ccpp->sum('diferenciapago') }}</h2></label></h3>
               </div>
               <div class="card-body">
                 @if ($ccpp->count())
                 <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
                     <th scope="col">#</th>
                     <th scope="col">Proveedor</th>
-                    <th scope="col">Cantidad</th>
+                    <th scope="col">Monto</th>
                     <th scope="col"></th>
                   </tr></thead><tbody>
                   @foreach ($ccpp as $cp)<tr class="hover:bg-green-200">
@@ -144,21 +143,21 @@
           </div>{{-- CUENTAS POR COBRAR --}}
           <div class="col-lg-4 col-md-4 col-xs-4 mt-2">
             <div class="card">
-              <div class="card-header bg-info" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center">Cuentas por Cobrar&nbsp;
-                <h2>{{ traesuma('SUM(totalcomrav)', 'ventas', 'idestatuspagov', '2') }}</h2> </label></h3>
+              <div class="card-header bg-info" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center">Total Cuentas por Cobrar:&nbsp;
+                <h2>{{ $ccpp->sum('diferenciapagov') }}</h2> </label></h3>
               </div>
               <div class="card-body">
                 @if ($ccpc->count())
                 <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
                     <th scope="col">#</th>
-                    <th scope="col">Proveedor</th>
-                    <th scope="col">Cantidad</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Monto</th>
                     <th scope="col"></th>
                   </tr></thead><tbody>
                   @foreach ($ccpc as $pc)<tr class="hover:bg-green-200">
                     <td scope="row" class="px-1 py-1">{{$loop->iteration}}</td>
                     <td class="px-1 py-1">{{$pc->nombre}}</td>
-                    <td class="px-1 py-1">{{$pc->diferenciapago}}</td>
+                    <td class="px-1 py-1">{{$pc->diferenciapagov}}</td>
                     <td class="px-1 py-1">
                       <a href="" wire:click.prevent="edit({{ $pc }})"><i class="fa fa-edit mr-2"></i></a>
                       {{-- <a href="" wire:click.prevent="{ {-- confirmUserRemoval({{ $producto->id } }) --} }destroy({ { $producto->id } })"><i class="fa fa-trash text-danger"></i></a> --}}
