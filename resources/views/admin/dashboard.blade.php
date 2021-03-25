@@ -83,33 +83,7 @@
           <!-- ./col -->
         </div>
         <!-- /.row -->
-        <div class="row">
-          @php
-            function conn(){
-              $conn=mysqli_connect("localhost", "root", '') or trigger_error(mysqli_error(),E_USER_ERROR);
-              mysqli_select_db($conn,'remeca');
-              return $conn;
-            }
-            function traesuma($campos, $tabla, $criterio, $buscar){
-              $sqltrol='SELECT '.$campos.' FROM '.$tabla.' WHERE '.$criterio.'='.$buscar;
-              $restrol=mysqli_query(conn(),$sqltrol) or die('FALLO LA CONSULTA: '.mysqli_error(conn()));
-              $datrol=mysqli_fetch_array($restrol);
-              $descmat=$datrol[0];
-              mysqli_free_result($restrol);
-              return $descmat;
-            }
-            function traeresumen($campos, $tabla, $criterio, $buscar){
-              $sqltrol='SELECT '.$campos.' FROM '.$tabla.' WHERE '.$criterio.'='.$buscar;
-              $restrol=mysqli_query(conn(),$sqltrol) or die('FALLO LA CONSULTA: '.mysqli_error(conn()));
-              $datrol=mysqli_fetch_array($restrol);
-              $descmat=$datrol;
-              mysqli_free_result($restrol);
-              //dd($descmat);
-              return $datrol;
-            }
-            //CUENTAS POR PAGAR
-            //$ccpp=traeresumen('proveedores.nombre, _ccompras.diferenciapago', '_ccompras INNER JOIN proveedores ON proveedores.cedula = _ccompras.cedula', 'idestatuspago', '2 GROUP BY _ccompras.id');
-          @endphp{{-- INVENTARIO --}}
+        <div class="row">{{-- INVENTARIO --}}
           <div class="col-lg-4 col-md-4 col-xs-4 mt-2">
             <div class="card">
               <div class="card-header bg-warning" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center">Inventario&nbsp;
