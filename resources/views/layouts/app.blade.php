@@ -10,7 +10,11 @@
   <link rel="stylesheet" href="{{asset('css/app.css')}}"> <!-- Font -->
   <link rel="stylesheet" href="http://filamentgroup.github.io/tablesaw/dist/tablesaw.css">
 	<link rel="stylesheet" href="http://filamentgroup.github.io/tablesaw/demo/demo.css">
-	<link rel="stylesheet" href="//filamentgroup.github.io/demo-head/demohead.css">
+  <link rel="stylesheet" href="//filamentgroup.github.io/demo-head/demohead.css">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
   <style>
     .democolwidth {
       width: 150px;
@@ -49,6 +53,8 @@
   <link rel="stylesheet" href="{{ mix('css/app.css')}}">
   @livewireStyles
   <script src="{{ mix('js/app.js') }}" defer></script>
+  <script src="sweetalert2.min.js"></script>
+<link rel="stylesheet" href="sweetalert2.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed antialiased">
 <div class="wrapper">
@@ -155,6 +161,7 @@
     });
 </script> --}}
 {{-- validar numeros --}}
+<script src="sweetalert2.all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.0.2/cleave.min.js"></script>
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function (){
@@ -166,6 +173,7 @@
     })
   })
 </script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <!-- DataTables  & Plugins -->
 <script src="{{ asset('backend/plugins/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('backend/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -231,6 +239,41 @@
       $('#form').modal('hide');
       toastr.success(event.detail.message, '¡Satisfactorio!');
     })
+
+    //$this->dispatchBrowserEvent('hide-form', ['message' => 'Compra de Material Generada']);
+
+    window.addEventListener('busnumalmacen', event => {
+      Swal.fire({
+        title: event.detail.message,
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+        }
+      });
+    })
+
+    window.addEventListener('confirmar', event => {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+        }
+      });
+    })
+
   });
 </script>
 <script>

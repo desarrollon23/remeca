@@ -27,7 +27,9 @@ class DashBoardController extends Controller
  */
         $this->fecha = date('d-m-Y');
         /* $emd = Almacen::count()->where("fecha", $this->fecha) */
-        $emd = Almacen::count();
+        //$emd = Almacen::count(); 'recibido' => 'NO'
+        $emd = Almacen::where('fecha', date('d-m-Y'))
+                        ->where('recibido', 'SI')->get();
         $inventarios = Producto::all();
         $ccpp = Compra::join("proveedores","_ccompras.cedula","=","proveedores.cedula")
                         ->where('_ccompras.idestatuspago','=',2) // 2 = POR PAGAR

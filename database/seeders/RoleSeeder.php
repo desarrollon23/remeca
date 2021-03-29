@@ -38,10 +38,9 @@ class RoleSeeder extends Seeder
         //******************PERMISOS DE FINANZAS
         /* Permission::create(['name' => 'livewire.purchases.index',
                             'description' =>'Ver la Lista de Compras'])->syncRoles([$role1, $role2, $role4, $role5]); */  //TAMBIEN ES PARA ADMINISTRACION
-        Permission::create(['name' => 'livewire.sales.index',
-                            'description' =>'Ver la Lista de Ventas'])->syncRoles([$role1, $role2, $role4, $role5]);
+        
         Permission::create(['name' => 'livewire.inventory.index',
-                            'description' =>'Ver el Inventario'])->syncRoles([$role1, $role2, $role4, $role5]);
+                            'description' =>'Ver el Inventario'])->syncRoles([$role1, $role2, $role4, $role5, $role7]);
         /* Permission::create(['name' => 'livewire.almacen.material-reception.destroy',
                             'description' =>'Eliminar una Compra'])->syncRoles([$role1, $role2, $role4, $role5]); */
 
@@ -54,6 +53,17 @@ class RoleSeeder extends Seeder
                             'description' =>'Editar una Compra'])->syncRoles([$role1, $role2, $role4, $role7]);
         Permission::create(['name' => 'livewire.purchases.destroy',
                             'description' =>'Eliminar una Compra'])->syncRoles([$role1, $role2, $role4, $role7]);
+                //**********PERMISOS DE VENTAS */
+        Permission::create(['name' => 'livewire.livewire.ventas-component',
+                            'description' =>'Ver la Negociacion de Ventas'])->syncRoles([$role1, $role2, $role4, $role5, $role7]);
+        Permission::create(['name' => 'livewire.ventas.index',
+                            'description' =>'Ver la Lista de Ventas'])->syncRoles([$role1, $role2, $role4, $role5, $role7]);
+        Permission::create(['name' => 'livewire.ventas.show',
+                            'description' =>'Crear una Venta'])->syncRoles([$role1, $role2, $role4, $role7]);
+        Permission::create(['name' => 'livewire.ventas.edit',
+                            'description' =>'Editar una Venta'])->syncRoles([$role1, $role2, $role4, $role7]);
+        Permission::create(['name' => 'livewire.ventas.destroy',
+                            'description' =>'Eliminar una Venta'])->syncRoles([$role1, $role2, $role4, $role7]);
 
         //******************PERMISOS DE ALMACEN
         Permission::create(['name' => 'livewire.almacen.material-reception.index',

@@ -35,7 +35,8 @@
               100% { transform: rotate(360deg); }
             }
             </style>
-        <link rel="shortcut icon" type="favicon" href="favicon.png"/>
+        {{-- <link rel="shortcut icon" type="favicon" href="favicon.png"/> --}}
+        <link rel="shortcut icon" href="../favicons/favicon.ico" />
         <title>REMECA</title>
         <meta http-equiv="refresh" content="1; url=admin/dashboard">
         <!-- Fonts -->

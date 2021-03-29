@@ -24,15 +24,8 @@ use function PHPUnit\Framework\isNull;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
-class MaterialReception extends Component
-{
-    /* public function __construct() //PROTEGE LAS RUTAS PARA QUE NO LA ABRA UN USUARIO SI NO TIENE PERMISO
-    {
-        $this->middleware('can:livewire.almacen.material-reception.index')->only('index');
-        $this->middleware('can:livewire.almacen.material-reception.create')->only('create', 'store');
-        $this->middleware('can:livewire.almacen.material-reception.edit')->only('edit', 'update');
-        $this->middleware('can:livewire.almacen.material-reception.destroy')->only('destroy');
-    } */
+class MaterialReception extends Component{
+
     public $fecha, $cedula, $nombre, $idlugar, $pesofull, $pesovacio, $pesoneto, $observaciones, $almacen_id;
     public $recepcion, $recepcionmaterial_id, $producto_id, $cantidadprorecmat, $operacion, $detalmacen_id;
     public $accion = "store";
@@ -50,7 +43,7 @@ class MaterialReception extends Component
     public $close, $muesdesmaterial;
     public $vclose, $vpeso = "false", $pesoi;
     public $ptg, $ptf, $pmm;
-    public $editm_id, $traesuma='NO';
+    public $editm_id, $traesuma='NO', $mostrar = "false", $mostrarm = "false";
 
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
@@ -60,118 +53,64 @@ class MaterialReception extends Component
     public $userIdBeingRemoved = null;
 
     protected $rules = [
-        'cedula' => 'required',
+        'cedula' => 'required|max:15',
+        'nombre' => 'required|max:50',
         'idlugar' => 'required',
         'pesofull' => 'required',
         'pesovacio' => 'required',
         'pesoneto' => 'required',
         'pesocalculado' => 'required',
-        'producto_id' => 'required',
-        'cantidadprorecmat' => 'required'
+        'observaciones' => 'max:250',
+        'state.producto_id' => 'required',
+        'state.cantidadprorecmat' => 'required',
+        'state.operacion' => 'required|max:10',
     ];
 
     protected $validationattributs = [
         'cedula' => 'Cédula',
+        'nombre' => 'Nombre',
         'idlugar' => 'Lugar',
         'pesofull' => 'Peso FULL',
         'pesovacio' => 'Peso VACIO',
         'pesoneto' => 'Peso NETO',
-        'producto_id' => 'Material', 
-        'cantidadprorecmat' => 'Cantidad de Material',
-        'cantidadprorecmat' => 'Cantidad'
+        'observaciones.max' => 'Observaciones',
+        'state.producto_id' => 'MATERIAL',
+        'state.cantidadprorecmat' => 'PESO',
+        'state.operacion' => 'OPERACION'
     ];
 
     protected $messages = [
-        'cedula.required' => 'Por favor ingrese la Cédula.',
-        'cedula.max' => 'La Cédula no puede tener más de 12 caracteres.',
-        'idlugar.required' => 'Por favor Seleccione el Lugar.',
-        'pesofull.required' => 'Por favor ingrese el Peso FULL.',
-        'pesofull.max' => 'El Peso FULL no puede tener más de 8 cifras.',
-        'pesovacio.required' => 'Por favor ingrese el Peso VACIO.',
-        'pesovacio.max' => 'El Peso VACIO no puede tener más de 8 cifras.',
-        'pesoneto.required' => 'Por favor ingrese el Peso NETO.',
-        'pesoneto.max' => 'El Peso NETO no puede tener más de 8 cifras.',
-        'observaciones.max' => 'Las Observaciones no pueden tener más de 250 caracteres.',
-        'cantidadprorecmat.required' => 'Por favor ingrese la Cantidad de Material.',
-        'cantidadprorecmat.max' => 'La Cédula no puede tener más de 8 cifras.'
+        'cedula.required' => 'Ingrese la Cédula',
+        'cedula.max' => 'Máximo 15 caracteres',
+        'nombre.required' => 'Ingrese el Nombre',
+        'nombre.max' => 'Máximo 50 caracteres',
+        'idlugar.required' => 'Seleccione el Lugar',
+        'pesofull.required' => 'Ingrese el Peso FULL',
+        'pesofull.max' => 'Máximo 8 cifras',
+        'pesovacio.required' => 'Ingrese el Peso VACIO',
+        'pesovacio.max' => 'Máximo 8 cifras',
+        'pesoneto.required' => 'Ingrese el Peso NETO',
+        'pesoneto.max' => 'Máximo 8 cifras',
+        'observaciones.max' => 'Máximo 250 caracteres',
+        'state.producto_id.required' => 'SELECCIONE',
+        'state.cantidadprorecmat.required' => 'INGRESE',
+        'state.cantidadprorecmat.max' => 'MAXIMO 8 CIFRAS',
+        'state.operacion.required' => 'SELECCIONE'
     ];
 
-
-    public function addNew(){
-        $this->state = [];
-        $this->showEditModal = false;
-        $this->dispatchBrowserEvent('show-form');
-    }
-
-    public function createUser(){
-        $validateData = Validator::make($this->state, [
-            'producto_id' => 'required',
-            'cantidadprorecmat' => 'required|max:8',
-            'operacion' => 'max:10'
-        ])->validate();
-        Material::create([
-            'recepcionmaterial_id' => $this->recepcionmaterial_id,
-            'producto_id' => $this->state['producto_id'],
-            'cantidadprorecmat' => $this->state['cantidadprorecmat'],
-            'operacion' => $this->state['operacion']
-        ]);
-            (double)$this->ptg=(double)session('pt')+(double)$this->state['cantidadprorecmat'];
-            (double)$this->pfg=(double)session('pf')-(double)$this->state['cantidadprorecmat'];
-            session(['pt' => $this->ptg]);
-            session(['pf' => $this->pfg]);
-        $this->reset(['state', 'producto_id', 'cantidadprorecmat', 'operacion']);
-        $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material agregado correctamente!']);
-    }
     public function storem()    {
-        $validateData = Validator::make($this->state, [
-            'producto_id' => 'required',
-            'cantidadprorecmat' => 'required|max:8',
-            'operacion' => 'max:10'
-        ])->validate();
+        $this->validate();
         Material::create([
             'recepcionmaterial_id' => $this->recepcionmaterial_id,
             'producto_id' => $this->state['producto_id'],
             'cantidadprorecmat' => $this->state['cantidadprorecmat'],
             'operacion' => $this->state['operacion']
         ]);
-        /* (double)$this->ptg=(double)session('pt')+(double)$this->state['cantidadprorecmat'];
-        (double)$this->pfg=(double)session('pf')-(double)$this->state['cantidadprorecmat']; */
         session(['pt' => (double)session('pt')+(double)$this->state['cantidadprorecmat']]);
         session(['pf' => (double)session('pf')-(double)$this->state['cantidadprorecmat']]);
-        if(!isnull(session('pt'))==!isnull($this->pesoneto)){
-            $this->vpeso = "true";
-        }
-        $this->reset(['state', 'producto_id', 'cantidadprorecmat', 'operacion']);
+        if(session('pf') == 0){ $this->mostrarm="false"; }
+        else{ $this->reset(['state', 'producto_id', 'cantidadprorecmat', 'operacion']); }
         $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material agregado correctamente!']);
-    }
-
-    public function edit($id){
-        $Detallealmacen=Material::find($id);
-        $this->editm_id = $Detallealmacen->id;
-        $this->state['producto_id'] = $Detallealmacen->producto_id;
-        $this->state['cantidadprorecmat'] = $Detallealmacen->cantidadprorecmat;
-        $this->state['operacion'] = $Detallealmacen->operacion;
-        /* session(['editm_id' => $Detallealmacen->id]); */
-        $this->accion = "update";
-        (double)$this->pmm=$this->state['cantidadprorecmat'];
-        session(['pt' => (double)session('pt')-(double)$this->pmm]);
-        session(['pf' => (double)session('pf')+(double)$this->pmm]);
-    }
-    
-    public function updatematerial(){
-        (double)$this->pmm=(double)$this->state['cantidadprorecmat'];
-        $material = Material::find($this->editm_id);
-        $material->update([
-            'producto_id' => $this->state['producto_id'],
-            'cantidadprorecmat' => $this->state['cantidadprorecmat'],
-            'operacion' => $this->state['operacion']
-        ]);
-        session(['pt' => (double)session('pt')+(double)$this->pmm]);
-        session(['pf' => (double)session('pf')-(double)$this->pmm]);
-        $this->accion = "store";
-        $this->reset(['producto_id', 'cantidadprorecmat', 'operacion', 'editm_id', 'pmm']);
-        $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material actualizado correctamente!']);
-        //dd($Detallealmacen);
     }
 
     public function destroy(Material $material){
@@ -179,41 +118,9 @@ class MaterialReception extends Component
         $material->delete();
         session(['pt' => (double)session('pt')-(double)$this->pmm]);
         session(['pf' => (double)session('pf')+(double)$this->pmm]);
-        //$this->accion = "store";
-        if(session('pt')<$this->pesoneto){
-            $this->vpeso = "false";
-        }
+        if(session('pf') > 0){ $this->mostrarm="true"; }
         $this->reset(['producto_id', 'cantidadprorecmat', 'operacion', 'editm_id', 'pmm']);
         $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material eliminado!']);
-    }
-
-    /* public function updateUser(){
-        $validateData = Validator::make($this->state, [
-            // 'recepcionmaterial_id' => 'required',
-            'producto_id' => 'required',
-            'cantidadprorecmat' => 'required|max:8',
-        ])->validate();
-        $this->user->update($validateData);
-        
-        $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material actualizado correctamente!']);
-    } */
-
-    /* public function confirmUserRemoval($userId){
-        $this->userIdBeingRemoved = $userId;
-        $this->dispatchBrowserEvent('show-delete-modal');
-    } */
-
-    public function deleteUser(){
-        $user = Material::findOrFail($this->userIdBeingRemoved);
-        (double)$this->state['cantidadprorecmat']=(double)$user->$this->cantidadprorecmat;
-        $user->delete();
-        /* if($this->state['operacion']=="RESTA"){ */
-            (double)$this->pag=(double)session('pt')-(double)$this->state['cantidadprorecmat'];
-            (double)$this->pag=(double)session('pf')+(double)$this->state['cantidadprorecmat'];
-            session(['pt' => $this->pag]);
-            session(['pf' => $this->pag]);
-        /* } */
-        $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Material Eliminado!']);
     }
 
     public function calpeso(){ //CALCULA EL PESO NETO
@@ -222,6 +129,7 @@ class MaterialReception extends Component
                 if($this->pesofull>$this->pesovacio){
                     $this->pesoneto=$this->pesofull - $this->pesovacio;
                     session(['pf' => $this->pesoneto]);
+                    if(session('pf') > 0){ $this->mostrarm="true"; }
                 }else{ $this->pesoneto="PESO FULL <= PESO VACIO"; }
             }
         }
@@ -231,10 +139,8 @@ class MaterialReception extends Component
     
     public function verificarpeso(){ //CALCULA EL PESO DISPONIBLE
         if(session('pf') >= $this->state['cantidadprorecmat']){
-            $this->vpeso = "false";
             $this->pesoi="";
         }else{ 
-            $this->vpeso = "true";
             $this->pesoi="PESO INSUFICIENTE INGRESE UNA CANTIDAD MENOR";
         }       
     }
@@ -267,56 +173,60 @@ class MaterialReception extends Component
             'pesovacio' => $this->pesovacio,
             'pesoneto' => $this->pesoneto,
             'pesocalculado' => $this->pesoneto,
-            'observaciones' => $this->observaciones
+            'observaciones' => $this->observaciones,
+            'recibido' => 'NO',
+            'facturado' => 'NO'
         ]);
+        $this->mostrar = "true"; $this->mostrarm = "true";
         $recepcion = Almacen::latest('id')->first();
         $this->recepcionmaterial_id=$recepcion->id;
         session(['pt' => 0]); session(['pf' => 0]);
         $this->dispatchBrowserEvent('hide-form', ['message' => 'Recepción de Material Generada']);
     }
 
-    public function update($recepcionmaterial_id)    {
-        /* $traesuma=Detallealmacen::where('recepcionmaterial_id',$recepcionmaterial_id)->get()->pluck('operacion'); */
-        //$traesuma=Detallealmacen::where('recepcionmaterial_id',159)->get()->pluck('operacion');
-        /* $this->nopuedeguardar = isset($traesuma) ? $traesuma : "NO";
-        dd($this->nopuedeguardar);
-        if($this->nopuedeguardar=="NO"){
+    public function update($recepcionmaterial_id){
+        $this->validate();
+        if(session('pf') > (double)0){
+            $this->dispatchBrowserEvent('no-existe', ['message' => 'Faltan '.session('pf').'KG por registrar']);
+        }elseif(session('pf') == (double)0){
+            $this->fecha = date('d-m-Y');
+            $datos = Almacen::find($recepcionmaterial_id);
+            $datos->update([
+                'fecha' => $this->fecha,
+                'cedula' => $this->cedula,
+                'idlugar' => $this->idlugar,
+                'pesofull' => $this->pesofull,
+                'pesovacio' => $this->pesovacio,
+                'pesoneto' => $this->pesoneto,
+                'pesocalculado' => $this->pesoneto,
+                'observaciones' => $this->observaciones,
+                'recibido' => 'SI',
+                'facturado' => 'NO'
+            ]);
             $this->vpeso = "true";
-            $this->nopuedeguardar="Debe agregar materiales que sumen la cantidad del PESO NETO";
-        }else{ */
-        $this->fecha = date('d-m-Y');
-        $datos = Almacen::find($recepcionmaterial_id);
-        $datos->update([
-            'fecha' => $this->fecha,
-            'cedula' => $this->cedula,
-            'idlugar' => $this->idlugar,
-            'pesofull' => $this->pesofull,
-            'pesovacio' => $this->pesovacio,
-            'pesoneto' => $this->pesoneto,
-            'pesocalculado' => $this->pesoneto,
-            'observaciones' => $this->observaciones
-        ]);
-        session(['pt' => 0]); session(['pf' => 0]);
-        $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Recepción de Material Actualizada!']);
-        $this->reset(['cedula', 'nombre', 'idlugar', 'pesofull', 'pesovacio', 'pesoneto', 'pesocalculado', 
-                  'almacen_id', 'producto_id', 'cantidadprorecmat', 'observaciones', 'recepcionmaterial_id', 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', 'state']);
-        /* } */
+            $this->mostrar = "false"; $this->mostrarm = "false";
+            session(['pt' => 0]); session(['pf' => 0]); session(['vpeso' => false]);
+            $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Recepción de Material Actualizada!']);
+            $this->reset(['cedula', 'nombre', 'idlugar', 'pesofull', 'pesovacio', 'pesoneto', 'pesocalculado', 'almacen_id', 'producto_id', 'cantidadprorecmat', 'observaciones', 'recepcionmaterial_id', 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', 'state', 'messages']);
+        }
     }
     
     public function default($recepcionmaterial_id)    {
-        /* $user = Detallealmacen::all()->where('recepcionmaterial_id', $this->recepcionmaterial_id);
-        $user->delete(); */
-        $user = Almacen::findOrFail($recepcionmaterial_id);
-        $user->delete();
-        session(['pt' => 0]); session(['pf' => 0]);
-        $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Recepción de Material Eliminada!']);
-        $this->reset(['cedula', 'idlugar', 'nombre', 'pesofull', 'pesovacio', 'pesoneto', 'pesocalculado', 'almacen_id', 'producto_id', 'cantidadprorecmat', "recepcionmaterial_id", 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', 'state', 'cantidadprorecmat']);
+        $nc = Material::where('recepcionmaterial_id',$recepcionmaterial_id)->get()->count();
+        if($nc>0){ 
+            $this->dispatchBrowserEvent('no-existe', ['message' => 'Elimine los Materiales para poder Cancelar la Recepción']);
+        }else{
+            $user = Almacen::findOrFail($recepcionmaterial_id);
+            $user->delete();
+            session(['pt' => 0]); session(['pf' => 0]);
+            $this->vpeso = "false";
+            $this->mostrar = "false"; $this->mostrarm = "false";
+            $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Recepción de Material  Eliminada!']);
+            $this->reset(['cedula', 'idlugar', 'nombre', 'pesofull', 'pesovacio', 'pesoneto',   'pesocalculado', 'almacen_id', 'producto_id', 'cantidadprorecmat', "recepcionmaterial_id",    'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', 'state', 'cantidadprorecmat',  'pesoi', 'messages']);
+        }
     }
     
-    public function render()
-    {
-        //$recepcionmaterial_id=10;
-//        dd($this->recepcionmaterial_id);
+    public function render(){
         $vendedores = Proveedores::all();
         $lugares = Sucursal::all();
         $productos = Producto::all();
@@ -324,11 +234,8 @@ class MaterialReception extends Component
         $materiales = Material::all();
         $este=$this->recepcion;                                    
         $productosrecepcion=Detallealmacen::all()->where('recepcionmaterial_id',$this->recepcionmaterial_id);
-
         $traesuma=Detallealmacen::where('recepcionmaterial_id',$this->recepcionmaterial_id)
                                     ->where('operacion','SUMA')->get();
-
-        //dd($traesuma);
         return view('livewire.almacen.material-reception', [
                     'materiales'=>$materiales,
             ], compact('vendedores', 'lugares', 'productos', 'recepcion', 'productosrecepcion', 'traesuma'));

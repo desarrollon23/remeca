@@ -16,7 +16,10 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Livewire\Client;
 use App\Http\Controllers\Livewire\PurchaseController;
-
+use App\Http\Controllers\VentaController;
+use App\Http\Livewire\NegociacionComponent;
+use App\Http\Livewire\VentaComponent;
+use App\Http\Livewire\VentasComponent;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,6 +88,13 @@ Route::get('livewire/purchases/index', CompradorComponent::class)->name('livewir
 Route::get('livewire/purchases/show', CompradorComponent::class)->name('livewire.purchases.show');
 Route::put('livewire/purchases/edit', CompradorComponent::class)->name('livewire.purchases.edit');
 Route::delete('livewire/purchases/delete', CompradorComponent::class)->name('livewire.purchases.delete');
+
+Route::get('livewire/ventas/negociacion', NegociacionComponent::class)->name('livewire.ventas.negociacion');
+Route::get('livewire/venta-component', VentaComponent::class)->name('livewire.venta-component');
+Route::get('livewire/ventas/show', VentaComponent::class)->name('livewire.ventas.show');
+Route::put('livewire/ventas/edit', VentaComponent::class)->name('livewire.ventas.edit');
+Route::delete('livewire/ventas/delete', VentaComponent::class)->name('livewire.ventas.delete');
+
 
 //Route::get('/', Vehiculos::class); //Para el Componente Full Page, trabaja con la plantilla appCFP.blade.php que debe ser renombrada por app.blade.php
 

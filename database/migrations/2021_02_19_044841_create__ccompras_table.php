@@ -15,6 +15,7 @@ class CreateCcomprasTable extends Migration
     {
         Schema::create('_ccompras', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('idrecepcion');
             $table->string('fecharecepcion', 10)->nullable($value = true);
             $table->string('fechacompra', 10)->nullable($value = true);
             $table->string('hora', 10)->nullable($value = true);
@@ -26,6 +27,7 @@ class CreateCcomprasTable extends Migration
             $table->decimal('totalpagado', $precision = 8, $scale = 2)->nullable($value = true);
             $table->decimal('diferenciapago', $precision = 8, $scale = 2)->nullable($value = true);
             $table->string('observacionesc', 250)->nullable($value = true);
+            $table->foreign('idrecepcion')->references('id')->on('recepcionmaterial')->ondelete('cascade');
             $table->timestamps();
         });
     }

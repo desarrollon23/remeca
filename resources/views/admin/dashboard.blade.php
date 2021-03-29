@@ -29,8 +29,8 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>{{ $emd }}</h3>
-                <p>Entrada de Material</p>
+                <h3 style="color: #fff; text-shadow: 2px 2px 2px black;">{{ $emd->count() }}</h3>
+                <p style="text-shadow: 2px 2px 2px black;">Entrada de Material por día</p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
@@ -43,8 +43,8 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>0 {{-- {{ 0 }} --}}<sup style="font-size: 20px"></sup></h3>
-                <p>Despacho de Material</p>
+                <h3 style="color: #fff; text-shadow: 2px 2px 2px black;">0 {{-- {{ 0 }} --}}<sup style="font-size: 20px"></sup></h3>
+                <p style="text-shadow: 2px 2px 2px black;">Despacho de Material</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -57,8 +57,8 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>{{ $inventarios->count() }}</h3>
-                <p>INVENTARIO</p>
+                <h3 style="color: black; text-shadow: 2px 2px 2px white;">{{ $inventarios->count() }}</h3>
+                <p style="color: black; text-shadow: 2px 2px 2px white;">Inventario</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person-add"></i>
@@ -71,8 +71,8 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>{{ $ccpp->count() }}</h3>
-                <p>P/Pagar</p>
+                <h3 style="color: #fff; text-shadow: 2px 2px 2px black;">{{ $ccpp->count() }}</h3>
+                <p style="text-shadow: 2px 2px 2px black;">P/Pagar</p>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
@@ -86,7 +86,7 @@
         <div class="row">{{-- INVENTARIO --}}
           <div class="col-lg-4 col-md-4 col-xs-4 mt-2">
             <div class="card">
-              <div class="card-header bg-warning" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center">Inventario&nbsp;</label></h3>
+              <div class="card-header bg-warning" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;" style="text-shadow: 2px 2px 2px black;">Inventario&nbsp;</label></h3>
               </div>
               <div class="card-body">
                 @if ($inventarios->count())
@@ -114,7 +114,7 @@
           </div>{{-- CUENTAS POR PAGAR --}}
           <div class="col-lg-4 col-md-4 col-xs-4 mt-2">
             <div class="card">
-              <div class="card-header bg-danger" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center">Total Cuentas por Pagar:&nbsp;
+              <div class="card-header bg-danger" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;">Total Cuentas por Pagar:&nbsp;
                 <h2>{{ $ccpp->sum('diferenciapago') }}</h2></label></h3>
               </div>
               <div class="card-body">
@@ -143,7 +143,7 @@
           </div>{{-- CUENTAS POR COBRAR --}}
           <div class="col-lg-4 col-md-4 col-xs-4 mt-2">
             <div class="card">
-              <div class="card-header bg-info" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center">Total Cuentas por Cobrar:&nbsp;
+              <div class="card-header bg-info" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;">Total Cuentas por Cobrar:&nbsp;
                 <h2>{{ $ccpp->sum('diferenciapagov') }}</h2> </label></h3>
               </div>
               <div class="card-body">

@@ -51,47 +51,40 @@ class CompradorComponent extends Component
     public $precio1, $precio2, $precio3, $precio4, $precio5, $precio6, $precio7, $precio8, $precio9, $precio10;
     public $toprod1, $toprod2, $toprod3, $toprod4, $toprod5, $toprod6, $toprod7, $toprod8, $toprod9, $toprod10;
     public $cantpro, $totalcalculado, $sobregiro, $vpeso;
-    public $probc, $muesdesmaterial;
+    public $probc, $muesdesmaterial, $mostrar = "false", $mostrarm = "false";
 
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
     public $state = [];
-    public $calculos = [];
+    public $estate = [];
     public $user;
     public $showEditModal = false;
     public $userIdBeingRemoved = null;
 
     protected $rules = [
-        'idestatuspago' => 'required',
-        'idtipopago' => 'required',
-        'observacionesc' => 'required'
+        'state.idestatuspago' => 'required',
+        'state.idtipopago' => 'required',
+        'state.observacionesc' => 'required',
+        'state.totalpagado' => 'required'
     ];
 
     protected $validationattributs = [
-        'idestatuspago' => 'Estatus de Pago',
-        'idtipopago' => 'Tipo de Pago',
-        'observacionesc' => 'Observaciones'
+        'state.idestatuspago' => 'Estatus de Pago',
+        'state.idtipopago' => 'Tipo de Pago',
+        'state.observacionesc' => 'Observaciones',
+        'state.totalpagado' => 'Total a Pagar'
     ];
 
     protected $messages = [
-        'idestatuspago.required' => 'Por favor seleccione el Estatus de Pago.',
-        'idtipopago.required' => 'Por favor seleccione el Tipo de Pago.',
-        'observacionesc.required' => 'Por favor ingrese las Observaciones.',
-        'observacionesc.max' => 'Las Observaciones no puede tener más de 250 letras.',
+        'state.idestatuspago.required' => 'Seleccione Estatus de Pago.',
+        'state.idtipopago.required' => 'Seleccione Tipo de Pago.',
+        'state.observacionesc.required' => 'Ingrese Observaciones',
+        'state.observacionesc.max' => 'Máximo 250 letras',
+        'state.totalpagado.required' => 'Ingrese Total a Pagar'
     ];
 
-    public function addNew(){
-        $this->state = [];
-        $this->showEditModal = false;
-        $this->dispatchBrowserEvent('show-form');
-    }
-
     public function createUser(){
-        $validateData = Validator::make($this->state, [
-            'producto_id' => 'required',
-            'cantidadprorecmat' => 'required|max:8',
-            'operacion' => 'max:10'
-        ])->validate();
+        $this->validate();
         Material::create([
             'recepcionmaterial_id' => $this->recepcionmaterial_id,
             'producto_id' => $this->state['producto_id'],
@@ -110,7 +103,6 @@ class CompradorComponent extends Component
 
     public function updateUser(){
         $validateData = Validator::make($this->state, [
-            // 'recepcionmaterial_id' => 'required',
             'producto_id' => 'required',
             'cantidadprorecmat' => 'required|max:8',
         ])->validate();
@@ -145,13 +137,6 @@ class CompradorComponent extends Component
             $this->pesodisponible=$this->pesofull; 
             $this->pesodisponiblec=$this->pesodisponible; }
     }
-    /* public function calpreind(){
-        //$variable[$numero] = "numero".$numero;
-        /* if(is_numeric($this->numero.$numero)){ * /
-        if(is_numeric($this->precio1)){
-            $this->toprod1 = (double)$this->cantidadp1 * (double)$this->precio1;
-        }
-    } */
 
     public function calpreind($numero, $cantpro){
         (double)$this->totalcalculado=0;
@@ -166,10 +151,10 @@ class CompradorComponent extends Component
     public function caldiferencia(){ //CALCULA LA DIFERENCIA DE PAGO
         (double)$this->state['diferenciapago']=0;
         if(is_numeric($this->state['totalpagado'])){
-            //(double)$this->state['diferenciapago'] = (double)$toprodacum - (double)$this->state['totalpagado'];
             (double)$this->state['diferenciapago'] = (double)$this->totalcalculado - (double)$this->state['totalpagado'];
+            session('totalpagado',(double)$this->state['totalpagado']);
+            session('diferenciapago',(double)$this->state['diferenciapago']);
             if((double)$this->state['totalpagado']<=(double)$this->totalcalculado){
-                //(double)$this->state['diferenciapago'] = 0;
                 $this->vpeso = "false";
                 $this->sobregiro=" ";
             }else{
@@ -191,30 +176,35 @@ class CompradorComponent extends Component
         }
     }
 
-    /* public function busproc(){ //BUSCA LOS PROVEEDORES
-        $probc=Proveedores::where('cedula',$this->cedula)->get()->pluck('nombre');
-        $this->nombre = isset($probc) ? $probc : "NO EXISTE";
-    } */
     public function busnumal(){ //BUSCA LOS DATOS DEL ALMACEN
-        /* if(isset($recepcionmaterial_id)==0){ */
-        $datalm = Almacen::find($this->recepcionmaterial_id);
-        //$datalm = Almacen::all()->where('recepcionmaterial_id',$this->recepcionmaterial_id);
-        if(isset($datalm)<>null){
-        $this->fecha = isset($datalm->fecha) ? $datalm->fecha : "";
-        $this->cedula = isset($datalm->cedula) ? $datalm->cedula : "";
-        $datalmn=Proveedores::where('cedula',$datalm->cedula)->get()->pluck('nombre');
-        $this->nombre = isset($datalmn) ? $datalmn : "";
-        $datalml=Sucursal::where('id',$datalm->idlugar)->get()->pluck('descripcion');
-        $this->idlugar = isset($datalml) ? $datalml : "";
-        $this->pesofull = isset($datalm->pesofull) ? $datalm->pesofull : "";
-        $this->pesovacio = isset($datalm->pesovacio) ? $datalm->pesovacio : "";
-        $this->pesoneto = isset($datalm->pesoneto) ? $datalm->pesoneto : "";
-        $this->pesocalculado = isset($datalm->pesocalculado) ? $datalm->pesocalculado : "";
-        $this->observaciones = isset($datalm->observaciones) ? $datalm->observaciones : "";
+        $nc = Almacen::count();
+        if($nc>0){ 
+            if($this->recepcionmaterial_id>$nc){ 
+                $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'El número de Almacen '.$this->recepcionmaterial_id.' no se ha creado']);
+                $this->datalm=""; $this->limpiar();
+            }elseif(($this->recepcionmaterial_id>0) and ($this->recepcionmaterial_id<=$nc)){
+                $datalm = Almacen::find($this->recepcionmaterial_id);
+                if($datalm->facturado=="NO"){
+                    $datalm = Almacen::find($this->recepcionmaterial_id);
+                    $this->fecha = isset($datalm->fecha) ? $datalm->fecha : "";
+                    $this->cedula = isset($datalm->cedula) ? $datalm->cedula : "";
+                    $datalmn=Proveedores::where('cedula',$datalm->cedula)->get()->pluck('nombre');
+                    $this->nombre = isset($datalmn) ? $datalmn : "";
+                    $datalml=Sucursal::where('id',$datalm->idlugar)->get()->pluck('descripcion');
+                    $this->idlugar = isset($datalml) ? $datalml : "";
+                    $this->pesofull = isset($datalm->pesofull) ? $datalm->pesofull : "";
+                    $this->pesovacio = isset($datalm->pesovacio) ? $datalm->pesovacio : "";
+                    $this->pesoneto = isset($datalm->pesoneto) ? $datalm->pesoneto : "";
+                    $this->pesocalculado = isset($datalm->pesocalculado) ? $datalm->pesocalculado : "";
+                    $this->observaciones = isset($datalm->observaciones) ? $datalm->observaciones : "";
+                }else{
+                    $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'El número de Almacen '.$this->recepcionmaterial_id.' ya fue procesado']);
+                    $this->datalm=""; $this->limpiar();
+                }
+            }else{ $this->limpiar(); }
         }
-        /* }else{ $recepcionmaterial_id=""; } */
     }
-
+    
     public function buspron(){ //BUSCA LOS PROVEEDORES
         $probn=Proveedores::where('nombre',$this->nombre)->get()->pluck('cedula');
         $this->cedula = isset($probn) ? $probn : "";
@@ -233,51 +223,56 @@ class CompradorComponent extends Component
     }
 
     public function generar(){ //AQUÍ SE GUARDA LA RECEPCION DESPUES SE GUARDAN LOS MATERIALES       
+        if(!is_null($this->recepcionmaterial_id)){
         $nc = Compra::count();
         if($nc==0){ $nc = 1; }else{ ++$nc; }
         $recepcion = Almacen::find($this->recepcionmaterial_id);
         $datosc = Compra::create([
             'id' => $nc,           
-            //'fecharecepcion' => $this->fecha,
+            'idrecepcion' => $this->recepcionmaterial_id,
             'fecharecepcion' => $recepcion->fecha,
             'fechacompra' => $this->fechacompra,
             'hora' => $this->hora,
-            //'cedula' => $this->cedula,
             'cedula' => $recepcion->cedula,
             'idlugar' => $recepcion->idlugar,
-            'idestatuspago' => $this->idestatuspago,
-            'idtipopago' => 1, //'idtipopago' => $this->idtipopago,
-            'totalcomra' => 1, //'totalcomra' => $this->totalcomra,
-            'totalpagado' => $this->totalpagado,
-            'diferenciapago' => $this->diferenciapago,
-            'observacionesc' => "Ninguna" //'observacionesc' => $this->observacionesc
+            'idestatuspago' => 1,
+            'idtipopago' => 1,
+            'totalcomra' => 0,
+            'totalpagado' => 0,
+            'diferenciapago' => 0,
+            'observacionesc' => 'NINGUNA'
         ]);
         $compra = Compra::latest('id')->first();
         $this->compra=$compra->id;
+        $this->mostrar = "true"; $this->mostrarm = "true";
         $this->dispatchBrowserEvent('hide-form', ['message' => 'Compra de Material Generada']);
+        }else{
+            $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'Ingrese el número de Almacen ']);
+            $this->datalm=""; $this->limpiar();
+        }
     }
 
-    public function update($compra, $productosrecepcion, $toprodacum){
-        $validateData = Validator::make($this->state, [
-            'idestatuspago' => 'required',
-            'idtipopago' => 'required',
-            'observacionesc' => 'max:250'
-        ])->validate();
-        $fechacomprau = date('d-m-Y');
+    public function update($compra, $productosrecepcion, $totalcalculado){
+        $this->validate();
+        $this->fechacomprau = date('d-m-Y');
         $recepcion = Almacen::find($this->recepcionmaterial_id);
         $datosc = Compra::find($compra);
         $datosc->update([
+            'idrecepcion' => $this->recepcionmaterial_id,
             'fecharecepcion' => $recepcion->fecha,
-            'fechacompra' => $fechacomprau,
-            //'hora' => $this->hora,
+            'fechacompra' => $this->fechacomprau,
+            'hora' => date("H:i:s"),
             'cedula' => $recepcion->cedula,
             'idlugar' => $recepcion->idlugar,
             'idestatuspago' => $this->state['idestatuspago'],
             'idtipopago' => $this->state['idtipopago'],
-            'totalcomra' => $toprodacum,
-            'totalpagado' => (double)$this->state['totalpagado'],
-            'diferenciapago' => $this->state['diferenciapago'],
+            'totalcomra' => (double)$totalcalculado,
+            'totalpagado' =>(double)$this->state['totalpagado'],
+            'diferenciapago' => (double)$this->state['diferenciapago'],
             'observacionesc' => $this->state['observacionesc']
+        ]);
+        $recepcion->update([
+           'facturado' => 'SI'
         ]);
         foreach ($productosrecepcion as $productocompra){
             $this->i=$this->i+1;
@@ -286,27 +281,28 @@ class CompradorComponent extends Component
                'idproducto' => $productocompra['producto_id'],
                'cantidadpro' => $productocompra['cantidadprorecmat'],
                'operacion' => $productocompra['operacion'],
-               'preciopro' => $this->{"precio".$this->i},
-               'totalpro' => $this->{"toprod".$this->i}
+               'preciopro' => (double)$this->{"precio".$this->i},
+               'totalpro' => (double)$this->{"toprod".$this->i}
             ]);
             //guardar la compra en el inventario
             //buscar la existena del producto en la tabla producto
             $existenciapro=Producto::find($productocompra['producto_id']);
             $datosInventario = Inventario::create([
-                'fecha' => $fechacomprau,
+                'fecha' => $this->fechacomprau,
                 'hora' => date("H:i:s"), //COLOCAR LA HORA DE VENEZUELA
                 'idproducto' => $productocompra['producto_id'],
-                'comprados' => $productocompra['cantidadprorecmat'],
+                'comprados' => (double)$productocompra['cantidadprorecmat'],
                 'vendidos' => 0,
-                'existencia' => $existenciapro->cantidad
+                'existencia' => (double)$existenciapro->cantidad
             ]);
             //actualizar la existencia en la tabla del producto
             $datospro = Producto::find($productocompra['producto_id']);
             $nexistencia = $existenciapro->cantidad+$productocompra['cantidadprorecmat'];
             $datospro->update([
-                'cantidad' => $nexistencia
+                'cantidad' => (double)$nexistencia
             ]);
         }
+        $this->mostrar = "false"; $this->mostrarm = "false";
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Compra de Material Realizada!']);
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Se actualizó el Inventário!']);
         $this->reset(['compra', 'cedula', 'nombre', 'idlugar', 'pesofull', 'pesovacio', 'pesoneto', 'observaciones', 'pesocalculado', 'almacen_id', 'producto_id', 'cantidadprorecmat', "recepcionmaterial_id", 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', 'fecharecepcion', 'fechacompra', 'fechacomprau', 'idlugar', 'datalcl', 'idestatuspago', 'idtipopago', 'totalcomra', 'totalpagado', 'diferenciapago', 'idestatuspago', 'idtipopago', 'idestatuspagoc', 'idtipopagoc', 'observacionesc', 'datos', 'state', 'nexistencia', 'diferenciapago', 'totalpagado', 'totalcalculado', 'acumulado']);
@@ -315,8 +311,13 @@ class CompradorComponent extends Component
     public function default($compra)    {
         $compra = Compra::findOrFail($compra);
         $compra->delete();
+        $this->mostrar = "false"; $this->mostrarm = "false";
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Compra de Material Eliminada!']);
-        $this->reset(['compra', 'cedula', 'nombre', 'idlugar', 'pesofull', 'pesovacio', 'pesoneto', 'pesocalculado', 'obsercaciones', 'almacen_id', 'producto_id', 'cantidadprorecmat', "recepcionmaterial_id", 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', ]);
+        $this->limpiar();
+    }
+
+    public function limpiar(){
+        $this->reset(['compra', 'cedula', 'nombre', 'idlugar', 'pesofull', 'pesovacio', 'pesoneto', 'pesocalculado', 'state', 'almacen_id', 'producto_id', 'cantidadprorecmat', "recepcionmaterial_id", 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', ]);
     }
 
     public function show(){
@@ -326,96 +327,16 @@ class CompradorComponent extends Component
 
     public function render()
     {
-            /* $existenciapro=Producto::find(1);
-            dd($existenciapro->cantidad); */
-            $vendedores = Proveedores::all();
-            $lugares = Sucursal::all();
-            $productos = Producto::all();
-            //$recepcion = Almacen::latest('id')->first(); //AQUÍ SE COLOCA EL ID DEL ALMACEN
-            $recepcion = Almacen::all();
-            $materiales = Material::all();
-            $este=$this->recepcion;
-            $productosrecepcion=Detallealmacen::all()->where('recepcionmaterial_id', 
-            $this->recepcionmaterial_id);
-            return view('livewire.comprador-component', [
-                        'materiales'=>$materiales,
-                ], compact('vendedores', 'lugares', 'productos', 'recepcion', 'productosrecepcion'));
-    }
-}
-
-
-
-
-/* namespace App\Http\Livewire;
-
-use Livewire\Component;
-use App\Models\Compra;
-use App\Models\Proveedores;
-use App\Models\Sucursal;
-use App\Models\Producto;
-
-class CompradorComponent extends Component
-{
-    public $cedula, $compra_id;
-    //public $clientes;
-    public $accion = "store";
-    protected $rules = [
-        'cedula' => 'required'
-    ];
-
-    protected $validationattributs = [
-        'cedula' => 'Cédula'
-    ];
-
-    protected $messages = [
-        'cedula.required' => 'Por favor ingrese la Cédula o Rif.',
-        'cedula.max' => 'La Cédula no puede tener más de 15 caracteres.',
-        'cedula.min' => 'La Cédula no puede tener menos de 10 caracteres.',
-    ];
-
-    public function render()    {
-        $compradores = Compra::all();
         $vendedores = Proveedores::all();
         $lugares = Sucursal::all();
         $productos = Producto::all();
-        return view('livewire.comprador-component', compact('compradores', 'vendedores', 'lugares', 'productos'));
+        $recepcion = Almacen::all()->where('recibido', 'NO');
+        $materiales = Material::all();
+        $este=$this->recepcion;
+        $productosrecepcion=Detallealmacen::all()->where('recepcionmaterial_id', 
+        $this->recepcionmaterial_id);
+        return view('livewire.comprador-component', [
+                    'materiales'=>$materiales,
+            ], compact('vendedores', 'lugares', 'productos', 'recepcion', 'productosrecepcion'));
     }
-
-    public function store()    {
-        $this->validate([
-            'cedula' => 'required|min:10|max:15',
-        ]);
-        Compra::create([
-            'cedula' => $this->cedula,
-            'idlugar' => $this->idlugar,
-        ]);
-        $this->reset(['cedula']);
-    }
-
-    public function edit(Compra $Compra)    {
-        $this->cedula = $Compra->cedula;
-        $this->idlugar = $Compra->idlugar;
-        $this->compra_id = $Compra->id;
-        $this->accion = "update";
-    }
-
-    public function update()    {
-        $this->validate();
-        $Compra = Compra::find($this->compra_id);
-        $Compra->update([
-            'cedula' => $this->cedula,
-            'idlugar' => $this->idlugar
-        ]);
-        $this->reset(['cedula', 'idlugar', 'accion', 'compra_id']);
-    }
-
-    public function destroy(Compra $Compra)    {
-        $Compra->delete();
-        $this->reset(['cedula', 'idlugar']);
-        $this->reset(['cedula', 'idlugar', 'accion', 'compra_id']);
-    }
-    
-    public function default()    {
-        $this->reset(['cedula', 'idlugar', 'accion', 'compra_id']);
-    }
-} */
+}

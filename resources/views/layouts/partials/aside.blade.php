@@ -19,17 +19,19 @@
   
     /* para fondo blanco */
     $fondoc='style="background: white;"';
-    $texto='style="color: white;"';
+    $texto='style="color: white; text-align: center; text-shadow: 2px 2px 2px black;"';
     $textom='style="color: black; font-weight: bold;"';
     $textos='style="color: black;"';
   @endphp
-  <!-- LOGO -->
+  <!-- LOGO style="color: white; text-shadow: 2px 2px 2px black;" --> 
+  <img src="{{ asset('../img/logo.png') }}" alt="REMECA" class="brand-image animate__slideInLeft" height="500px" width="500px">
   <a href="{{ route('admin.dashboard') }}" class="brand-link">
     {{-- <img src="{{ asset('backend/dist/img/AdminLTELogo.png') }}" alt="REMECA" class="brand-image img-circle elevation-3" style="opacity: .8"> --}}
-    <img src="{{ asset('../img/logo.png') }}" alt="REMECA" class="brand-image">
+    {{-- <img src="{{ asset('../img/logo.png') }}" alt="REMECA" class="brand-image" height="500px" width="500px"> --}}
     <!--span class="brand-text font-weight-light">REMECA</span-->
-    <span class="brand-text" @php echo $texto; @endphp>REMECA</span>
+    <h1 class="brand-text" @php echo $texto; @endphp>REMECA&nbsp;&nbsp;&nbsp;&nbsp;</h1>
   </a>
+
   <div class="sidebar" @php echo $fondoc; @endphp>
     <!-- PANEL DEL USUARIO -->
     {{-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -110,9 +112,12 @@
               <a href="{{ route('livewire.comprador-component') }}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
                 <i class="nav-icon fas fa-cart-plus"></i><p @php echo $textos; @endphp>Compras</p></a>
             </li><li class="nav-item">
-              <a href="#" class="nav-link request()->is('admin/users') ? 'active' : '' ">
-                <i class="nav-icon fas fa-cart-arrow-down"></i></i><p @php echo $textos; @endphp>Ventas</p></a>
-          </li></ul>
+              <a href="{{ route('livewire.ventas.negociacion') }}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
+                <i class="nav-icon fas fa-cart-arrow-down"></i></i><p @php echo $textos; @endphp>Negociación</p></a>
+          </li><li class="nav-item">
+            <a href="{{ route('livewire.venta-component') }}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
+              <i class="nav-icon fas fa-cart-arrow-down"></i></i><p @php echo $textos; @endphp>Ventas</p></a>
+        </li></ul>
         </li>@endrole<div></div>{{-- ALMACEN --}}@role('Admin|Auditor|Almacen')
         <li class="nav-item">
           <a href="#" class="nav-link">

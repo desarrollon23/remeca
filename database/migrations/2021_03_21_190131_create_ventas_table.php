@@ -21,6 +21,7 @@ class CreateVentasTable extends Migration
             $table->integer('idlugarv')->nullable($value = true);
             $table->integer('idestatuspagov')->nullable($value = true);
             $table->integer('idtipopagov')->nullable($value = true);
+            $table->string('placa', 20)->nullable($value = true);
             $table->decimal('totalcomrav', $precision = 8, $scale = 2)->nullable($value = true);
             $table->decimal('totalpagadov', $precision = 8, $scale = 2)->nullable($value = true);
             $table->decimal('diferenciapagov', $precision = 8, $scale = 2)->nullable($value = true);

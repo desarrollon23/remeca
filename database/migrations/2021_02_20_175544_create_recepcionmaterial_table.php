@@ -23,6 +23,8 @@ class CreateRecepcionmaterialTable extends Migration
             $table->decimal('pesoneto', $precision = 8, $scale = 2)->nullable($value = true);
             $table->decimal('pesocalculado', $precision = 8, $scale = 2)->nullable($value = true);
             $table->string('observaciones', 250)->nullable($value = true);
+            $table->string('recibido', 2)->nullable($value = true);
+            $table->string('facturado', 2)->nullable($value = true);
             $table->timestamps();
         });
     }

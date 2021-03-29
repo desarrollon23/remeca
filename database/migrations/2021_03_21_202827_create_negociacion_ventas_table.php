@@ -21,6 +21,7 @@ class CreateNegociacionVentasTable extends Migration
             $table->integer('idtipopagon',)->nullable($value = true);
             $table->integer('idtipoabonon',)->nullable($value = true);
             $table->string('observaciones', 250)->nullable($value = true);
+            $table->string('finalizada', 2)->nullable($value = true);
             $table->timestamps();
         });
     }
