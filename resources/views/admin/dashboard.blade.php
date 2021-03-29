@@ -25,7 +25,7 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-          <div class="col-lg-3 col-6">
+          <div class="col-lg-3 col-6">{{-- ENTRADA DE MATERIAL --}}
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
@@ -39,11 +39,11 @@
             </div>
           </div>
           <!-- ./col -->
-          <div class="col-lg-3 col-6">
+          <div class="col-lg-3 col-6">{{-- DESPACHO DE MATERIAL --}}
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3 style="color: #fff; text-shadow: 2px 2px 2px black;">0 {{-- {{ 0 }} --}}<sup style="font-size: 20px"></sup></h3>
+                <h3 style="color: #fff; text-shadow: 2px 2px 2px black;">{{ $dmd->count() }}<sup style="font-size: 20px"></sup></h3>
                 <p style="text-shadow: 2px 2px 2px black;">Despacho de Material</p>
               </div>
               <div class="icon">
@@ -53,12 +53,12 @@
             </div>
           </div>
           <!-- ./col -->
-          <div class="col-lg-3 col-6">
+          <div class="col-lg-3 col-6">{{-- CUENTAS POR PAGAR --}}
             <!-- small box -->
-            <div class="small-box bg-warning">
+            <div class="small-box bg-danger">
               <div class="inner">
-                <h3 style="color: black; text-shadow: 2px 2px 2px white;">{{ $inventarios->count() }}</h3>
-                <p style="color: black; text-shadow: 2px 2px 2px white;">Inventario</p>
+                <h3 style="color: white; text-shadow: 2px 2px 2px black;">{{ $ccpp->sum('diferenciapago') }}</h3>
+                <p style="color: white; text-shadow: 2px 2px 2px black;">P/PAGAR</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person-add"></i>
@@ -67,12 +67,12 @@
             </div>
           </div>
           <!-- ./col -->
-          <div class="col-lg-3 col-6">
+          <div class="col-lg-3 col-6">{{-- CUENTAS POR COBRAR --}}
             <!-- small box -->
-            <div class="small-box bg-danger">
+            <div class="small-box bg-info">
               <div class="inner">
-                <h3 style="color: #fff; text-shadow: 2px 2px 2px black;">{{ $ccpp->count() }}</h3>
-                <p style="text-shadow: 2px 2px 2px black;">P/Pagar</p>
+                <h3 style="color: #fff; text-shadow: 2px 2px 2px black;">{{ $ccpc->sum('totalcomrav') }}</h3>
+                <p style="text-shadow: 2px 2px 2px black;">P/COBRAR</p>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
@@ -83,17 +83,18 @@
           <!-- ./col -->
         </div>
         <!-- /.row -->
-        <div class="row">{{-- INVENTARIO --}}
-          <div class="col-lg-4 col-md-4 col-xs-4 mt-2">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-xs-4 mt-2">{{-- INVENTARIO --}}
             <div class="card">
-              <div class="card-header bg-warning" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;" style="text-shadow: 2px 2px 2px black;">Inventario&nbsp;</label></h3>
+              <div class="card-header bg-warning" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;" style="text-shadow: 2px 2px 2px black;">Inventario&nbsp;
+                <h2>{{ $inventarios->count() }}</h2></label></h3>
               </div>
               <div class="card-body">
                 @if ($inventarios->count())
                 <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
                     <th scope="col">#</th>
                     <th scope="col">Material</th>
-                    <th scope="col">Cantidad</th>
+                    <th scope="col">KG</th>
                     <th scope="col"></th>
                   </tr></thead><tbody>
                   @foreach ($inventarios as $inventario)<tr class="hover:bg-green-200">
@@ -111,11 +112,11 @@
                 @endif
               </div>
             </div>
-          </div>{{-- CUENTAS POR PAGAR --}}
-          <div class="col-lg-4 col-md-4 col-xs-4 mt-2">
+          </div>
+          <div class="col-lg-4 col-md-4 col-xs-4 mt-2">{{-- CUENTAS POR PAGAR --}}
             <div class="card">
               <div class="card-header bg-danger" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;">Total Cuentas por Pagar:&nbsp;
-                <h2>{{ $ccpp->sum('diferenciapago') }}</h2></label></h3>
+                <h2>{{ $ccpp->count() }}</h2></label></h3>
               </div>
               <div class="card-body">
                 @if ($ccpp->count())
@@ -140,11 +141,11 @@
                 @endif
               </div>
             </div>
-          </div>{{-- CUENTAS POR COBRAR --}}
-          <div class="col-lg-4 col-md-4 col-xs-4 mt-2">
+          </div>
+          <div class="col-lg-4 col-md-4 col-xs-4 mt-2">{{-- CUENTAS POR COBRAR --}}
             <div class="card">
               <div class="card-header bg-info" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;">Total Cuentas por Cobrar:&nbsp;
-                <h2>{{ $ccpp->sum('diferenciapagov') }}</h2> </label></h3>
+                <h2>{{ $ccpc->count() }}</h2> </label></h3>
               </div>
               <div class="card-body">
                 @if ($ccpc->count())
@@ -156,8 +157,8 @@
                   </tr></thead><tbody>
                   @foreach ($ccpc as $pc)<tr class="hover:bg-green-200">
                     <td scope="row" class="px-1 py-1">{{$loop->iteration}}</td>
-                    <td class="px-1 py-1">{{$pc->nombre}}</td>
-                    <td class="px-1 py-1">{{$pc->diferenciapagov}}</td>
+                    <td class="px-1 py-1">{{$pc->nombrec}}</td>
+                    <td class="px-1 py-1">{{$pc->totalcomrav}}</td>
                     <td class="px-1 py-1">
                       <a href="" wire:click.prevent="edit({{ $pc }})"><i class="fa fa-edit mr-2"></i></a>
                       {{-- <a href="" wire:click.prevent="{ {-- confirmUserRemoval({{ $producto->id } }) --} }destroy({ { $producto->id } })"><i class="fa fa-trash text-danger"></i></a> --}}

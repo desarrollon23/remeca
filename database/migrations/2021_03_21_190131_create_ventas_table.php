@@ -27,6 +27,7 @@ class CreateVentasTable extends Migration
             $table->decimal('diferenciapagov', $precision = 8, $scale = 2)->nullable($value = true);
             $table->string('ajusteporpesov', 20)->nullable($value = true);
             $table->string('observacionesv', 250)->nullable($value = true);
+            $table->string('despachado', 2)->nullable($value = true);
             $table->timestamps();
         });
     }

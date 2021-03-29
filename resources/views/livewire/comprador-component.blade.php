@@ -93,7 +93,10 @@
     $estilocalculosprecio='style="color: red; width: 80px; font-weight: 900;"';
 
 /* echo '<input type="number" wire:model="cantidadp'.$loop->iteration.'" value="'.(double)$productorecepcion->cantidadprorecmat.'" '.$estilocalculos.'>'; */
-echo '<input type="number" wire:model="cantidadp'.$loop->iteration.'" wire:keyup="calpreind('.$loop->iteration.', '.$cantpro.')" '.$estilocalculosprecio.'>';
+
+if ($productorecepcion->operacion=="SUMA") { //PERMITE MOSTRAR LOS INPUT
+  echo '<input type="number" wire:model="cantidadp'.$loop->iteration.'" wire:keyup="calpreind('.$loop->iteration.', '.$cantpro.')" '.$estilocalculosprecio.'>';
+}
 
                           //echo '<input type="text" wire:model="cantidadp'.$loop->iteration.'" value="'. (double)$productorecepcion->cantidadprorecmat.'">';
                           
@@ -161,8 +164,11 @@ echo '<input type="number" wire:model="precio'.$loop->iteration.'" wire:keyup="c
                     //dd($verificaoperacion);
                     /* if ($verificaoperacion=="SUMA"){  */
                       /* echo '<input type="text" wire:model="toprod1">'; */
-                      
-echo '<input type="number" wire:model="toprod'.$loop->iteration.'" '.$estilocalculos.' disabled>';
+
+if ($productorecepcion->operacion=="SUMA") {
+  echo '<input type="number" wire:model="toprod'.$loop->iteration.'" '.$estilocalculos.' disabled>';
+}
+
                       //echo '<input type="text" wire:model="toprod'.$loop->iteration.'">';
 
                       //echo (double)$productorecepcion->cantidadprorecmat * (double)traematerialp($productorecepcion->producto_id);
@@ -175,12 +181,12 @@ echo '<input type="number" wire:model="toprod'.$loop->iteration.'" '.$estilocalc
                       //echo $toprod;
                       /* echo isset($toprod[$loop->iteration]); */ } 
                     @endphp
-                    <input style="border:0 font-weight: 900" type="hidden" id="toprod" value="{{ isset($toprod[$loop->iteration]) }}" disabled/></td>
+<input style="border:0 font-weight: 900" type="hidden" id="toprod" value="{{ isset($toprod[$loop->iteration]) }}" disabled/></td>
                     <td>
                       @php 
                         if ($productorecepcion->operacion=="RESTA") {
                         /* if ($verificaoperacion=="RESTA") { */
-                            $acumulado=$acumulado-$productorecepcion->cantidadprorecmat;
+                            //$acumulado=$acumulado-$productorecepcion->cantidadprorecmat;
                             $pesodisponible=$pesodisponible+$acumulado;
                             $pesodisponiblec=$pesodisponible;
                             $acumuladoc=$acumulado;

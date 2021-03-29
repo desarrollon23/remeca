@@ -169,7 +169,8 @@ class VentaComponent extends Component
             'idestatuspagov' => $this->idestatuspagov,
             'idtipopagov' => $this->idtipopagov,
             'placav' => $this->placav,
-            'observacionesv' => $this->observacionesv
+            'observacionesv' => $this->observacionesv,
+            'despachado' => 'NO'
         ]);
         $this->mostrar = "true"; $this->mostrarm = "true";
         $recepcion = Venta::latest('id')->first();

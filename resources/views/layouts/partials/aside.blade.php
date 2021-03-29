@@ -129,7 +129,8 @@
                 <i class="nav-icon fas fa-dolly"></i><p @php echo $textos; @endphp>Recepción</p></a>
             </li>
             <li class="nav-item">
-              <a href="#{{-- {{ route('admin.users') }} --}}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
+              <a href="{{ route('livewire.despacho-component') }}"
+              class="nav-link request()->is('admin/users') ? 'active' : '' ">
                 <i class="nav-icon fas fa-people-carry"></i><p @php echo $textos; @endphp>Entrega</p></a>
           </li></ul>
         </li>@endrole<div></div>{{-- MANTENIMIENTOS --}}@role('Admin|Auditor|Mantenimiento')

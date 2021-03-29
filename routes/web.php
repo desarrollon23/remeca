@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Livewire\Client;
 use App\Http\Controllers\Livewire\PurchaseController;
 use App\Http\Controllers\VentaController;
+use App\Http\Livewire\DespachoComponent;
 use App\Http\Livewire\NegociacionComponent;
 use App\Http\Livewire\VentaComponent;
 use App\Http\Livewire\VentasComponent;
@@ -78,6 +79,7 @@ Route::get('livewire/almacen', AlmacenComponent::class)->name('livewire.almacen'
 Route::get('livewire/almacen/material-reception', MaterialReception::class)->name('almacen.material-reception');
 Route::put('livewire/almacen/material-reception{material}', [MaterialReception::class, 'updatematerial'])->name('almacen.material-reception.updatematerial');
 Route::delete('livewire/almacen/material-reception{material}', [MaterialReception::class, 'destroy'])->name('almacen.material-reception.destroy');
+Route::get('livewire/despacho-component', DespachoComponent::class)->name('livewire.despacho-component');
 
 /* livewire.purchases.index
 livewire.sales.index

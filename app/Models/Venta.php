@@ -9,7 +9,7 @@ class Venta extends Model
 {
     public $table = "ventas";
     use HasFactory;
-    protected $fillable = ['id', 'fechaventa', 'horaventa', 'cedulav', 'idlugarv', 'pesofullv', 'pesovaciov', 'pesonetov', 'pesocalculadov', 'idestatuspagov', 'idtipopagov', 'totalcomrav', 'totalpagadov', 'diferenciapagov', 'ajusteporpesov', 'observacionesv'];
+    protected $fillable = ['id', 'fechaventa', 'horaventa', 'cedulav', 'idlugarv', 'pesofullv', 'pesovaciov', 'pesonetov', 'pesocalculadov', 'idestatuspagov', 'idtipopagov', 'totalcomrav', 'totalpagadov', 'diferenciapagov', 'ajusteporpesov', 'observacionesv', 'despachado'];
 
     //Relacion uno a muchos inversa con Proveedores y Productos
     public function Proveedores(){

@@ -30,13 +30,15 @@ class DashBoardController extends Controller
         //$emd = Almacen::count(); 'recibido' => 'NO'
         $emd = Almacen::where('fecha', date('d-m-Y'))
                         ->where('recibido', 'SI')->get();
+        $dmd = Venta::where('despachado', 'NO')->get();
         $inventarios = Producto::all();
         $ccpp = Compra::join("proveedores","_ccompras.cedula","=","proveedores.cedula")
                         ->where('_ccompras.idestatuspago','=',2) // 2 = POR PAGAR
                         ->get();
-        $ccpc = Venta::join("proveedores","ventas.cedulav","=","proveedores.cedula")
+        $ccpc = Venta::join("clientes","ventas.cedulav","=","clientes.cedulac")
                         ->where('ventas.idestatuspagov','=',2)  //2 = POR COBRAR
+                        ->where('ventas.despachado','=','SI')  //2 = POR COBRAR
                         ->get();
-        return view('admin.dashboard', compact(['emd', 'inventarios', 'ccpp', 'ccpc']));
+        return view('admin.dashboard', compact(['emd', 'dmd' ,'inventarios', 'ccpp', 'ccpc']));
     }
 }
