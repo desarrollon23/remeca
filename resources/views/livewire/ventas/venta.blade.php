@@ -58,8 +58,8 @@
                       <div style="width: 49%; margin-right: 2px;">
                       <button x-show="{{ $mostrar }}" wire:click="default({{ $recepcionmaterial_id }})" class="btn btn-secondary mb-1 mr-2"><i class="fa fa-times mr-1"></i> CANCELAR</button></div>
                       <div style="width: 49%; margin-right: 2px;">
-                      <button x-show="{{ $mostrar }}" wire:click="update({{ $recepcionmaterial_id }})" class="btn btn-primary mb-1"><i class="fa fa-save mr-1"></i> GUARDAR</button></div>
-                      <div style="width: 49%; margin-right: 2px;">
+                      <button x-show="{{ $mostrar }}" wire:click="update({{ $recepcionmaterial_id.','.$acumulado }})" class="btn btn-primary mb-1"><i class="fa fa-save mr-1"></i> GUARDAR</button></div>
+                    <div style="width: 49%; margin-right: 2px;">
                       <button x-show="!{{ $mostrar }}" wire:click="generar" class="btn btn-primary mb-1"><i class="fa fa-save mr-1"></i> GENERAR</button></div>
                     </div>                
                 </div>
@@ -155,33 +155,33 @@
                     <th scope="col">#</th>
                     <th scope="col">MATERIAL</th>
                     <th scope="col">KG</th>
+                    <td scope="col"></td>
                     <th scope="col">PRECIO</th>
-                    <th scope="col">MONTO</th>
+                    <td scope="col"></td>
+                    <th scope="col">TOTAL</th>
                     <th scope="col"></th>
                   </tr></thead><tbody>
                   @foreach ($productosrecepcion as $productorecepcion)
                   <tr><th scope="row">{{ $loop->iteration }}</th>
-                    <td>{{ $this->traedesmaterial($productorecepcion->producto_id) }}</td>
-                    <td>{{ $productorecepcion->cantidadprorecmat }}</td>
-                    <td>
-                    {{-- @php
-                    if ($productorecepcion->operacion=="RESTA") {
-                        echo '<a><i class="fas fa-minus text-danger"></i></a>';
-                        }if ($productorecepcion->operacion=="SUMA") {
-                            echo '<a><i class="color danger fas fa-plus text-success"></i></a>';
-                     }@endphp --}}
-                    </td>
+                    <td>{{ $this->traedesmaterial($productorecepcion->idproductov) }}</td>
+                    <td>{{ $productorecepcion->cantidadprov }}</td>
+                    <td><a><i class="color danger fas fa-plus text-asterisk text-success"></i></a></td>
+                      <td>{{ $productorecepcion->precioprov }}</td>
+                      <td><a><i class="color danger fas fa-equals text-success"></i></a></td>
+                      <td>{{ $productorecepcion->totalprov }}</td>
                     <td>
                       <a href="" wire:click.prevent="destroy({{ $productorecepcion->id }})"><i class="fa fa-trash text-danger"></i></a>
-                    </td>
-                  </tr>@endforeach</tbody>
-                  <tfoot><tr><td colspan="2"><label>PESO TOTAL</label></td>
-                    <td><h1 style="font-weight:900; color:red">{{ (double)session('pt') }}
-                    </h1></td><td></td></tr>
-                    <tr><td colspan="2"><label>MONTO TOTAL</label></td><td></td>
-                    <td></td><td><h1 style="font-weight:900; color:red">{{ (double)session('pf') }}
-                  </h1></td></tr>
-                  </tfoot>
+                      </td>@php 
+                        $acumulado=$acumulado+$productorecepcion->totalprov;
+                        session(['totalacumulado' => $acumulado]);
+                       @endphp
+                    </tr>@endforeach</tbody>
+                    <tfoot><tr><td colspan="2"><label>TOTAL</label></td>
+                      <td></td><td></td><td colspan="2"></td>
+                      <td><h1 style="font-weight:900; color:red">{{ (double)$acumulado }}
+                      </h1></td><td>{{-- {{ (double)session('pfn') }} --}}</td></tr>
+                      <tr><td></td></tr>
+                    </tfoot>
                 </table>
               </div>
             </div>

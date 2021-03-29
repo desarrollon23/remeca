@@ -90,7 +90,7 @@ Route::put('livewire/purchases/edit', CompradorComponent::class)->name('livewire
 Route::delete('livewire/purchases/delete', CompradorComponent::class)->name('livewire.purchases.delete');
 
 Route::get('livewire/ventas/negociacion', NegociacionComponent::class)->name('livewire.ventas.negociacion');
-Route::get('livewire/venta-component', VentaComponent::class)->name('livewire.venta-component');
+Route::get('livewire/ventas/venta', VentaComponent::class)->name('livewire.ventas.venta');
 Route::get('livewire/ventas/show', VentaComponent::class)->name('livewire.ventas.show');
 Route::put('livewire/ventas/edit', VentaComponent::class)->name('livewire.ventas.edit');
 Route::delete('livewire/ventas/delete', VentaComponent::class)->name('livewire.ventas.delete');

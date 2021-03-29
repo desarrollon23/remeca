@@ -1,7 +1,7 @@
 <div class="pt-1">
     <div class="card-header"><h1 class="card-title text-danger">
       ADMINISTRACION -> Negociación</a>
-      <a href="{{ route('livewire.venta-component') }}" class="btn btn-primary" style="color: #fff; text-shadow: 2px 2px 2px black;">Venta</a>
+      <a href="{{ route('livewire.ventas.venta') }}" class="btn btn-primary" style="color: #fff; text-shadow: 2px 2px 2px black;">Venta</a>
     </h1></div>
     {{-- <div x-data="{ open: false }" class="content"> --}}{{-- <div x-data="pdisponible()"> --}}
     <div x-data="main()" class="content">

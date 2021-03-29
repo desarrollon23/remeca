@@ -15,6 +15,7 @@ use App\Models\almacen;
 use App\Models\Cliente;
 use App\Models\Detallealmacen;
 use App\Models\DetalleNegociacionVenta;
+use App\Models\Inventario;
 use App\Models\NegociacionVenta;
 use App\Models\Proveedores;
 use App\Models\Sucursal;
@@ -38,10 +39,9 @@ class VentaComponent extends Component
         $this->middleware('can:livewire.almacen.material-reception.edit')->only('edit', 'update');
         $this->middleware('can:livewire.almacen.material-reception.destroy')->only('destroy');
     } */
-    public $fechaventa, $cedulav, $nombre, $idlugarv, $idestatuspagov, $idtipopagov, $placav, $observacionesv, $idventa, $idproductov, $cantidadprov, $precioprov;
+    public $fechaventa, $cedulav, $nombre, $idlugarv, $idestatuspagov, $idtipopagov, $placav, $observacionesv, $idventa, $idproductov, $cantidadprov, $precioprov, $totalprov, $totalpronegn;
     public $venta, $mostrar='false', $mostrarm='false'; 
-
-    public $horaventa, $pesofullv, $pesovaciov, $pesonetov, $pesocalculadov, $totalcomrav, $totalpagadov, $diferenciapagov, $ajusteporpesov;
+    public $horaventa, $pesofullv, $pesovaciov, $pesonetov, $pesocalculadov, $totalcomrav, $totalpagadov, $diferenciapagov, $ajusteporpesov, $totalacumulado;
 
     public $fecha, $idlugar, $pesofull, $pesovacio, $pesoneto, $observaciones, $almacen_id;
     public $recepcion, $recepcionmaterial_id, $producto_id, $cantidadprorecmat, $operacion, $detalmacen_id;
@@ -172,13 +172,57 @@ class VentaComponent extends Component
             'observacionesv' => $this->observacionesv
         ]);
         $this->mostrar = "true"; $this->mostrarm = "true";
-        $recepcion = NegociacionVenta::latest('id')->first();
+        $recepcion = Venta::latest('id')->first();
         $this->recepcionmaterial_id=$recepcion->id;
         /* session(['ptn' => 0]); session(['pfn' => 0]); */
         $this->dispatchBrowserEvent('hide-form', ['message' => 'Negociación Generada']);
     }
-    public function update($recepcionmaterial_id)    {
+
+    public function update($venta, $totalcalculado)    {
         $this->validate();
+        //$this->fechacomprau = date('d-m-Y');
+        //$recepcion = Almacen::find($this->recepcionmaterial_id);
+        
+        $datosc = Venta::find($venta);
+        $datosc->update([
+            'fechanventa' => date('d-m-Y'),
+            'hora' => date("H:i:s"),
+            'cedulav' => $this->cedulav,
+            'idlugarv' => $this->idlugarv,
+            'idestatuspagov' => $this->idestatuspagov,
+            'idtipopagov' => $this->idtipopagov,
+            'placav' => $this->placav,
+            'totalcomrav' => (double)session('totalacumulado'),
+            'observacionesv' => $this->observacionesv
+        ]);
+        /* $recepcion->update([
+           'facturado' => 'SI'
+        ]); */
+        $productosventa=DetalleVenta::all()->where('idventa',$venta);
+        foreach ($productosventa as $productoventa){
+            //guardar la compra en el inventario
+            //buscar la existena del producto en la tabla producto
+
+            $existenciapro=Producto::find($productoventa->idproductov);
+            $datosInventario = Inventario::create([
+                'fecha' => date('d-m-Y'),
+                'hora' => date("H:i:s"), //COLOCAR LA HORA DE VENEZUELA
+                'idproducto' => $existenciapro->id,
+                'comprados' => 0,
+                'vendidos' => (double)$productoventa['cantidadprov'],
+                'existencia' => (double)$existenciapro->cantidad
+            ]);
+            //actualizar la existencia en la tabla del producto
+            $datospro = Producto::find($productoventa->idproductov);
+            $nexistencia = $existenciapro->cantidad-$productoventa['cantidadprov'];
+            $datospro->update([
+                'cantidad' => (double)$nexistencia
+            ]);
+        }
+        $this->mostrar = "false"; $this->mostrarm = "false";
+        $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Compra de Material Realizada!']);
+        $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Se actualizó el Inventário!']);
+        $this->reset(['fechaventa', 'cedulav', 'nombre', 'idlugarv', 'idestatuspagov', 'idtipopagov', 'placav', 'observaciones', 'idventa', 'idproductov', 'cantidadprov', 'precioprov', 'recepcionmaterial_id', 'messages', 'totalacumulado']);
     }
     public function default($recepcionmaterial_id)    {
         $nc = DetalleVenta::where('idventa',$recepcionmaterial_id)->get()->count();
@@ -204,8 +248,8 @@ class VentaComponent extends Component
         $materiales = Material::all();
         $este=$this->venta;                                    
         $productosrecepcion=DetalleVenta::all()->where('idventa',$this->recepcionmaterial_id);
-        return view('livewire.ventas.venta', /* [
+        return view('livewire.ventas.venta', [
                     'materiales'=>$materiales,
-            ], */ compact('vendedores', 'lugares', 'productos', 'venta', 'productosrecepcion'/* , 'traesuma' */));
+            ], compact('vendedores', 'lugares', 'productos', 'venta', 'productosrecepcion'/* , 'traesuma' */));
     }
 }
