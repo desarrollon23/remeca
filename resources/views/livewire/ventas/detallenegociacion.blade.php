@@ -116,13 +116,13 @@ div.detalle.show { display: block !important; }
                             @if ($productosabonados->where('negociacion',$negociacion->id)->count())
                               <label style="text-align: center; color: #17a2b8; ">ABONOS DE MATERIALES</label>
                               <table class="table table-striped"><thead><tr>
-                                <th scope="col">FACTURA</th>
+                                <th scope="col"># DESPACHO</th>
                                 <th scope="col">FECHA</th>
                                 <th scope="col">MATERIAL</th>
                                 <th scope="col">ABONO</th>
                                 </tr></thead><tbody>
                                 @foreach ($productosabonados->where('negociacion',$negociacion->id) as $productoabonado)
-                                  <tr><td scope="row">{{ $productoabonado->factura }}</td>
+                                  <tr><td scope="row">{{ $productoabonado->despacho }}</td>
                                     <td>{{ $productoabonado->fecha }}</td>
                                     <td>{{ $productoabonado->material }}</td>
                                     <td>{{ $formatter->formatCurrency($productoabonado->abono, ''), PHP_EOL }}</td>

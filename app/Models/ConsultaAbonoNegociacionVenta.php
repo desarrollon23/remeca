@@ -9,4 +9,5 @@ class ConsultaAbonoNegociacionVenta extends Model
 {
     use HasFactory;
     public $table = 'vista_abono_negociacion_venta';
+    protected $fillable = ['id'];
 }

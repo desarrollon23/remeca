@@ -269,6 +269,7 @@
 
                         {{-- @php dd($productosabonar->where('negociacion_id',1)); @endphp --}}
                         <label for="idproductov" style="width: 100%; margin-right: 2px;">Material</label>
+        {{-- @php dd($productosabonar->where('negociacion_id',$this->negociacion_id)); @endphp --}}
                         <select name="idproductov" wire:model="idproductov" id="idproductov" style="width: 100%;">
                         <option value="NULL" selected>(SELECCIONE)</option>
 
@@ -314,6 +315,7 @@
                     {{-- <th scope="col">CANTIDAD</th><th scope="col"></th> --}}
                     <th scope="col">ABONO</th>{{-- <th scope="col"></th>
                     <th scope="col">RESTA</th> --}}
+                    <th scope="col"></th>
                   </tr></thead><tbody>
                     @php //dd($productosabonados->where('negociacion_id',$this->negociacion_id));
                     $productosabonados=$productosabonados->where('negociacion',$negociacion_id);
@@ -336,6 +338,7 @@
                       <td>{{ $formatter->formatCurrency($productoabonado->abono, ''), PHP_EOL }}</td>
                       {{-- <td><a><i class="color danger fas fa-equals text-success"></i></a></td>
                       <td>{{ $productoabonado->cantidad-$productoabonado->cantidadprov }}</td> --}}
+                      <td><a href="" wire:click.prevent="destroyabonomaterial({{ $productoabonado->id }})"><i class="fa fa-trash text-danger"></i></a></td>
                     </tr>
                   @endforeach</tbody>
                     <tfoot><tr><td></td></tr>

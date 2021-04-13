@@ -142,6 +142,19 @@ class VentaComponent extends Component
         $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material eliminado!']);
     }
 
+    public function destroyabonomaterial(AbonoMaterialNegociacionVentas $abonomaterialnv){
+        $datosc = DetalleNegociacionVenta::where('negociacion_id', $abonomaterialnv->negociacion_id)
+                            ->where('producto_idn', $abonomaterialnv->idproducton)->get()->pluck('cantidadprorecmatndebe');
+        $debe = (double)$datosc[0]+(double)$abonomaterialnv->cantidadpron;
+        $datosc = DetalleNegociacionVenta::where('negociacion_id', $abonomaterialnv->negociacion_id)
+                            ->where('producto_idn', $abonomaterialnv->idproducton)->get();
+        $datosc[0]->update([
+            'cantidadprorecmatndebe' => (double)$debe
+        ]);
+        $abonomaterialnv->delete();
+        $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material eliminado del Abono!']);
+    }
+
     public function calpeso(){ //CALCULA EL PESO NETO
         if((is_numeric($this->cantidadprov)) and (is_numeric($this->precioprov))){
             $this->totalprov=$this->cantidadprov * $this->precioprov;
@@ -368,6 +381,7 @@ class VentaComponent extends Component
             ->get(); */
 
         $productosabonados=ConsultaAbonoNegociacionVenta::all();
+        
         //$productosabonados=AbonoMaterialNegociacionVentas::all();
         $amortizacionesdepago=ConsultaAmortizacionNegociacionVenta::all();
 
