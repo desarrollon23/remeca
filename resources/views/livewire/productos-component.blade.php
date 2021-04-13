@@ -51,7 +51,9 @@
                     <td class="px-1 py-1">{{$producto->cantidad}}</td>
                     <td class="px-1 py-1">
                       <a href="" wire:click.prevent="edit({{ $producto }})"><i class="fa fa-edit mr-2"></i></a>
-                      <a href="" wire:click.prevent="{{-- confirmUserRemoval({{ $producto->id }}) --}}destroy({{ $producto->id }})"><i class="fa fa-trash text-danger"></i></a>
+                      @if ($producto->id<>1)
+                        <a href="" wire:click.prevent="destroy({{ $producto->id }})"><i class="fa fa-trash text-danger"></i></a>
+                      @endif
                     </td></tr>
                   @endforeach</tbody>
               </table>

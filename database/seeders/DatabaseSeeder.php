@@ -19,5 +19,7 @@ class DatabaseSeeder extends Seeder
         //Sucursal::factory(20)->create();
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(ProductoSeeder::class);
+        $this->call(SucursalSeeder::class);
     }
 }

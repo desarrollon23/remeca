@@ -19,7 +19,7 @@
     .democolwidth {
       width: 150px;
     }
-    </style>
+  </style>
     	<script src="http://filamentgroup.github.io/tablesaw/dist/tablesaw.js"></script>
       <script src="http://filamentgroup.github.io/tablesaw/dist/tablesaw-init.js"></script>
       <script src="//filamentgroup.github.io/demo-head/loadfont.js"></script>
@@ -51,10 +51,61 @@
    <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{{ asset('backend/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
   <link rel="stylesheet" href="{{ mix('css/app.css')}}">
-  @livewireStyles
+  
   <script src="{{ mix('js/app.js') }}" defer></script>
   <script src="sweetalert2.min.js"></script>
 <link rel="stylesheet" href="sweetalert2.min.css">
+
+<script language="javascript">
+	function mascara(o,f){  
+		v_obj=o;  
+		v_fun=f;  
+		setTimeout("execmascara()",1);  
+	}  
+	function execmascara(){   
+		v_obj.value=v_fun(v_obj.value);
+	}  
+	function cpf(v){     
+		v=v.replace(/([^0-9\.]+)/g,''); 
+		/* v=v.replace(/^[\.]/,''); 
+		v=v.replace(/[\.][\.]/g,''); 
+		v=v.replace(/\.(\d)(\d)(\d)/g,'.$1$2'); 
+		v=v.replace(/\.(\d{1,2})\./g,'.$1');  
+		v = v.toString().split('').reverse().join('').replace(/(\d{3})/g,'$1,');    
+		/* v = v.split('').reverse().join('').replace(/^[\,]/,'');  */
+		return v;  
+	}  
+	/* function calcularjs(){
+		var varMonto;
+		var varIva;
+		var varSubTotal;
+		
+		varMonto = document.getElementById("importe").value;	
+		varMonto = varMonto.replace(/[\,]/g,''); 
+		
+		varIva = parseFloat(varMonto).toFixed(2) * 0.15;
+		document.getElementById("iva").value = addCommas(parseFloat(varIva).toFixed(2)) ;
+		
+		varSubTotal = parseFloat(varMonto) + parseFloat(varIva);
+		document.getElementById("subtotal").value = addCommas(parseFloat(varSubTotal).toFixed(2)) ;
+
+	} */
+	
+	/* function addCommas(nStr){
+		nStr += '';
+		x = nStr.split('.');
+		x1 = x[0];
+		x2 = x.length > 1 ? '.' + x[1] : '';
+		var rgx = /(\d+)(\d{3})/;
+		while (rgx.test(x1)) {
+			x1 = x1.replace(rgx, '$1' + ',' + '$2');
+		}
+		return x1 + x2;
+	} */
+	
+</script>
+
+@livewireStyles
 </head>
 <body class="hold-transition sidebar-mini layout-fixed antialiased">
 <div class="wrapper">
@@ -126,7 +177,9 @@
 <!-- FIN SCRIPTS ADMINLTEMASTER -->
 
 @stack('modals')
+
 @livewireScripts
+
 <script src="/livewire/livewire.js?id=d9e06c155e467adb5de2" data-turbo-eval="false" data-turbolinks-eval="false"></script>
 {{-- Este SCRIPT que está comentado abajo genera el mensage de warnig --}}
 {{-- <script data-turbo-eval="false" data-turbolinks-eval="false">
@@ -289,6 +342,30 @@
   })
 </script>
 <script>$.widget.bridge('uibutton', $.ui.button)</script>
+
+{{-- INICIO ACORDEON --}}
+{{-- <script>
+  var acc = document.getElementsByClassName("accordion");
+  var i;
+  
+  for (i = 0; i < acc.length; i++) {
+      acc[i].onclick = function(){
+          this.classList.toggle("active");
+          this.nextElementSibling.classList.toggle("show");
+    }
+  }
+  
+  var acd = document.getElementsByClassName("accordiond");
+  var i;
+  
+  for (i = 0; i < acd.length; i++) {
+      acd[i].onclick = function(){
+          this.classList.toggle("active");
+          this.nextElementSibling.classList.toggle("show");
+    }
+  }
+  </script> --}}
+  {{-- FIN ACORDEON --}}
 @yield('js')
 </body>
 </html>

@@ -9,9 +9,9 @@ class NegociacionVenta extends Model
 {
     public $table = 'negociacion_ventas';
     use HasFactory;
-    protected $fillable = ['id', 'fechan', 'cedulan', 'idlugarn', 'idtipopagon', 'idtipoabonon', 'observaciones', 'finalizada'];
+    protected $fillable = ['id', 'fechan', 'cedulan', 'idlugarn', 'idtipopagon', 'idtipoabonon', 'observaciones', 'montotn', 'totalpagado', 'pesotn', 'restan', 'finalizada'];
     //Relacion uno a muchos inversa con Proveedores y Productos
-    public function Proveedores(){
-        return $this->belongsTo(Proveedores::class);
+    public function Clientes(){
+        return $this->belongsTo(Clientes::class);
     }
 }

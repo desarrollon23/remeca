@@ -19,6 +19,7 @@ use App\Models\NegociacionVenta;
 use App\Models\Proveedores;
 use App\Models\Sucursal;
 use App\Models\Producto;
+use App\Models\PagoNegociacionVenta;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 //use Illuminate\Http\Request;
@@ -39,6 +40,7 @@ class NegociacionComponent extends Component
         $this->middleware('can:livewire.almacen.material-reception.destroy')->only('destroy');
     } */
     
+    public $mostraremid='false', $mostraremc='false', $mostraremp='false', $pesotn=0, $montotn;
     public $negociacion_id, $producto_idn, $cantidadprorecmatn, $precionegn, $totalpronegn;
     public $fechan, $cedulan, $nombren, $idlugarn, $idtipopagon, $idtipoabonon, $required, $observaciones, $preciopron, $totalcalculado;
     public $fecha, $cedula, $idlugar, $pesofull, $pesovacio, $pesoneto, $almacen_id;
@@ -59,6 +61,7 @@ class NegociacionComponent extends Component
     public $vclose, $vpeso = "false", $pesoi;
     public $ptg, $ptf, $pmm;
     public $editm_id, $traesuma='NO', $mostrar='false', $mostrarm='false';
+    public $idtipopagoneg, $pagoefectivoneg, $pagotransfneg, $totalpagoneg, $restapagoneg, $validamontotn, $mostrarpagoneg='false';
 
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
@@ -71,26 +74,26 @@ class NegociacionComponent extends Component
         //'fechan' => 'required',
         'cedulan' => 'required|max:15',
         'nombren' => 'required|max:50',
-        //'idlugarn' => 'required',
+        /* 'idlugarn' => 'required',
         'idtipopagon' => 'required',
-        'idtipoabonon' => 'required',
+        'idtipoabonon' => 'required', */
         'observaciones' => 'required|max:250',
-        'producto_idn' => 'required',
+        /* 'producto_idn' => 'required',
         'cantidadprorecmatn' => 'required|max:8',
-        'precionegn' => 'required|max:8',
+        'precionegn' => 'required|max:8', */
     ];
 
     protected $validationattributs = [
         //'fechan' => 'Fecha',
         'cedulan' => 'Cédula',
         'nombren' => 'Nombre',
-        //'idlugarn' => 'Lugar',
+        /* 'idlugarn' => 'Lugar',
         'idtipopagon' => 'Tipo de Pago',
-        'idtipoabonon' => 'Tipo de Abono',
+        'idtipoabonon' => 'Tipo de Abono', */
         'observaciones' => 'Observaciones',
-        'producto_idn' => 'Material',
+        /* 'producto_idn' => 'Material',
         'cantidadprorecmatn' => 'Cantidad',
-        'precionegn' => 'Precio',
+        'precionegn' => 'Precio', */
     ];
 
     protected $messages = [
@@ -98,88 +101,83 @@ class NegociacionComponent extends Component
         'cedulan.max' => 'Máximo 15 Cífras',
         'nombren.required' => 'Ingrese el Nombre',
         'nombren.max' => 'Máximo 50 caracteres',
-        //'idlugarn' => 'Seleccione Lugar',
+        /* 'idlugarn' => 'Seleccione Lugar',
         'idtipopagon.required' => 'Seleccione Tipo de Pago',
-        'idtipoabonon.required' => 'Seleccione Tipo de Abono',
+        'idtipoabonon.required' => 'Seleccione Tipo de Abono', */
         'observaciones.required' => 'Ingrese Observaciones',
         'observaciones.max' => 'Máximo 250 letras',
-        'producto_idn.required' => 'SELECCIONE',
+        /* 'producto_idn.required' => 'SELECCIONE',
         'cantidadprorecmatn.required' => 'INGRESE',
         'cantidadprorecmatn.max' => 'MAXIMO 8 CIFRAS',
         'precionegn.required' => 'INGRESE',
-        //'totalpronegn.required' => 'SELECCIONE'
+        'totalpronegn.required' => 'SELECCIONE' */
     ];
 
-    public function storem()    {   //AGREGA MATERIALES A LA LISTA
-        $this->validate();
-        $existencia=Producto::find($this->producto_idn);
+    public function storem()    {   //AGREGA MATERIALES A LA LISTA  
+        if(empty($this->producto_idn)){ $this->mostraremid='true';
+        }else{ $this->mostraremid='false'; }
+        if(empty($this->cantidadprorecmatn)){ $this->mostraremc='true';
+        }else{ $this->mostraremc='false'; }
+        if(empty($this->precionegn)){ $this->mostraremp='true';
+        }else{ $this->mostraremp='false'; }
+        if((!empty($this->producto_idn)) and (!empty($this->cantidadprorecmatn)) and (!empty($this->precionegn))){
+        /* $existencia=Producto::find($this->producto_idn);
         $this->muesdesmaterial=$existencia['cantidad'];
-        //dd($this->muesdesmaterial);
         if($this->muesdesmaterial<$this->cantidadprorecmatn){
             $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'No puede agregar esa cantidad, actualmente tiene '.$this->muesdesmaterial.' KG disponible(s)']);
-        }else{
+        }else{ */
             DetalleNegociacionVenta::create([
                 'negociacion_id' => $this->recepcionmaterial_id,
                 'producto_idn' => $this->producto_idn,
-                'cantidadprorecmatn' => (double)$this->cantidadprorecmatn,
-                'precionegn' => (double)$this->precionegn,
-                'totalpronegn' => (double)$this->totalpronegn
+                'cantidadprorecmatn' => round((double)$this->cantidadprorecmatn,2),
+                'precionegn' => round((double)$this->precionegn,2),
+                'totalpronegn' => round((double)$this->totalpronegn,2),
+                'cantidadprorecmatndebe' => round((double)$this->cantidadprorecmatn,2)
             ]);
-            //session(['tpn' => (double)session('tpn')+(double)$this->totalpronegn]);
-            $this->reset([/* 'negociacion_id', 'producto_idn', 'cantidadprorecmatn', 'precionegn', */ 'totalpronegn']);
+            $this->restapagoneg = (double)$this->restapagoneg+(double)$this->totalpronegn;
+            $this->mostrarpagoneg='true';
+            $this->mostraremid='false'; $this->mostraremc='false'; $this->mostraremp='false';
+            $this->reset(['producto_idn', 'cantidadprorecmatn', 'precionegn', 'totalpronegn']);
             $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material agregado correctamente!']);
-
-            //guardar la compra en el inventario
-            //buscar la existena del producto en la tabla producto
-            /* $existenciapro=Producto::find($this->producto_id);
-            $datosInventario = Inventario::create([
-                'fecha' => $this->fechacomprau,
-                'hora' => date("H:i:s"), //COLOCAR LA HORA DE VENEZUELA
-                'idproducto' => $this->producto_id,
-                'comprados' => 0,
-                'vendidos' => (double)$this->cantidadprorecmatn,
-                'existencia' => (double)$existenciapro->cantidad
-            ]);
-            //actualizar la existencia en la tabla del producto
-            $datospro = Producto::find($this->producto_id);
-            $nexistencia = $existenciapro->cantidad+$this->cantidadprorecmatn;
-            $datospro->update([
-                'cantidad' => (double)$nexistencia
-            ]); */
         }
     }
 
     public function destroy(DetalleNegociacionVenta $detallenegociacionventa){
+        /* $this->pesotn=$this->pesotn-$detallenegociacionventa->cantidadprorecmatn;
+        $this->montotn=$this->montotn-$productorecepcion->totalpronegn; */
         (double)$this->pmmdn=$detallenegociacionventa->totalpronegn;
+        $this->restapagoneg = (double)$this->restapagoneg-(double)$detallenegociacionventa->totalpronegn;
+
         $detallenegociacionventa->delete();
-
-        //guardar la compra en el inventario
-            //buscar la existena del producto en la tabla producto
-            /* $existenciapro=Producto::find($this->producto_id);
-            $datosInventario = Inventario::create([
-                'fecha' => $this->fechacomprau,
-                'hora' => date("H:i:s"), //COLOCAR LA HORA DE VENEZUELA
-                'idproducto' => $this->producto_id,
-                'comprados' => 0,
-                'vendidos' => (double)$this->cantidadprorecmatn,
-                'existencia' => (double)$existenciapro->cantidad
-            ]);
-            //actualizar la existencia en la tabla del producto
-            $datospro = Producto::find($this->producto_id);
-            $nexistencia = $existenciapro->cantidad+$this->cantidadprorecmatn;
-            $datospro->update([
-                'cantidad' => (double)$nexistencia
-            ]); */
-
-        //session(['tpn' => (double)session('tpn')-(double)$this->pmmdn]);
         $this->reset(['producto_idn', 'cantidadprorecmatn', 'precionegn', 'totalpronegn']);
         $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material eliminado!']);
     }
 
     public function calpeso(){ //CALCULA EL PESO NETO
         if((is_numeric($this->cantidadprorecmatn)) and (is_numeric($this->precionegn))){
-            $this->totalpronegn=$this->cantidadprorecmatn * $this->precionegn;
+            $this->totalpronegn=round((double)$this->cantidadprorecmatn * (double)$this->precionegn,2);
+            //$this->totalpronegn=round($this->totalpronegn,2);
             //session(['totalcalculado' => $this->totalcalculado+$this->totalpronegn]);
+        }
+    }
+
+    public function calrestaneg($montotn){ //CALCULA EL PAGO
+        //dd($montotn);
+        if((double)$montotn==0){
+            $this->validamontotn="INGRESE MATERIALES";
+        }elseif(((double)$this->pagoefectivoneg+(double)$this->pagotransfneg)>(double)$montotn){
+                $this->validamontotn="INGRESE UNA CANTIDAD MENOR O IGUAL AL TOTAL A PAGAR";
+                $this->totalpagoneg=round((double)$this->pagoefectivoneg + (double)$this->pagotransfneg,2);
+                $this->restapagoneg=round((double)$montotn-(double)$this->totalpagoneg,2);
+
+        }else{
+            if((is_numeric((double)$this->pagoefectivoneg)) or (is_numeric((double)$this->pagotransfneg))){
+                //$idtipopagoneg, $pagoefectivoneg, $pagotransfneg, $totalpagoneg;
+                $this->validamontotn="";
+                $this->totalpagoneg=round((double)$this->pagoefectivoneg + (double)$this->pagotransfneg,2);
+                $this->restapagoneg=round((double)$montotn-(double)$this->totalpagoneg,2);
+
+            }
         }
     }
 
@@ -199,17 +197,17 @@ class NegociacionComponent extends Component
         return $this->muesdesmaterial;
     }
 
-    public function generar(){ //AQUÍ SE GUARDA LA RECEPCION DESPUES SE GUARDAN LOS MATERIALES       
-        $nrm = NegociacionVenta::count();       
+    public function generar(){ //AQUÍ SE GUARDA LA RECEPCION DESPUES SE GUARDAN LOS MATERIALES
+        $nrm = NegociacionVenta::count();
         if($nrm==0){ $nrm = 1; }else{ ++$nrm; }       
         $datos = NegociacionVenta::create([
             'id' => $nrm,           
-            'fechan' => $this->fecha,
-            'cedulan' => $this->cedula,
+            'fechan' => $this->fechan,
+            /* 'cedulan' => $this->cedulan, */
             //'idlugarn' => $this->idlugar,
-            'idtipopagon' => $this->idtipopagon,
+            /* 'idtipopagon' => $this->idtipopagon,
             'idtipoabonon' => $this->idtipoabonon,
-            'observaciones' => $this->observaciones,
+            'observaciones' => $this->observaciones, */
             'finalizada' => 'NO',
             //'facturado' => 'NO'
         ]);
@@ -220,24 +218,64 @@ class NegociacionComponent extends Component
         $this->dispatchBrowserEvent('hide-form', ['message' => 'Negociación Generada']);
     }
 
-    public function update($recepcionmaterial_id)    {
+    public function update($recepcionmaterial_id){
+        /* if($this->pagoefectivoneg>0){ $idtipoabonon=1; }
+        if($this->pagotransfneg>0){ $idtipoabonon=2; }
+        if($this->pagotransfneg>0 and $this->pagoefectivoneg>0){ $idtipoabonon=3; }
+        if($this->pagotransfneg=="" and $this->pagoefectivoneg==""){ $idtipoabonon=0; } */
+        /* if($this->restapagoneg==0){ $idtipopagon=1; }else{ $idtipopagon=2; }
+        dd(
+            " Resta = ".$this->restapagoneg.
+            " - Tipo = ".$idtipopagon
+        ); */
+
         $this->validate();
-        $this->fecha = date('d-m-Y');
-        $datos = NegociacionVenta::find($recepcionmaterial_id);
-        $datos->update([
-            //'id' => $nrm,       
-            'fechan' => $this->fecha,
-            'cedulan' => $this->cedulan,
-            //'idlugarn' => $this->idlugar,
-            'idtipopagon' => $this->idtipopagon,
-            'idtipoabonon' => $this->idtipoabonon,
-            'observaciones' => $this->observaciones,
-            'finalizada' => 'NO',
-            //'facturado' => 'NO'
-        ]);                
-        $this->mostrar = "false"; $this->mostrarm = "false";
-        $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Negociación Actualizada!']);
-        $this->reset(['fechan', 'cedulan', 'nombren', 'idtipopagon', 'idtipoabonon', 'observaciones', 'negociacion_id', 'producto_idn', 'cantidadprorecmatn', 'precionegn', 'totalpronegn', 'recepcionmaterial_id', 'messages']);
+        $nc = DetalleNegociacionVenta::where('negociacion_id',$recepcionmaterial_id)->get()->count();
+        if($nc==0){ 
+            $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'Agrege Materiales para Guardar la Negociación']);
+        }else{
+            $this->fecha = date('d-m-Y');
+            $datos = NegociacionVenta::find($recepcionmaterial_id);
+            $productosrecepcion=DetalleNegociacionVenta::all()->where('negociacion_id', $this->recepcionmaterial_id);
+            foreach ($productosrecepcion as $dtosd){
+                $this->pesotn=$this->pesotn+$dtosd->cantidadprorecmatn;
+                $this->montotn=$this->montotn+$dtosd->totalpronegn;
+            }
+            $pagonegventa = PagoNegociacionVenta::create([
+                'negociacion_id' => $this->recepcionmaterial_id,
+                'fechapagonegven' => date('d-m-Y'),
+                'horapagonegven' => date("H:i:s"),
+                'montoefec' => (double)$this->pagoefectivoneg,
+                'montotran' => (double)$this->pagotransfneg,
+                'totalpago' => (double)$this->pagoefectivoneg+(double)$this->pagotransfneg,
+                'restapago' => $this->restapagoneg
+            ]);
+            //DETERMINA EL TIPO DE PAGO
+            if($this->restapagoneg==0){ $idtipopagon=1; }else{ $idtipopagon=2; }
+            //DETERMINA EL TIPO DE ABONO
+            if($this->pagoefectivoneg>0){ $idtipoabonon=1; }
+            if($this->pagotransfneg>0){ $idtipoabonon=2; }
+            if($this->pagotransfneg>0 and $this->pagoefectivoneg>0){ $idtipoabonon=3; }
+            if($this->pagotransfneg=="" and $this->pagoefectivoneg==""){ $idtipoabonon=0; }
+            $datos->update([
+                'fechan' => date('d-m-Y'),
+                'cedulan' => (string)$this->cedulan,
+                'idtipopagon' => $idtipopagon,
+                'idtipoabonon' => $idtipoabonon,
+                'observaciones' => $this->observaciones,
+                'montotn' => (double)$productosrecepcion->sum('totalpronegn'),
+                'totalpagado' => (double)$this->pagoefectivoneg+(double)$this->pagotransfneg,
+                'pesotn' => (double)$productosrecepcion->sum('cantidadprorecmatn'),
+                'restan' => (double)$this->restapagoneg,
+                'finalizada' => 'NO'
+            ]);
+            
+            //LA FACTURA SE GENERA DESDE LA BASE DE DATOS CON UN TRIGER
+
+            $this->mostrar = "false"; $this->mostrarm = "false"; $this->mostrarpagoneg = 'false';
+            $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Negociación Actualizada!']);
+            $this->reset(['fechan', 'cedulan', 'nombren', 'idtipopagon', 'idtipoabonon', 'observaciones', 'negociacion_id', 'producto_idn', 'cantidadprorecmatn', 'precionegn', 'totalpronegn', 'recepcionmaterial_id', 'messages', 'pesotn', 'montotn', 'idtipopagon', 'idtipoabonon', 'pagoefectivoneg', 'pagotransfneg', 'restapagoneg', 'totalpagoneg']);
+        }
     }
     
     public function default($recepcionmaterial_id)    {
@@ -249,9 +287,9 @@ class NegociacionComponent extends Component
             $user->delete();
             /* session(['ptn' => 0]); session(['pfn' => 0]);
             $this->vpeso = "false"; */
-            $this->mostrar = "false"; $this->mostrarm = "false";
+            $this->mostrar = "false"; $this->mostrarm = "false"; $this->mostrarpagoneg = 'false';
             $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Negociación  Eliminada!']);
-            $this->reset(['fechan', 'cedulan', 'nombren', 'idtipopagon', 'idtipoabonon', 'observaciones', 'negociacion_id', 'producto_idn', 'cantidadprorecmatn', 'precionegn', 'totalpronegn', 'recepcionmaterial_id', 'messages']);
+            $this->reset(['fechan', 'cedulan', 'nombren', 'idtipopagon', 'idtipoabonon', 'observaciones', 'negociacion_id', 'producto_idn', 'cantidadprorecmatn', 'precionegn', 'totalpronegn', 'recepcionmaterial_id', 'messages', 'pesotn', 'montotn', 'pagoefectivoneg', 'pagotransfneg', 'restapagoneg', 'totalpagoneg']);
         }
     }
     
@@ -260,11 +298,13 @@ class NegociacionComponent extends Component
         //$recepcionmaterial_id=7;
         $vendedores = Proveedores::all();
         $lugares = Sucursal::all();
-        $productos = Producto::all();
+        $productos = Producto::where('id', '<>', 1)->get();
         $recepcion = NegociacionVenta::latest('id')->first();
         $materiales = Material::all();
         $este=$this->recepcion;                                    
         $productosrecepcion=DetalleNegociacionVenta::all()->where('negociacion_id',$this->recepcionmaterial_id);
+        /* $productosrecepcion=DetalleVenta::all()->where('idventa',$this->recepcionmaterial_id); */
+
         return view('livewire.ventas.negociacion', [
                     'materiales'=>$materiales,
             ], compact('vendedores', 'lugares', 'productos', 'recepcion', 'productosrecepcion'/* , 'traesuma' */));

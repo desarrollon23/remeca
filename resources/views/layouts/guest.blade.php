@@ -56,7 +56,7 @@
               <div class="col-lg-6 col-md-6 col-xs-4" style="background: #336699;">
                 <div style="margin: 0; position: absolute; top: 35%; left: 40%;
                     margin: -25px 0 0 -25px; -ms-transform: translateY(-50%); transform: translateY(-50%); width: 300px; height: 300px;">
-                    <H1 style="color: white;">REMECA</H1>
+                    <H1 {{-- style="color: white;" --}} style="color: #fff; text-shadow: 2px 2px 2px black;">REMECA</H1>
                   {{-- <img src="../../../../img/t2.png"> --}}
                 </div>
                 <!--div class="card card-success">

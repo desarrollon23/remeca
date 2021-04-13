@@ -13,6 +13,10 @@ use App\Models\DetalleComprador;
 use App\Models\Proveedores;
 use App\Models\Sucursal;
 use App\Models\Producto;
+use App\Models\DespachoMaterial;
+use App\Models\AbonoMaterialNegociacionVentas;
+use App\Models\ConsultaDespachoAbonoMaterialVentas;
+
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 //use App\Http\Livewire\Almacen\Request;
@@ -25,6 +29,7 @@ use App\Http\Livewire\Compras;
 use App\Models\Cliente;
 use App\Models\DetalleVenta;
 use App\Models\Venta;
+use Illuminate\Support\Facades\DB;
 
 use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
@@ -55,7 +60,7 @@ class DespachoComponent extends Component
     public $precio1, $precio2, $precio3, $precio4, $precio5, $precio6, $precio7, $precio8, $precio9, $precio10;
     public $toprod1, $toprod2, $toprod3, $toprod4, $toprod5, $toprod6, $toprod7, $toprod8, $toprod9, $toprod10;
     public $cantpro, $totalcalculado, $sobregiro, $vpeso;
-    public $probc, $muesdesmaterial, $mostrar = "false", $mostrarm = "false";
+    public $probc, $muesdesmaterial, $mostrar = "false", $mostrarm = "false", $iddespacho;
 
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
@@ -94,15 +99,24 @@ class DespachoComponent extends Component
         }
     }
 
-    public function update($venta)    {
-        $datosc = Venta::find($venta);
+    public function update($venta){
+        
+
+        //VERIFICAR QUE SE DESCUENTA DEL INVENTARIO CUANDO SE CREA EL ABONO
+        $datosc = DespachoMaterial::find($venta);
+        $datosc->update([
+            'idestatusd' => 2
+        ]);
+
+        /* $datosc = Venta::find($venta);
         $datosc->update([
             'despachado' => 'SI',
-        ]);
+        ]); */
+
         $this->mostrar = "false"; $this->mostrarm = "false";
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Material Despachado!']);
-        $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Se actualizó el Inventário!']);
-        $this->reset(['cedulav', 'nombre', 'observacionesv', 'recepcionmaterial_id']);
+        //$this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Se actualizó el Inventário!']);
+        $this->reset(['cedulav', 'nombre', 'observacionesv', 'recepcionmaterial_id', 'iddespacho']);
     }
 
     public function traedesmaterial($id){
@@ -121,6 +135,7 @@ class DespachoComponent extends Component
         $this->reset(['compra', 'cedulav', 'nombre', 'idlugar', 'pesofull', 'pesovacio', 'pesoneto', 'pesocalculado', 'state', 'almacen_id', 'producto_id', 'cantidadprorecmat', "recepcionmaterial_id", 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', ]);
     }
 
+    /* public $despachos; */
     public function render()
     {
         $vendedores = Proveedores::all();
@@ -131,10 +146,14 @@ class DespachoComponent extends Component
         $este=$this->recepcion;
         $productosrecepcion=Detallealmacen::all()->where('recepcionmaterial_id', 
         $this->recepcionmaterial_id);
+        
+        $despachos = DespachoMaterial::all()->where('idestatusd', 1);
+        $productosabonos = AbonoMaterialNegociacionVentas::all();
+
+        $despachar = ConsultaDespachoAbonoMaterialVentas::where('despacho', $this->iddespacho)->get();
+       
         return view('livewire.despacho-component', [
                     'materiales'=>$materiales,
-            ], compact('vendedores', 'lugares', 'productos', 'recepcion', 'productosrecepcion'));
-        
-        //return view('livewire.despacho-component');
+            ], compact('vendedores', 'lugares', 'productos', 'recepcion', 'productosrecepcion', 'despachos', 'productosabonos', 'despachar'));
     }
 }

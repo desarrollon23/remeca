@@ -50,7 +50,7 @@ class CompradorComponent extends Component
     public $cantidadp1, $cantidadp2, $cantidadp3, $cantidadp4, $cantidadp5, $cantidadp6, $cantidadp7, $cantidadp8, $cantidadp9, $cantidadp10;
     public $precio1, $precio2, $precio3, $precio4, $precio5, $precio6, $precio7, $precio8, $precio9, $precio10;
     public $toprod1, $toprod2, $toprod3, $toprod4, $toprod5, $toprod6, $toprod7, $toprod8, $toprod9, $toprod10;
-    public $cantpro, $totalcalculado, $sobregiro, $vpeso;
+    public $cantpro, $totalcalculado, $sobregiro, $vpeso, $recepciones;
     public $probc, $muesdesmaterial, $mostrar = "false", $mostrarm = "false";
 
     use WithPagination;
@@ -141,7 +141,8 @@ class CompradorComponent extends Component
     public function calpreind($numero, $cantpro){
         (double)$this->totalcalculado=0;
         if(is_numeric($this->{"precio".$numero})){
-            (double)$this->{"toprod".$numero}=(double)$this->{"cantidadp".$numero} * (double)$this->{"precio".$numero};
+            /* (double)$this->{"toprod".$numero}=(double)$this->{"cantidadp".$numero} * (double)$this->{"precio".$numero}; */
+            (double)$this->{"toprod".$numero}=(double)session("cantidadp".$numero) * (double)$this->{"precio".$numero};
             for($i=1;$i<=$cantpro;$i++){
                 (double)$this->totalcalculado=(double)$this->totalcalculado+$this->{"toprod".$i};
             }
@@ -331,12 +332,14 @@ class CompradorComponent extends Component
         $lugares = Sucursal::all();
         $productos = Producto::all();
         $recepcion = Almacen::all()->where('recibido', 'NO');
+        $recepciones = Almacen::all()->where('facturado', 'NO');
+        //dd($recepciones->count());
         $materiales = Material::all();
         $este=$this->recepcion;
         $productosrecepcion=Detallealmacen::all()->where('recepcionmaterial_id', 
         $this->recepcionmaterial_id);
         return view('livewire.comprador-component', [
                     'materiales'=>$materiales,
-            ], compact('vendedores', 'lugares', 'productos', 'recepcion', 'productosrecepcion'));
+            ], compact('vendedores', 'lugares', 'productos', 'recepcion', 'productosrecepcion', 'recepciones'));
     }
 }

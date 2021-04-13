@@ -18,9 +18,12 @@ use App\Http\Livewire\Client;
 use App\Http\Controllers\Livewire\PurchaseController;
 use App\Http\Controllers\VentaController;
 use App\Http\Livewire\DespachoComponent;
+use App\Http\Livewire\DetalleNegociacionVenComponent;
 use App\Http\Livewire\NegociacionComponent;
 use App\Http\Livewire\VentaComponent;
 use App\Http\Livewire\VentasComponent;
+use App\Http\Livewire\AbonoVentaComponent;
+use App\Http\Livewire\InventarioComponent;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,6 +80,9 @@ Route::get('livewire/client', Client::class)->name('livewire.client');
 Route::get('livewire/productos', ProductosComponent::class)->name('livewire.productos');
 Route::get('livewire/almacen', AlmacenComponent::class)->name('livewire.almacen');
 Route::get('livewire/almacen/material-reception', MaterialReception::class)->name('almacen.material-reception');
+
+Route::get('livewire/almacen/inventario/{material}', [InventarioComponent::class, 'show'])->name('livewire.almacen.inventario');
+
 Route::put('livewire/almacen/material-reception{material}', [MaterialReception::class, 'updatematerial'])->name('almacen.material-reception.updatematerial');
 Route::delete('livewire/almacen/material-reception{material}', [MaterialReception::class, 'destroy'])->name('almacen.material-reception.destroy');
 Route::get('livewire/despacho-component', DespachoComponent::class)->name('livewire.despacho-component');
@@ -92,7 +98,19 @@ Route::put('livewire/purchases/edit', CompradorComponent::class)->name('livewire
 Route::delete('livewire/purchases/delete', CompradorComponent::class)->name('livewire.purchases.delete');
 
 Route::get('livewire/ventas/negociacion', NegociacionComponent::class)->name('livewire.ventas.negociacion');
+
+Route::get('livewire/ventas/detallenegociacion', [DetalleNegociacionVenComponent::class, 'show'])->name('livewire.ventas.detallenegociacion');
+
+Route::get('livewire/ventas/detallenegociacion/{cedula}', [DetalleNegociacionVenComponent::class, 'show'])->name('livewire.ventas.detallenegociacion');
+
+Route::get('livewire/{cedula}', [DetalleNegociacionVenComponent::class, 'show'])->name('livewire');
+
 Route::get('livewire/ventas/venta', VentaComponent::class)->name('livewire.ventas.venta');
+
+/* Route::get('livewire/ventas/abono/{id}', [VentaComponent::class, 'show'])->name('livewire.ventas.abono'); */
+/* Route::get('livewire/abono-venta-component', AbonoVentaComponent::class)->name('livewire.ventas.abono'); */
+
+
 Route::get('livewire/ventas/show', VentaComponent::class)->name('livewire.ventas.show');
 Route::put('livewire/ventas/edit', VentaComponent::class)->name('livewire.ventas.edit');
 Route::delete('livewire/ventas/delete', VentaComponent::class)->name('livewire.ventas.delete');

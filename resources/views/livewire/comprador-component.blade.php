@@ -5,9 +5,26 @@
       <div class="row aling: center" >
         <div class="col-lg-12 col-md-6 col-xs-6 mt-2">
           <div class="card">
-            <div class="card-header bg-danger" @php echo $fondoo; @endphp>
+            <div class="card-header bg-secondary
+" @php echo $fondoo; @endphp>
               <div style="display: flex; flex-wrap: wrap; margin-right: 2px;"><h3 class="card-title" style="color: #fff; text-shadow: 2px 2px 2px black; margin-right: 2px;"># de Almacen:</h3>
-              <input wire:model="recepcionmaterial_id" wire:keyup="busnumal" style="width: 200px; border-radius: 5px; background-color: white; border: 0px solid #dc3545; color: #dc3545; margin-right: 2px; padding-top: 0;" id="recepcionmaterial_id" class="form-control" type="number" name="recepcionmaterial_id" placeholder="Ingrese el Número">@error('recepcionmaterial_id')<p ass="text-x text-red-500 italic">{{$message}}</p>@enderror<h3 class="card-title" style="color: #fff; text-shadow: 2px 2px 2px black;">Fecha de Recepción: {{ $fecha }}</h3></div>
+              <input wire:model="recepcionmaterial_id" wire:keyup="busnumal" style="width: 200px; border-radius: 5px; background-color: white; border: 0px solid #dc3545; color: #dc3545; margin-right: 2px; padding-top: 0;" id="recepcionmaterial_id" class="form-control" type="number" name="recepcionmaterial_id" placeholder="Ingrese el Número">@error('recepcionmaterial_id')<p ass="text-x text-red-500 italic">{{$message}}</p>@enderror
+              
+
+              {{-- @php dd($recepciones->count()); @endphp
+              # de Almacen:
+                <select name="recepcionmaterial_id" wire:model="recepcionmaterial_id" 
+                wire:change="busnumal"
+                id="recepcionmaterial_id" class="form-control" style="text-transform: uppercase;">
+                  <option value="NULL" style="width: 100%" selected>(SELECCIONE)</option>
+                  @foreach ($recepciones as $facturar)
+                    <option value="{{$facturar->id}}">{{$facturar->id}}</option>
+                  @endforeach
+                </select>@error('recepcionmaterial_id')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror --}}
+
+
+              
+              <h3 class="card-title" style="color: #fff; text-shadow: 2px 2px 2px black;">Fecha de Recepción: {{ $fecha }}</h3></div>
             </div>
             <div class="card-body" style="display: flex; flex-wrap: wrap;">
               {{-- <div class="form-group"> --}}
@@ -35,7 +52,8 @@
         </div>{{-- Lista de Materiales a Pagar --}}
         <div class="col-lg-7 col-md-6 col-xs-6 mt-2">
           <div class="card">
-            <div class="card-header bg-danger" @php echo $fondoo; @endphp><h3 class="card-title" style="color: #fff; text-shadow: 2px 2px 2px black;"><label>Lista de Materiales</label></h3></div>
+            <div class="card-header bg-secondary
+" @php echo $fondoo; @endphp><h3 class="card-title" style="color: #fff; text-shadow: 2px 2px 2px black;"><label>Lista de Materiales</label></h3></div>
             <div class="card-body">
               {{-- <div class="d-flex justify-content-end mb-2">
                   <button x-bind:disabled="!open" wire:click.prevent="addNew" class="btn btn-primary"><i class="fa fa-plus-circle mr-1"></i> Agregar Material a la lista</button>
@@ -95,7 +113,8 @@
 /* echo '<input type="number" wire:model="cantidadp'.$loop->iteration.'" value="'.(double)$productorecepcion->cantidadprorecmat.'" '.$estilocalculos.'>'; */
 
 if ($productorecepcion->operacion=="SUMA") { //PERMITE MOSTRAR LOS INPUT
-  echo '<input type="number" wire:model="cantidadp'.$loop->iteration.'" wire:keyup="calpreind('.$loop->iteration.', '.$cantpro.')" '.$estilocalculosprecio.'>';
+  /* echo '<input type="number" wire:model="cantidadp'.$loop->iteration.'" wire:keyup="calpreind('.$loop->iteration.', '.$cantpro.')" '.$estilocalculosprecio.' value="'.$productorecepcion->cantidadprorecmat.'">'; */
+  session(['cantidadp'.$loop->iteration => $productorecepcion->cantidadprorecmat]);
 }
 
                           //echo '<input type="text" wire:model="cantidadp'.$loop->iteration.'" value="'. (double)$productorecepcion->cantidadprorecmat.'">';
@@ -147,7 +166,7 @@ echo '<input type="number" wire:model="precio'.$loop->iteration.'" wire:keyup="c
                       //echo (double)traematerialp($productorecepcion->producto_id);
 
         //NO BORRAR EL DE ABAJO, IMPRIME EL PRECIO DE LOS PRODUCTOS
-        //echo (double)$precio;
+        echo (double)$precio;
 
                       /* echo '<td><input style="width: 100px; border:0 font-weight: 900" type="text" id="precio['.$loop->iteration.']" value="'.isset($precio[$loop->iteration]).'" disabled/></td>'; }else{ echo "<td></td>"; */ }
                     @endphp</td>
@@ -174,7 +193,7 @@ if ($productorecepcion->operacion=="SUMA") {
                       //echo (double)$productorecepcion->cantidadprorecmat * (double)traematerialp($productorecepcion->producto_id);
                       
       //NO BORRAR EL DE ABAJO, IMPRIME EL TOTAL CALCULADO DE LOS PRODUCTOS
-      //echo (double)$productorecepcion->cantidadprorecmat * (double)$precio;
+      echo (double)$productorecepcion->cantidadprorecmat * (double)$precio;
                       
 
                     if ($productorecepcion->operacion=="SUMA") {
@@ -202,7 +221,8 @@ if ($productorecepcion->operacion=="SUMA") {
                   </td></tr>@endforeach</tbody>
                   <tfoot><tr><td colspan="2">
                     <label>TOTAL</label></td>
-                    <td><label><h1 style="font-weight:900; color:red" id="pesocalculado"><i class="fa fa-usd"></i>{{ $acumulado }}{{-- </h1><input style="border:0 font-weight: 900" wire:model="pesocalculado" type="hidden" id="pesocalculado" value="{{ $acumulado }}" disabled/> --}}</label></td><td></td><td></td>
+                    <td><label><h1 style="font-weight:900; color:red" id="pesocalculado"><i class="fa fa-usd"></i>{{ $acumulado }}
+                      {{-- </h1><input style="border:0 font-weight: 900" wire:model="pesocalculado" type="hidden" id="pesocalculado" value="{{ $acumulado }}" disabled/> --}}</label></td><td></td><td></td>
                     <td></td><td>{{-- <h1 style="font-weight:900; color:red" id="pesocalculado"><i class="fa fa-usd"></i>{{ $toprodacum }}</h1> --}}
 
 <input type="number" wire:model="totalcalculado" id="totalcalculado" name="totalcalculado" style="width: 110px; color:red; font-weight: 900; border: 0px;" disabled class="numeric"></td></tr>
@@ -229,7 +249,8 @@ if ($productorecepcion->operacion=="SUMA") {
         </div>{{-- Datos del pago --}}
         <div class="col-lg-5 col-md-6 col-xs-6 mt-2">
           <div class="card">
-            <div class="card-header bg-danger" @php echo $fondoo; @endphp>
+            <div class="card-header bg-secondary
+" @php echo $fondoo; @endphp>
               <h3 class="card-title" style="color: #fff; text-shadow: 2px 2px 2px black;"><label class="d-flex justify-content-center">Fecha de Pago: {{ date('d-m-Y') }} | Número de Pago {{ $compra }}
               </label></h3>
             </div>

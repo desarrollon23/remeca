@@ -18,7 +18,10 @@ class CreateDetalleNegociacionVentasTable extends Migration
             $table->unsignedBigInteger('negociacion_id');
             $table->unsignedBigInteger('producto_idn');
             $table->decimal('cantidadprorecmatn', $precision = 8, $scale = 2)->nullable($value = true);
-            $table->string('operacionn')->nullable($value = true);
+            $table->decimal('precionegn', $precision = 8, $scale = 2)->nullable($value = true);
+            $table->decimal('totalpronegn', $precision = 8, $scale = 2)->nullable($value = true);
+            $table->decimal('cantidadprorecmatndebe', $precision = 8, $scale = 2)->nullable($value = true);
+            /* $table->string('operacionn')->nullable($value = true); */
             $table->foreign('negociacion_id')->references('id')->on('negociacion_ventas')->ondelete('cascade');
             $table->timestamps();
         });

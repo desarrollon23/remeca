@@ -9,5 +9,5 @@ class DetalleNegociacionVenta extends Model
 {
     public $table = "detalle_negociacion_ventas";
     use HasFactory;
-    protected $fillable = ['id', 'negociacion_id', 'producto_idn', 'cantidadprorecmatn', 'precionegn', 'totalpronegn'];
+    protected $fillable = ['id', 'negociacion_id', 'producto_idn', 'cantidadprorecmatn', 'precionegn', 'totalpronegn', 'cantidadprorecmatndebe'];
 }
