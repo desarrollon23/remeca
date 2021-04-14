@@ -94,7 +94,9 @@
                         </select>@error('negociacion_id')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</div>
                     @endif
 
-                    @php if($idtipopagov==4){ $negociacionescredito=$this->busnegccredito($cedulav); } @endphp
+                    @php 
+                    /* dd($negociacionescredito=$this->busnegccredito('V22222222')); */
+                    if($idtipopagov==4){ $negociacionescredito=$this->busnegccredito($cedulav); } @endphp
                     @if($idtipopagov==4)
                       <div style="width: 49%; margin-right: 2px;"><label for="negociacion_id" style="width: 100%; margin-right: 2px;">Negociación</label>
                         <select name="negociacion_id" wire:model="negociacion_id" id="negociacion_id" style="width: 100%; text-transform: uppercase;">
@@ -121,8 +123,11 @@
                       @if($mostrarabono=='true')
                       <div style="width: 49%; margin-right: 2px;">
                         <button x-show="{{ $mostrar }}" wire:click="defaultabono" class="btn btn-secondary mb-1 mr-2"><i class="fa fa-times mr-1"></i> CANCELAR</button></div>
-                      <div style="width: 49%; margin-right: 2px;">
-                        <button x-show="{{ $mostrar }}" wire:click="generardespacho" class="btn btn-primary mb-1"><i class="fa fa-save mr-1"></i> GUARDAR</button></div>
+
+                        @if($idtipopagov==3)
+                          <div style="width: 49%; margin-right: 2px;">
+                            <button x-show="{{ $mostrar }}" wire:click="generardespacho" class="btn btn-primary mb-1"><i class="fa fa-save mr-1"></i> GUARDAR</button></div>
+                        @endif
                       @endif
                     </div>
                 </div>
@@ -315,7 +320,7 @@
                     {{-- <th scope="col">CANTIDAD</th><th scope="col"></th> --}}
                     <th scope="col">ABONO</th>{{-- <th scope="col"></th>
                     <th scope="col">RESTA</th> --}}
-                    <th scope="col"></th>
+                    {{-- <th scope="col"></th> --}}
                   </tr></thead><tbody>
                     @php //dd($productosabonados->where('negociacion_id',$this->negociacion_id));
                     $productosabonados=$productosabonados->where('negociacion',$negociacion_id);
@@ -338,7 +343,10 @@
                       <td>{{ $formatter->formatCurrency($productoabonado->abono, ''), PHP_EOL }}</td>
                       {{-- <td><a><i class="color danger fas fa-equals text-success"></i></a></td>
                       <td>{{ $productoabonado->cantidad-$productoabonado->cantidadprov }}</td> --}}
-                      <td><a href="" wire:click.prevent="destroyabonomaterial({{ $productoabonado->id }})"><i class="fa fa-trash text-danger"></i></a></td>
+
+                      {{-- EL BOTON DE ABAJO ESTÁ BUENO NO BORRA --}}
+
+                      {{-- <td><a href="" wire:click.prevent="destroyabonomaterial({{ $productoabonado->id }})"><i class="fa fa-trash text-danger"></i></a></td> --}}
                     </tr>
                   @endforeach</tbody>
                     <tfoot><tr><td></td></tr>
@@ -360,7 +368,10 @@
                   <div class="card-body" style="/* background-color: #9FA5AA; */ display: flex; flex-wrap: wrap; margin-right: 2px;">
                     <div style="width: 100%; display: flex; flex-wrap: wrap; margin-right: 2px;">
                           {{-- <div x-show="{{ $mostrarm }}" style="width: 19%; margin-right: 2px;"> --}}
-
+                
+                @if($negociacion_id!=0)
+                
+                    @if($amortizacionesdepago->where('negociacion',$negociacion_id)->pluck('resta')[0]!=0)
                           <table class="table table-striped"><thead><tr>
                             <tr><td><label>DEBE</label></td>
                               <td><label for="idtipopagov" style="width: 100%; margin-right: 2px;">{{-- Tipo --}}</label></td><td></td>
@@ -370,17 +381,17 @@
                               <td><label>Resta</label></td>
                             </tr><tr>
                               <td><h1 style="font-weight:900; color:red">
-                                @php dd($amortizacionesdepago->where('negociacion',$negociacion_id)->pluck('resta')[0]); @endphp
+                                {{-- @php dd($amortizacionesdepago); @endphp --}}
                                 {{ $formatter->formatCurrency($amortizacionesdepago->where('negociacion',$negociacion_id)->pluck('resta')[0], ''), PHP_EOL }}</h1></td>
                                 {{-- {{ $formatter->formatCurrency($restapagoneg, ''), PHP_EOL }} --}}
                                 <td><a><i class="color danger fas fa-minus text-success"></i></a></td>
                                 <td><h1 style="color: #28A745;"><strong>(</strong></h1></td>
                               <td>
-                                <input x-bind:disabled="!{{ $mostrar }}" type="number" wire:model="pagoefectivoneg" id="pagoefectivoneg" name="pagoefectivoneg" aria-describedby="pagoefectivoneg" placeholder="Efectivo" wire:keyup="calrestaneg({{$amortizacionesdepago->where('negociacion',$negociacion_id)->pluck('resta')}})" size="9" maxlength="9" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%; border-color: white white green white; font-weight:900; color:red; padding-top: 0px;">
+                                <input x-bind:disabled="!{{ $mostrar }}" type="text" wire:model="pagoefectivoneg" id="pagoefectivoneg" name="pagoefectivoneg" aria-describedby="pagoefectivoneg" placeholder="Ingresar" wire:keyup="calrestaneg({{$amortizacionesdepago->where('negociacion',$negociacion_id)->pluck('resta')}})" size="9" maxlength="9" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%; border-color: white white green white; font-weight:900; color:red; padding-top: 0px;">
                               </td>
                               <td><a><i class="color danger fas fa-plus text-success"></i></a></td>
                               <td>
-                                <input x-bind:disabled="!{{ $mostrar }}" type="number" wire:model="pagotransfneg" id="pagotransfneg" name="pagotransfneg" aria-describedby="pagotransfneg" placeholder="Transferencia" wire:keyup="calrestaneg({{$amortizacionesdepago->where('negociacion',$negociacion_id)->pluck('resta')}})" size="9" maxlength="9" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%;border-color: white white green white; font-weight:900; color:red; padding-top: 0px;">
+                                <input x-bind:disabled="!{{ $mostrar }}" type="text" wire:model="pagotransfneg" id="pagotransfneg" name="pagotransfneg" aria-describedby="pagotransfneg" placeholder="Ingresar" wire:keyup="calrestaneg({{$amortizacionesdepago->where('negociacion',$negociacion_id)->pluck('resta')}})" size="9" maxlength="9" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%;border-color: white white green white; font-weight:900; color:red; padding-top: 0px;">
                               </td>
                               <td><h1 style="color: #28A745;"><strong>)</strong></h1></td>
                               {{-- <td><a><i class="color danger fas fa-equals text-success"></i></a></td> --}}
@@ -392,19 +403,19 @@
                             <tr><td></td>
                               <td colspan=8><h1 style="font-weight:900; color:red">{{ $validamontotn }}</h1></td>
                               <td colspan=2><label for="" style="width: 100%; margin-right: 2px;" class="align-self-baseline">
-                                <button {{-- x-show="{{ $mostrar }}" wire:click="storem" --}} class="btn btn-primary mt-4">Agregar</button>
+                                <button x-show="{{ $ocultarboton }}" wire:click="guardaramortizacion" class="btn btn-primary mt-4">Agregar</button>
                               </label></td>
                               {{-- <td colspan="2"><h1 style="font-weight:900; color:red">{{ $formatter->formatCurrency($restapagoneg, ''), PHP_EOL }}</h1></td> --}}
                             </tr>
                           </table>
+                      @endif
                         {{-- </div> --}}
                         <div style="width: 100%; display: flex; flex-wrap: wrap; margin-right: 2px;">
-        {{-- @php dd($negociacion_id); @endphp --}}
-        {{-- $negociacionescredito=$this->busnegccredito($cedulav); --}}
-              @if ($amortizacionesdepago->where('negociacion',$negociacion_id)->count())
+                        {{-- @php dd($negociacion_id); @endphp --}}
+                        {{-- $negociacionescredito=$this->busnegccredito($cedulav); --}}
+                    @if ($amortizacionesdepago->where('negociacion',$negociacion_id)->count())
                             <label style="text-align: center; color: #17a2b8; ">AMORTIZACIONES DE PAGO</label>
                             <table class="table table-striped"><thead><tr>
-                              <th scope="col">#</th>
                               <th scope="col" colspan="2">FECHA</th>
                               <th scope="col">EFECTIVO</th>
                               <th scope="col">TRANSFERENCIA</th>
@@ -412,7 +423,7 @@
                               <th scope="col">RESTA</th>
                               </tr></thead><tbody>
                               @foreach ($amortizacionesdepago->where('negociacion',$negociacion_id) as $amortizaciondepago)
-                                <tr><td scope="row">{{ $loop->iteration }}</td>
+                                {{-- <tr><td scope="row">{{ $loop->iteration }}</td> --}}
                                   <td colspan="2">{{ $amortizaciondepago->fecha }}</td>
                                   <td>{{ $formatter->formatCurrency($amortizaciondepago->efectivo, ''), PHP_EOL }}</td>
                                   <td>{{ $formatter->formatCurrency($amortizaciondepago->transferencia, ''), PHP_EOL }}</td>
@@ -421,8 +432,9 @@
                                 </tr>
                               @endforeach</tbody>
                             </table>
-              @else <h1 style="font-weight:900;">{{ 'No tiene Amortizaciones de Pago'}}</h1>
-              @endif
+                    @else <h1 style="font-weight:900;">{{ 'No tiene Amortizaciones de Pago'}}</h1>
+                    @endif
+                @endif
   @endif
 
               </div>

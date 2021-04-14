@@ -53,7 +53,7 @@ div.detalle.show { display: block !important; }
                             </div></div>
                           <div class="card-body" style="display: flex; flex-wrap: wrap; margin-right: 2px;">
                             <div><label style="width: 100%; margin-right: 2px;">Factura: {{
-                            $amortizacionesdepago->where('negociacion',$negociacion->id)->pluck('factura') }}</label></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            $amortizacionesdepago->where('negociacion',$negociacion->id)->pluck('factura')[0] }}</label></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <div><label style="width: 100%; margin-right: 2px;">Observaciones: {{ $negociacion->observaciones }}</label></div>
                           </div>
                           <table class="table table-striped"><thead><tr>
@@ -90,7 +90,7 @@ div.detalle.show { display: block !important; }
                             @if ($amortizacionesdepago->where('negociacion',$negociacion->id)->count())
                               <label style="text-align: center; color: #17a2b8; ">AMORTIZACIONES DE PAGO</label>
                               <table class="table table-striped"><thead><tr>
-                                <th scope="col">#</th>
+                                {{-- <th scope="col">#</th> --}}
                                 <th scope="col">FECHA</th>
                                 <th scope="col">EFECTIVO</th>
                                 <th scope="col">TRANSFERENCIA</th>
@@ -98,7 +98,7 @@ div.detalle.show { display: block !important; }
                                 <th scope="col">RESTA</th>
                                 </tr></thead><tbody>
                                 @foreach ($amortizacionesdepago->where('negociacion',$negociacion->id) as $amortizaciondepago)
-                                  <tr><td scope="row">{{ $loop->iteration }}</td>
+                                  <tr>{{-- <td scope="row">{{ $loop->iteration }}</td> --}}
                                     <td>{{ $amortizaciondepago->fecha }}</td>
                                     <td>{{ $formatter->formatCurrency($amortizaciondepago->efectivo, ''), PHP_EOL }}</td>
                                     <td>{{ $formatter->formatCurrency($amortizaciondepago->transferencia, ''), PHP_EOL }}</td>

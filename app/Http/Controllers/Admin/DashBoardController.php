@@ -10,6 +10,7 @@ use App\Models\NegociacionVenta;
 use App\Models\Producto;
 use App\Models\Venta;
 use App\Models\Liquidez;
+use App\Models\DespachoMaterial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -33,7 +34,10 @@ class DashBoardController extends Controller
         //$emd = Almacen::count(); 'recibido' => 'NO'
         $emd = Almacen::where('fecha', date('d-m-Y'))
                         ->where('recibido', 'SI')->get();
-        $dmd = Venta::where('despachado', 'NO')->get();
+
+        /* $despachos = DespachoMaterial::all()->where('idestatusd', 1);
+        $dmd = Venta::where('despachado', 'NO')->get(); */
+        $dmd = DespachoMaterial::all()->where('idestatusd', 1);
 
         $inventarios = Producto::all();
         $ccpp = Compra::join("proveedores","_ccompras.cedula","=","proveedores.cedula")

@@ -45,7 +45,7 @@
             <div class="small-box bg-success">
               <div class="inner">
                 <h3 style="color: #fff; text-shadow: 2px 2px 2px black;">{{ $dmd->count() }}<sup style="font-size: 20px"></sup></h3>
-                <p style="text-shadow: 2px 2px 2px black;">Despacho de Material</p>
+                <p style="text-shadow: 2px 2px 2px black;">Entrega de Material</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
