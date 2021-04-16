@@ -541,14 +541,12 @@ class VentaComponent extends Component
                 'cantidadpron' => (double)$this->cantidadprov,
                 /* 'despachado' => $despacho->id */
             ]);
-
+            
             $datosc = DetalleNegociacionVenta::where('negociacion_id', $this->negociacion_id)
                                 ->where('producto_idn', $this->idproductov)->get()->pluck('cantidadprorecmatndebe');
             $debe = (double)$datosc[0]-(double)$this->cantidadprov;
-
             $datosc = DetalleNegociacionVenta::where('negociacion_id', $this->negociacion_id)
                                 ->where('producto_idn', $this->idproductov)->get();
-            
             $datosc[0]->update([
                 'cantidadprorecmatndebe' => (double)$debe
             ]);
