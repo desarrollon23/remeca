@@ -120,17 +120,24 @@
               </div>
               <div class="card-body">
                 @if ($inventarios->count())
+                <div style="width: 100%; margin-right: 2px;">
                 <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
-                    <th scope="col">#</th>
+                    {{-- <th scope="col">#</th> --}}
                     <th scope="col">Material</th>
                     <th scope="col">KG</th>
-                    <th scope="col"></th>
+                    <th scope="col">P/C</th>
+                    <th scope="col">P/P</th>
                   </tr></thead><tbody>
                   @foreach ($inventarios as $inventario)<tr class="hover:bg-green-200">
-                    <td scope="row" class="px-1 py-1">{{$loop->iteration}}</td>
+                    {{-- <td scope="row" class="px-1 py-1">{{$loop->iteration}}</td> --}}
                     <td class="px-1 py-1">{{$inventario->descripcion}}</td>
                     <td class="px-1 py-1">{{$formatter->formatCurrency($inventario->cantidad, ''), PHP_EOL}}</td>
+                    <td class="px-1 py-1">{{$formatter->formatCurrency($inventario->cobrar, ''), PHP_EOL}}</td>
                     <td class="px-1 py-1">
+              {{-- @php dd($materialcpp->where('idproducto', $inventario->id)->pluck('cpp')[0]); @endphp --}}
+                      {{$formatter->formatCurrency($materialcpp->where('idproducto', $inventario->id)->pluck('cpp')[0], ''), PHP_EOL}}
+                      {{-- {{$formatter->formatCurrency($inventario->pagar, ''), PHP_EOL}} --}}
+                    </td><td>
                       <a href="{{ route('livewire.almacen.inventario', $inventario->id) }}"><i class="fa fa-edit mr-2"></i></a>
                       {{-- <a href="" wire:click.prevent="{ {-- confirmUserRemoval({{ $producto->id } }) --} }destroy({ { $producto->id } })"><i class="fa fa-trash text-danger"></i></a> --}}
                     </td></tr>
@@ -139,6 +146,7 @@
                 @else
                     {{ 'No tiene Materiales en Inventario' }}
                 @endif
+              </div>
               </div>
             </div>
           </div>

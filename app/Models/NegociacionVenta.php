@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class NegociacionVenta extends Model
 {
-    public $table = 'negociacion_ventas';
     use HasFactory;
-    protected $fillable = ['id', 'fechan', 'cedulan', 'idlugarn', 'idtipopagon', 'idtipoabonon', 'observaciones', 'montotn', 'totalpagado', 'pesotn', 'restan', 'finalizada', 'amortizando'];
+    public $table = 'negociacion_ventas';
+    protected $fillable = ['id', 'fechan', 'horan', 'cedulan', 'idlugarn', 'idtipopagon', 'idtipoabonon', 'observaciones', 'montotn', 'efectivo', 'transferencia', 'totalpagado', 'pesotn', 'restan', 'finalizada', 'amortizando'];
+
     //Relacion uno a muchos inversa con Proveedores y Productos
     public function Clientes(){
         return $this->belongsTo(Clientes::class);

@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\almacen;
 use App\Models\Compra;
 use App\Models\ConsultaNegVenMontoPorCobrar;
+use App\Models\CuentasMaterial;
 use App\Models\NegociacionVenta;
 use App\Models\Producto;
 use App\Models\Venta;
 use App\Models\Liquidez;
 use App\Models\DespachoMaterial;
+use App\Models\DetalleNegociacionVenta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -40,6 +42,9 @@ class DashBoardController extends Controller
         $dmd = DespachoMaterial::all()->where('idestatusd', 1);
 
         $inventarios = Producto::all();
+        /* $materialcpp = DetalleNegociacionVenta::all(); */
+        $materialcpp = CuentasMaterial::all();
+        
         $ccpp = Compra::join("proveedores","_ccompras.cedula","=","proveedores.cedula")
                         ->where('_ccompras.idestatuspago','=',2) // 2 = POR PAGAR
                         ->get();
@@ -49,6 +54,6 @@ class DashBoardController extends Controller
         $banco = Liquidez::where('id', 1)->get()->pluck('banco');
         /* dd($efectivo[0]); */
         /* $efectivo; */
-        return view('admin.dashboard', compact(['emd', 'dmd' ,'inventarios', 'ccpp', 'ccpc', 'efectivo', 'banco']));
+        return view('admin.dashboard', compact(['emd', 'dmd' ,'inventarios', 'materialcpp', 'ccpp', 'ccpc', 'efectivo', 'banco']));
     }
 }

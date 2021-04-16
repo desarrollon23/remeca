@@ -101,8 +101,8 @@
                       <div style="width: 49%; margin-right: 2px;"><label for="negociacion_id" style="width: 100%; margin-right: 2px;">Negociación</label>
                         <select name="negociacion_id" wire:model="negociacion_id" id="negociacion_id" style="width: 100%; text-transform: uppercase;">
                           <option value="NULL" style="width: 100%;" selected>(SELECCIONE)</option>
-                          @foreach ($negociacionescredito as $negociacion)
-                            <option value="{{$negociacion->id}}" style="width: 100%;">{{$negociacion->id." (Fecha: ".$negociacion->fechan.")"}}</option>
+                          @foreach ($negociacionescredito as $negociacion)                         
+                            <option value="{{$negociacion->idnegociacionventa}}" style="width: 100%;">{{$negociacion->id." (Fecha: ".$negociacion->fecha.")"}}</option>
                           @endforeach
                         </select>@error('negociacion_id')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</div>
                     @endif
@@ -114,7 +114,13 @@
                       <div style="width: 49%; margin-right: 2px;">
                         <button x-show="{{ $mostrar }}" wire:click="default({{ $recepcionmaterial_id }})" class="btn btn-secondary mb-1 mr-2"><i class="fa fa-times mr-1"></i> CANCELAR</button></div>
                       <div style="width: 49%; margin-right: 2px;">
-                        <button x-show="{{ $mostrar }}" wire:click="update({{ $recepcionmaterial_id.','.$acumulado }})" class="btn btn-primary mb-1"><i class="fa fa-save mr-1"></i> GUARDAR</button></div>
+
+                        @if($ocultarbotonven=='true')
+                        <button x-show="{{ $mostrar }}" wire:click="update({{ $recepcionmaterial_id.','.$acumulado }})" class="btn btn-primary mb-1"><i class="fa fa-save mr-1"></i> GUARDAR</button>
+                        @endif 
+
+                        </div>
+
                       @endif
                       <div style="width: 49%; margin-right: 2px;">
                         <button x-show="!{{ $mostrar }}" wire:click="generar" class="btn btn-primary mb-1"><i class="fa fa-save mr-1"></i> VENDER</button></div>
@@ -252,8 +258,42 @@
                       <td><h1 style="font-weight:900; color:red">{{ (double)$acumulado }}
                       </h1></td><td>{{-- {{ (double)session('pfn') }} --}}</td></tr>
                       <tr><td></td></tr>
+                
+                      @if($mostrarpagoventa=='true')
+                      <tr><td><label>FACTURACION</label></td>
+                        <td><label for="idtipopagov" style="width: 100%; margin-right: 2px;">{{-- Tipo --}}</label></td>
+
+                        <td><label for="precioprov" style="width: 100%; margin-right: 2px;">Efectivo</label></td><td></td>
+                        <td><label for="precioprov" style="width: 100%; margin-right: 2px;">Transferencia</label></td><td></td><td></td>
+                      </tr>
+
+                      <tr><td><label></label></td>
+                        <td></td>
+
+                        <td>
+                          <input x-bind:disabled="!{{ $mostrar }}" type="number" wire:model="pagoefectivoven" id="pagoefectivoven" name="pagoefectivoven" aria-describedby="pagoefectivoven" placeholder="Efectivo" wire:keyup="calrestaven({{$acumulado}})" size="9" maxlength="9" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%;">
+                        </td>
+                        <td><a><i class="color danger fas fa-plus text-success"></i></a></td>
+                        <td>{{-- session(['totalacumulado' => $acumulado]); --}}
+                          <input x-bind:disabled="!{{ $mostrar }}" type="number" wire:model="pagotransfven" id="pagotransfven" name="pagotransfven" aria-describedby="pagotransfven" placeholder="Transferencia" wire:keyup="calrestaven({{$acumulado}})" size="9" maxlength="9" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%;">
+                        </td>
+                        <td><a><i class="color danger fas fa-equals text-success"></i></a></td>
+                        <td><h1 style="font-weight:900; color:red">{{ $formatter->formatCurrency(round($totalpagoven,2), ''), PHP_EOL }}</h1></td>
+                      </tr>
+
+                      <tr><td></td>
+                        <td colspan=3><h1 style="font-weight:900; color:red">{{ $validamontotv }}</h1></td>
+                        <td><label>Resta</label></td>
+                        <td colspan="2"><h1 style="font-weight:900; color:red">{{ $formatter->formatCurrency($restapagoven, ''), PHP_EOL }}</h1></td>
+                      </tr>
+                    @endif
+
+
                     </tfoot>
                 </table>
+
+
+
               </div>
             </div>
       @endif
@@ -427,7 +467,7 @@
                                   <td colspan="2">{{ $amortizaciondepago->fecha }}</td>
                                   <td>{{ $formatter->formatCurrency($amortizaciondepago->efectivo, ''), PHP_EOL }}</td>
                                   <td>{{ $formatter->formatCurrency($amortizaciondepago->transferencia, ''), PHP_EOL }}</td>
-                                  <td>{{ $formatter->formatCurrency($amortizaciondepago->total, ''), PHP_EOL }}</td>
+                                  <td>{{ $formatter->formatCurrency($amortizaciondepago->pago, ''), PHP_EOL }}</td>
                                   <td>{{ $formatter->formatCurrency($amortizaciondepago->resta, ''), PHP_EOL }}</td>
                                 </tr>
                               @endforeach</tbody>

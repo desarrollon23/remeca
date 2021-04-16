@@ -52,8 +52,11 @@ div.detalle.show { display: block !important; }
                             </h3>
                             </div></div>
                           <div class="card-body" style="display: flex; flex-wrap: wrap; margin-right: 2px;">
-                            <div><label style="width: 100%; margin-right: 2px;">Factura: {{
-                            $amortizacionesdepago->where('negociacion',$negociacion->id)->pluck('factura')[0] }}</label></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div><label style="width: 100%; margin-right: 2px;">Factura: 
+                              @if($amortizacionesdepago->count())
+                            {{ $amortizacionesdepago->where('negociacion',$negociacion->id)->pluck('factura')[0] }}
+                            @endif
+                            </label></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <div><label style="width: 100%; margin-right: 2px;">Observaciones: {{ $negociacion->observaciones }}</label></div>
                           </div>
                           <table class="table table-striped"><thead><tr>
@@ -91,7 +94,7 @@ div.detalle.show { display: block !important; }
                               <label style="text-align: center; color: #17a2b8; ">AMORTIZACIONES DE PAGO</label>
                               <table class="table table-striped"><thead><tr>
                                 {{-- <th scope="col">#</th> --}}
-                                <th scope="col">FECHA</th>
+                                <th scope="col">FECHA - HORA</th>
                                 <th scope="col">EFECTIVO</th>
                                 <th scope="col">TRANSFERENCIA</th>
                                 <th scope="col">TOTAL</th>
@@ -99,7 +102,7 @@ div.detalle.show { display: block !important; }
                                 </tr></thead><tbody>
                                 @foreach ($amortizacionesdepago->where('negociacion',$negociacion->id) as $amortizaciondepago)
                                   <tr>{{-- <td scope="row">{{ $loop->iteration }}</td> --}}
-                                    <td>{{ $amortizaciondepago->fecha }}</td>
+                                    <td>{{ $amortizaciondepago->fecha.' '.$amortizaciondepago->hora }}</td>
                                     <td>{{ $formatter->formatCurrency($amortizaciondepago->efectivo, ''), PHP_EOL }}</td>
                                     <td>{{ $formatter->formatCurrency($amortizaciondepago->transferencia, ''), PHP_EOL }}</td>
                                     <td>{{ $formatter->formatCurrency($amortizaciondepago->total, ''), PHP_EOL }}</td>

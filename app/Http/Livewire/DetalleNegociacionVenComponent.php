@@ -24,7 +24,6 @@ class DetalleNegociacionVenComponent extends Component
             ->get();
         $productosabonados=ConsultaAbonoNegociacionVenta::all();
         $amortizacionesdepago=ConsultaAmortizacionNegociacionVenta::all();
-
         return view('livewire.ventas.detallenegociacion', 
                 compact('totalnegov', 'negociaciones', 'productosrecepcion', 'productosabonados', 'amortizacionesdepago'));
     }

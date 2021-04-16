@@ -25,6 +25,9 @@ use App\Models\ConsultaAbonoNegociacionVenta;
 use App\Models\ConsultaAmortizacionNegociacionVenta;
 use App\Models\AbonoMaterialNegociacionVentas;
 use App\Models\PagoNegociacionVenta;
+use App\Models\Liquidez;
+use App\Models\CuentasPorCobrarVentas;
+use App\Models\DetalleCuentasPorCobrarVentas;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 //use Illuminate\Http\Request;
@@ -69,8 +72,10 @@ class VentaComponent extends Component
     public $vclose, $vpeso = "false", $pesoi;
     public $ptg, $ptf, $pmm;
     public $editm_id, $traesuma='NO', $mostrarnegociacion='false', $cantidades;
-    public $pesoabonarv, $mabonar='true', $mostrarabono='false';
+    public $pesoabonarv, $mabonar='true', $mostrarabono='false', $mostrarpagoventa='false';
     public $negociacion;
+
+    public $totalpagoven, $restapagoven, $pagoefectivoven, $pagotransfven, $restaven, $ocultarbotonven='false', $validamontotv;
 
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
@@ -131,6 +136,10 @@ class VentaComponent extends Component
                 'precioprov' => (double)$this->precioprov,
                 'totalprov' => (double)$this->totalprov
             ]);
+            $this->mostrarpagoventa='true';
+            if($this->idtipopagov==2){
+                $this->ocultarbotonven="true";
+            }
             $this->reset([/* 'negociacion_id', 'producto_idn', 'cantidadprorecmatn', 'precionegn', */ 'totalpronegn']);
             $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material agregado correctamente!']);
         }
@@ -193,8 +202,12 @@ class VentaComponent extends Component
     public function busnegccredito($cedula){ //BUSCA LAS NEGOCIACIONES DE LOS PROVEEDORES
         /* dd($idtipopagov);
         if($idtipopagov==3){ */
-            $negociacionescredito=NegociacionVenta::where('cedulan', $cedula)
-            ->where('idtipopagon', 2)             ->where('finalizada','NO')->get();
+            /* $negociacionescredito=NegociacionVenta::where('cedulan', $cedula)
+            ->where('idtipopagon', 2)             ->where('finalizada','NO')->get(); */
+
+            $negociacionescredito= CuentasPorCobrarVentas::where('cedula', $cedula)
+                ->where('finalizada','NO')->get();
+
             //$this->negociaciones=$negociacionescli;
             //dd($negociacionescredito);
             return $negociacionescredito;
@@ -215,7 +228,7 @@ class VentaComponent extends Component
     public function generar(){ //AQUÍ SE GUARDA LA RECEPCION DESPUES SE GUARDAN LOS MATERIALES       
         //$nrm = Venta::count();
         $nrm = Venta::latest('id')->first();
-        if($nrm->id==0){ $nrm = 1; }else{ $nrm = ++$nrm->id; }
+        if($nrm==null or $nrm->id==0){ $nrm = 1; }else{ $nrm = ++$nrm->id; }
         if($this->idtipopagov==1){ $this->idestatuspagov=1; }else{ $this->idestatuspagov=2; }
         $datos = Venta::create([
             'id' => $nrm,           
@@ -235,26 +248,75 @@ class VentaComponent extends Component
         $this->dispatchBrowserEvent('hide-form', ['message' => 'Negociación Generada']);
     }
 
+    public $actefectivo, $acttransferencia, $iddespacho;
     public function update($venta, $totalcalculado)    {
+        /* dd(
+            ' - fechaventa '.date('d-m-Y').
+            ' - horaventa '.date("H:i:s").
+            ' - cedulav '.$this->cedulav.
+            ' - idlugarv '.$this->idlugarv.
+            ' - idestatuspagov '.$this->idestatuspagov.
+            ' - idtipopagov '.$this->idtipopagov.
+            ' - placav '.$this->placav.
+            ' - totalcomrav '.(double)session('totalacumulado').
+            ' - totalpagadov '.(double)$this->totalpagoven.
+            ' - diferenciapagov '.(double)$this->restapagoven.
+            ' - observacionesv '.$this->observaciones
+        ); */
+        /* $liquidez = Liquidez::find(1);
+        $actefectivo=(double)$liquidez->efectivo+(double)$this->pagoefectivoven;
+        $acttransferencia=(double)$liquidez->banco+(double)$this->pagotransfven;
+        dd(
+            ' $actefectivo='.(double)$actefectivo.
+            ' - acttransferencia='.(double)$acttransferencia
+        ); */
         if($this->idtipopagov==1){ $this->idestatuspagov=1; }else{ $this->idestatuspagov=2; }
         /* $this->cantidadprov=0; $this->precioprov=0; */
         $this->validate();
-        $datosc = Venta::find($venta);
+        
         /* if($this->idtipopagov!=3){ */
-        /* $datosc->update([
+        
+        //GENERAR DESPACHO
+        DespachoMaterial::create([
+            'fechaventad'=> date('d-m-Y'),
+            'horaventad' => date("H:i:s"),
+            'idestatusd' => 1
+        ]);
+        $iddespacho = DespachoMaterial::latest('id')->first();
+        if($this->pagoefectivoven>0){ $idtipoabonoven=1; }
+        if($this->pagotransfven>0){ $idtipoabonoven=2; }
+        if($this->pagotransfven>0 and $this->pagoefectivoven>0){ $idtipoabonoven=3; }
+        if($this->pagotransfven=="" and $this->pagoefectivoven==""){ $idtipoabonoven=0; }
+        if($this->idtipopagov==2){ $this->restapagoven = (double)session('totalacumulado'); }
+        $datosc = Venta::find($venta);
+        $datosc->update([
             'fechaventa' => date('d-m-Y'),
             'horaventa' => date("H:i:s"),
             'cedulav' => $this->cedulav,
             'idlugarv' => $this->idlugarv,
-            'idestatuspagov' => $this->idestatuspagov;
+            'idestatuspagov' => $this->idestatuspagov,
             'idtipopagov' => $this->idtipopagov,
-            'idtipoabonov' => ,
+            'efectivo' => (double)$this->pagoefectivoven,
+            'transferencia' => (double)$this->pagotransfven,
+            'idtipoabonov' => $idtipoabonoven,
             'placav' => $this->placav,
             'totalcomrav' => (double)session('totalacumulado'),
-            'totalpagadov' => ,
-            'diferenciapagov' => ,
-            'observacionesv' => $this->observacionesv
-        ]); */
+            'totalpagadov' => (double)$this->totalpagoven,
+            'diferenciapagov' => (double)$this->restapagoven,
+            'observacionesv' => $this->observacionesv,
+            'iddespacho' => $iddespacho
+        ]);
+
+        /* $actefectivo, $acttransferencia; */
+
+        $liquidez = Liquidez::find(1);
+        $this->actefectivo=(double)$liquidez->efectivo+(double)$this->pagoefectivoven;
+        $this->acttransferencia=(double)$liquidez->banco+(double)$this->pagotransfven;
+        $liquidez->update([
+            'efectivo' => (double)$this->actefectivo,
+            'banco' => (double)$this->acttransferencia
+        ]);
+
         $productosventa=DetalleVenta::all()->where('idventa',$venta);
         foreach ($productosventa as $productoventa){
             //guardar la compra en el inventario
@@ -276,16 +338,11 @@ class VentaComponent extends Component
                 'cantidad' => (double)$nexistencia
             ]);
         }
-        //GENERAR DESPACHO
-        DespachoMaterial::create([
-            'fechaventad'=> date('d-m-Y'),
-            'horaventad' => date("H:i:s"),
-            'idestatusd' => 1
-        ]);
-        $this->mostrar = "false"; $this->mostrarm = "false";
+        $this->mostrar = "false"; $this->mostrarm = "false"; $this->mostrarpagoventa='false'; $this->mostrarbotonpagoventa='false';
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Venta de Material Realizada!']);
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Se actualizó el Inventário!']);
-        $this->reset(['fechaventa', 'cedulav', 'nombre', 'idlugarv', 'idestatuspagov', 'idtipopagov', 'placav', 'observaciones', 'idventa', 'idproductov', 'cantidadprov', 'precioprov', 'recepcionmaterial_id', 'messages', 'totalacumulado', 'venta']); 
+        session(['totalacumulado' => 0]);
+        $this->reset(['fechaventa', 'cedulav', 'nombre', 'idlugarv', 'idestatuspagov', 'idtipopagov', 'placav', 'observaciones', 'idventa', 'idproductov', 'cantidadprov', 'precioprov', 'recepcionmaterial_id', 'messages', 'totalacumulado', 'venta', 'totalpagoven', 'restapagoven', 'pagoefectivoven', 'pagotransfven', 'restaven', 'ocultarbotonven', 'validamontotv', 'actefectivo', 'acttransferencia', 'iddespacho']); 
     }
     
     public function default($recepcionmaterial_id)    {
@@ -299,7 +356,7 @@ class VentaComponent extends Component
             $this->vpeso = "false"; */
             $this->mostrar = "false"; $this->mostrarm = "false";
             $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Venta Eliminada!']);
-            $this->reset(['fechaventa', 'cedulav', 'nombre', 'idlugarv', 'idestatuspagov', 'idtipopagov', 'placav', 'observaciones', 'idventa', 'idproductov', 'cantidadprov', 'precioprov', 'recepcionmaterial_id', 'messages', 'venta']);
+            $this->reset(['fechaventa', 'cedulav', 'nombre', 'idlugarv', 'idestatuspagov', 'idtipopagov', 'placav', 'observaciones', 'idventa', 'idproductov', 'cantidadprov', 'precioprov', 'recepcionmaterial_id', 'messages', 'venta', 'idventa', 'idproductov', 'cantidadprov', 'precioprov', 'recepcionmaterial_id', 'messages', 'totalacumulado', 'venta', 'totalpagoven', 'restapagoven', 'pagoefectivoven', 'pagotransfven', 'restaven', 'ocultarbotonven', 'validamontotv']);
         }
     }
     
@@ -315,8 +372,38 @@ class VentaComponent extends Component
         //}
     }
 
+    //public $ocultarboton='false';
+    public function calrestaven($restaven){ //CALCULA EL RESTO DE LAS COMPRAS
+        //dd($restaven);
+        if((double)$restaven==0){
+            $this->validamontotv="NO DEBE";
+            $this->totalpagoven=0;
+            $this->restapagoven=0;
+        }elseif(((double)$this->pagoefectivoven+(double)$this->pagotransfven)>(double)$restaven){
+                $this->validamontotv="TOTAL DEBE SER MENOR O IGUAL A: ".(double)$restaven;
+                $this->totalpagoven=round((double)$this->pagoefectivoven + (double)$this->pagotransfven,2);
+                $this->restapagoven=round((double)$restaven-(double)$this->totalpagoven,2);
+                $this->ocultarbotonven="false";
+        }else{
+            if((is_numeric((double)$this->pagoefectivoven)) or (is_numeric((double)$this->pagotransfven))){
+                //$idtipopagoneg, $pagoefectivoven, $pagotransfven, $totalpagoven;
+                $this->validamontotv="";
+                $this->totalpagoven=round((double)$this->pagoefectivoven + (double)$this->pagotransfven,2);
+                $this->restapagoven=round((double)$restaven-(double)$this->totalpagoven,2);
+
+                if($this->idtipopagov==1 and $this->restapagoven==0){
+                    $this->ocultarbotonven="true";
+                }elseif($this->idtipopagov==2){
+                    $this->ocultarbotonven="true";
+                }else{
+                    $this->ocultarbotonven="false";
+                }
+            }
+        }
+    }
+
     public $ocultarboton='false';
-    public function calrestaneg($restan){ //CALCULA EL RESTA
+    public function calrestaneg($restan){ //CALCULA EL RESTO DE LA NEGOCIACION
         //dd($montotn[0]);
         if((double)$restan==0){
             $this->validamontotn="NO DEBE";
@@ -338,28 +425,36 @@ class VentaComponent extends Component
         }
     }
 
-    public $pagoefectivoneg, $pagotransfneg, $totalpagoneg, $restapagoneg, $validamontotn, $finalizada; //$mostrarpagoneg='false';
+    public $pagoefectivoneg, $pagotransfneg, $totalfectivoneg, $totaltransfneg, $totalpagoneg, $totalrestapagoneg, $restapagoneg, $validamontotn, $finalizada; //$mostrarpagoneg='false';
     public function guardaramortizacion(){
-        $datos = NegociacionVenta::find($this->negociacion_id);
+        /* $datos = NegociacionVenta::find($this->negociacion_id); */
+        /* $datos = CuentasPorCobrarVentas::where('idnegociacionventa', $this->negociacion_id); */
+        $datos = CuentasPorCobrarVentas::where('idnegociacionventa', $this->negociacion_id)->get()->pluck('id')[0];
+        $datos = CuentasPorCobrarVentas::find($datos);
+        $this->totalfectivoneg = (double)$datos->totalefectivo+(double)$this->pagoefectivoneg;
+        $this->totaltransfneg = (double)$datos->totaltransferencia+(double)$this->pagotransfneg;
         $totalpagado=(double)$datos->totalpagado+(double)$this->pagoefectivoneg+(double)$this->pagotransfneg;
-        $pagonegventa = PagoNegociacionVenta::create([
-            'negociacion_id' => $this->negociacion_id,
-            'fechapagonegven' => date('d-m-Y'),
-            'horapagonegven' => date("H:i:s"),
-            'montoefec' => (double)$this->pagoefectivoneg,
-            'montotran' => (double)$this->pagotransfneg,
-            'totalpago' => (double)$totalpagado,
-            'restapago' => $this->restapagoneg
-        ]);
+        //$this->totalrestapagoneg = (double)$datos->totalresta-(double)$this->restapagoneg;
         $datos->update([
+            'totalefectivo' => (double)$this->totalfectivoneg,
+            'totaltransferencia' => (double)$this->totaltransfneg,
             'totalpagado' => (double)$totalpagado,
-            'restan' => (double)$this->restapagoneg,
+            /* 'totalresta' => (double)$this->totalrestapagoneg, */
+            'totalresta' => (double)$this->restapagoneg,
             'amortizando' => '1'
-        ]);
-        //LA FACTURA SE GENERA DESDE LA BASE DE DATOS CON UN TRIGER
+        ]); //detalle_cuentas_por_cobrar_ventas
+        $datosdetalle = DetalleCuentasPorCobrarVentas::create([
+            'idcpcv' => $datos->id,
+            'fecha'=> date('d-m-Y'),
+            'hora' => date("H:i:s"),
+            'efectivo' => (double)$this->pagoefectivoneg,
+            'transferencia' => (double)$this->pagotransfneg,
+            'pagado' => (double)$this->pagoefectivoneg+(double)$this->pagotransfneg,
+            'resta' => (double)$this->restapagoneg
+        ]); //LA FACTURA SE GENERA DESDE LA BASE DE DATOS CON UN TRIGER $
         $this->mostrar = "false"; $this->mostrarm = "false"; $this->mostrarpagoneg = 'false';
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Negociación Actualizada!']);
-        $this->reset(['cedulav', 'nombre', 'placav', 'observacionesv', 'negociacion_id', '', 'idtipopagov', 'idlugarv', 'precionegn', 'totalpronegn', 'recepcionmaterial_id', 'messages', 'pesotn', 'restan', 'idtipopagon', 'idtipoabonon', 'pagoefectivoneg', 'pagotransfneg', 'restapagoneg', 'totalpagoneg', 'pagotransfneg', 'totalpagoneg', 'restapagoneg', 'validamontotn']);
+        $this->reset(['cedulav', 'nombre', 'placav', 'observacionesv', 'negociacion_id', 'idtipopagov', 'idlugarv', 'precionegn', 'totalpronegn', 'recepcionmaterial_id', 'messages', 'pesotn', 'restan', 'idtipopagon', 'idtipoabonon', 'pagoefectivoneg', 'pagotransfneg', 'restapagoneg', 'totalpagoneg', 'pagotransfneg', 'totalpagoneg', 'restapagoneg', 'validamontotn']);
     }
 
     

@@ -19,6 +19,7 @@ use App\Models\NegociacionVenta;
 use App\Models\Proveedores;
 use App\Models\Sucursal;
 use App\Models\Producto;
+use App\Models\CuentasMaterial;
 use App\Models\PagoNegociacionVenta;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -147,9 +148,10 @@ class NegociacionComponent extends Component
         $this->montotn=$this->montotn-$productorecepcion->totalpronegn; */
         (double)$this->pmmdn=$detallenegociacionventa->totalpronegn;
         $this->restapagoneg = (double)$this->restapagoneg-(double)$detallenegociacionventa->totalpronegn;
-
         $detallenegociacionventa->delete();
-        $this->reset(['producto_idn', 'cantidadprorecmatn', 'precionegn', 'totalpronegn']);
+        $productosrecepcion=DetalleNegociacionVenta::all()->where('negociacion_id', $this->recepcionmaterial_id)->count();
+        if($productosrecepcion==0){ $this->mostrarpagoneg='false'; }
+        $this->reset(['producto_idn', 'cantidadprorecmatn', 'precionegn', 'totalpronegn', 'pagoefectivoneg', 'pagotransfneg', 'totalpagoneg', 'restapagoneg']);
         $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material eliminado!']);
     }
 
@@ -201,15 +203,22 @@ class NegociacionComponent extends Component
         $nrm = NegociacionVenta::count();
         if($nrm==0){ $nrm = 1; }else{ ++$nrm; }       
         $datos = NegociacionVenta::create([
-            'id' => $nrm,           
-            'fechan' => $this->fechan,
-            /* 'cedulan' => $this->cedulan, */
-            //'idlugarn' => $this->idlugar,
-            /* 'idtipopagon' => $this->idtipopagon,
-            'idtipoabonon' => $this->idtipoabonon,
-            'observaciones' => $this->observaciones, */
+            'id' => $nrm,
+            'fechan' => date('d-m-Y'),
+            'horan' => date("H:i:s"),
+            'cedulan' => (string)$this->cedulan,
+            'idlugarn' => 0,
+            'idtipopagon' => 0,
+            'idtipoabonon' => 0,
+            'observaciones' => '',
+            'montotn' => (double)0,
+            'efectivo' => (double)0,
+            'transferencia' => (double)0,
+            'totalpagado' => (double)0,
+            'pesotn' => (double)0,
+            'restan' => (double)0,
             'finalizada' => 'NO',
-            //'facturado' => 'NO'
+            'amortizando' => 2,
         ]);
         $this->mostrar = "true"; $this->mostrarm = "true";
         $recepcion = NegociacionVenta::latest('id')->first();
@@ -218,17 +227,8 @@ class NegociacionComponent extends Component
         $this->dispatchBrowserEvent('hide-form', ['message' => 'Negociación Generada']);
     }
 
-    public function update($recepcionmaterial_id){
-        /* if($this->pagoefectivoneg>0){ $idtipoabonon=1; }
-        if($this->pagotransfneg>0){ $idtipoabonon=2; }
-        if($this->pagotransfneg>0 and $this->pagoefectivoneg>0){ $idtipoabonon=3; }
-        if($this->pagotransfneg=="" and $this->pagoefectivoneg==""){ $idtipoabonon=0; } */
-        /* if($this->restapagoneg==0){ $idtipopagon=1; }else{ $idtipopagon=2; }
-        dd(
-            " Resta = ".$this->restapagoneg.
-            " - Tipo = ".$idtipopagon
-        ); */
-
+    public $totalpagonegven, $finalizadanegventa, $productosnegociacion;
+    public function update($recepcionmaterial_id){        
         $this->validate();
         $nc = DetalleNegociacionVenta::where('negociacion_id',$recepcionmaterial_id)->get()->count();
         if($nc==0){ 
@@ -236,42 +236,46 @@ class NegociacionComponent extends Component
         }else{
             $this->fecha = date('d-m-Y');
             $datos = NegociacionVenta::find($recepcionmaterial_id);
+            /* $datos = NegociacionVenta::all()->where('negociacion_id', $this->recepcionmaterial_id); */
             $productosrecepcion=DetalleNegociacionVenta::all()->where('negociacion_id', $this->recepcionmaterial_id);
             foreach ($productosrecepcion as $dtosd){
                 $this->pesotn=$this->pesotn+$dtosd->cantidadprorecmatn;
                 $this->montotn=$this->montotn+$dtosd->totalpronegn;
-            }
-            $pagonegventa = PagoNegociacionVenta::create([
-                'negociacion_id' => $this->recepcionmaterial_id,
-                'fechapagonegven' => date('d-m-Y'),
-                'horapagonegven' => date("H:i:s"),
-                'montoefec' => (double)$this->pagoefectivoneg,
-                'montotran' => (double)$this->pagotransfneg,
-                'totalpago' => (double)$this->pagoefectivoneg+(double)$this->pagotransfneg,
-                'restapago' => $this->restapagoneg
-            ]);
-            //DETERMINA EL TIPO DE PAGO
+                //ACTUALIZA LA CPP EN LA TABLA CUENTAS MATERIAL
+                $cuentamaterial=CuentasMaterial::where('idproducto', $dtosd->producto_idn)->get()->pluck('id');
+                $cuentamaterial=CuentasMaterial::find($cuentamaterial[0]);
+                $cmcpp=(double)$cuentamaterial->cpp+(double)$dtosd->cantidadprorecmatn;
+                $cuentamaterial->update([
+                    'cpp' => $cmcpp
+                ]); //FIN ACTUALIZA LA CPP EN LA TABLA CUENTAS MATERIAL
+            } //DETERMINA EL TIPO DE PAGO
             if($this->restapagoneg==0){ $idtipopagon=1; }else{ $idtipopagon=2; }
-            //DETERMINA EL TIPO DE ABONO
+              //DETERMINA EL TIPO DE ABONO
             if($this->pagoefectivoneg>0){ $idtipoabonon=1; }
             if($this->pagotransfneg>0){ $idtipoabonon=2; }
             if($this->pagotransfneg>0 and $this->pagoefectivoneg>0){ $idtipoabonon=3; }
             if($this->pagotransfneg=="" and $this->pagoefectivoneg==""){ $idtipoabonon=0; }
+            $this->productosnegociacion=(double)$productosrecepcion->sum('cantidadprorecmatn');
+            $this->totalpagonegven=(double)$this->pagoefectivoneg+(double)$this->pagotransfneg;
+            $this->finalizadanegventa = 'NO';
+            /* $datos = NegociacionVenta::where('id', $this->recepcionmaterial_id)->get()->pluck('id');
+            $datos = NegociacionVenta::find($datos[0]); */
             $datos->update([
                 'fechan' => date('d-m-Y'),
+                'horan' => date("H:i:s"),
                 'cedulan' => (string)$this->cedulan,
                 'idtipopagon' => $idtipopagon,
                 'idtipoabonon' => $idtipoabonon,
                 'observaciones' => $this->observaciones,
                 'montotn' => (double)$productosrecepcion->sum('totalpronegn'),
-                'totalpagado' => (double)$this->pagoefectivoneg+(double)$this->pagotransfneg,
-                'pesotn' => (double)$productosrecepcion->sum('cantidadprorecmatn'),
+                'efectivo' => (double)$this->pagoefectivoneg,
+                'transferencia' => (double)$this->pagotransfneg,
+                'totalpagado' => (double)$this->totalpagonegven,
+                'pesotn' => (double)$this->productosnegociacion,
                 'restan' => (double)$this->restapagoneg,
-                'finalizada' => 'NO'
-            ]);
-            
-            //LA FACTURA SE GENERA DESDE LA BASE DE DATOS CON UN TRIGER
-
+                'finalizada' => $this->finalizadanegventa,
+                'amortizando' => 2
+            ]); //LA FACTURA SE GENERA DESDE LA BASE DE DATOS CON UN TRIGER
             $this->mostrar = "false"; $this->mostrarm = "false"; $this->mostrarpagoneg = 'false';
             $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Negociación Actualizada!']);
             $this->reset(['fechan', 'cedulan', 'nombren', 'idtipopagon', 'idtipoabonon', 'observaciones', 'negociacion_id', 'producto_idn', 'cantidadprorecmatn', 'precionegn', 'totalpronegn', 'recepcionmaterial_id', 'messages', 'pesotn', 'montotn', 'idtipopagon', 'idtipoabonon', 'pagoefectivoneg', 'pagotransfneg', 'restapagoneg', 'totalpagoneg']);

@@ -66,12 +66,12 @@
                           </div>
                           <div x-show="{{ $mostrarm }}" style="width: 19%; margin-right: 2px;">
                             <label for="cantidadprorecmatn" style="width: 100%; margin-right: 2px;">Peso</label>
-                            <input x-show="{{ $mostrar }}" x-bind:disabled="!{{ $mostrar }}" type="number" wire:model="cantidadprorecmatn" id="cantidadprorecmatn" name="cantidadprorecmatn" aria-describedby="cantidadprorecmatn" placeholder="Ingrese la cantidad" wire:keyup="calpeso" size="9" maxlength="9" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeypress="mascara(this,cpf)" onpaste="return false" style="width: 100%;"><p x-show="{{ $mostraremc }}" class="text-x text-red-500 italic">INGRESE</p>
+                            <input x-show="{{ $mostrar }}" x-bind:disabled="!{{ $mostrar }}" type="text" wire:model="cantidadprorecmatn" id="cantidadprorecmatn" name="cantidadprorecmatn" aria-describedby="cantidadprorecmatn" placeholder="Ingrese la cantidad" wire:keyup="calpeso" size="9" maxlength="9" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeypress="mascara(this,cpf)" onpaste="return false" style="width: 100%;"><p x-show="{{ $mostraremc }}" class="text-x text-red-500 italic">INGRESE</p>
                             <small id="emailHelp" class="form-text text-muted"></small>
                           </div>
                           <div x-show="{{ $mostrarm }}" style="width: 19%; margin-right: 2px;">
                             <label for="precionegn" style="width: 100%; margin-right: 2px;">Precio</label>
-                            <input x-show="{{ $mostrar }}" x-bind:disabled="!{{ $mostrar }}" type="number" wire:model="precionegn" id="precionegn" name="precionegn" aria-describedby="precionegn" placeholder="Ingrese la cantidad" wire:keyup="calpeso" size="9" maxlength="9" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeypress="mascara(this,cpf)" onpaste="return false" style="width: 100%;"><p x-show="{{ $mostraremp }}" class="text-x text-red-500 italic">INGRESE</p>
+                            <input x-show="{{ $mostrar }}" x-bind:disabled="!{{ $mostrar }}" type="text" wire:model="precionegn" id="precionegn" name="precionegn" aria-describedby="precionegn" placeholder="Ingrese la cantidad" wire:keyup="calpeso" size="9" maxlength="9" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" onkeypress="mascara(this,cpf)" onpaste="return false" style="width: 100%;"><p x-show="{{ $mostraremp }}" class="text-x text-red-500 italic">INGRESE</p>
                             <small id="emailHelp" class="form-text text-muted"></small>
                           </div>
                           <div x-show="{{ $mostrarm }}" style="width: 19%; margin-right: 2px;">
@@ -138,11 +138,11 @@
                         <td></td>
 
                         <td>
-                          <input x-bind:disabled="!{{ $mostrar }}" type="number" wire:model="pagoefectivoneg" id="pagoefectivoneg" name="pagoefectivoneg" aria-describedby="pagoefectivoneg" placeholder="Efectivo" wire:keyup="calrestaneg({{$montotn}})" size="9" maxlength="9" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%;">
+                          <input x-bind:disabled="!{{ $mostrar }}" type="text" wire:model="pagoefectivoneg" id="pagoefectivoneg" name="pagoefectivoneg" aria-describedby="pagoefectivoneg" placeholder="Efectivo" wire:keyup="calrestaneg({{$montotn}})" size="9" maxlength="9" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%;">
                         </td>
                         <td><a><i class="color danger fas fa-plus text-success"></i></a></td>
                         <td>
-                          <input x-bind:disabled="!{{ $mostrar }}" type="number" wire:model="pagotransfneg" id="pagotransfneg" name="pagotransfneg" aria-describedby="pagotransfneg" placeholder="Transferencia" wire:keyup="calrestaneg({{$montotn}})" size="9" maxlength="9" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%;">
+                          <input x-bind:disabled="!{{ $mostrar }}" type="text" wire:model="pagotransfneg" id="pagotransfneg" name="pagotransfneg" aria-describedby="pagotransfneg" placeholder="Transferencia" wire:keyup="calrestaneg({{$montotn}})" size="9" maxlength="9" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%;">
                         </td>
                         <td><a><i class="color danger fas fa-equals text-success"></i></a></td>
                         <td><h1 style="font-weight:900; color:red">{{ $formatter->formatCurrency(round($totalpagoneg,2), ''), PHP_EOL }}</h1></td>
