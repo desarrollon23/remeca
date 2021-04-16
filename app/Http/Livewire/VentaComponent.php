@@ -250,92 +250,129 @@ class VentaComponent extends Component
 
     public $actefectivo, $acttransferencia, $iddespacho;
     public function update($venta, $totalcalculado)    {
-        /* dd(
-            ' - fechaventa '.date('d-m-Y').
-            ' - horaventa '.date("H:i:s").
-            ' - cedulav '.$this->cedulav.
-            ' - idlugarv '.$this->idlugarv.
-            ' - idestatuspagov '.$this->idestatuspagov.
-            ' - idtipopagov '.$this->idtipopagov.
-            ' - placav '.$this->placav.
-            ' - totalcomrav '.(double)session('totalacumulado').
-            ' - totalpagadov '.(double)$this->totalpagoven.
-            ' - diferenciapagov '.(double)$this->restapagoven.
-            ' - observacionesv '.$this->observaciones
-        ); */
-        /* $liquidez = Liquidez::find(1);
-        $actefectivo=(double)$liquidez->efectivo+(double)$this->pagoefectivoven;
-        $acttransferencia=(double)$liquidez->banco+(double)$this->pagotransfven;
-        dd(
-            ' $actefectivo='.(double)$actefectivo.
-            ' - acttransferencia='.(double)$acttransferencia
-        ); */
-        if($this->idtipopagov==1){ $this->idestatuspagov=1; }else{ $this->idestatuspagov=2; }
-        /* $this->cantidadprov=0; $this->precioprov=0; */
-        $this->validate();
-        
-        /* if($this->idtipopagov!=3){ */
-        
-        //GENERAR DESPACHO
-        DespachoMaterial::create([
-            'fechaventad'=> date('d-m-Y'),
-            'horaventad' => date("H:i:s"),
-            'idestatusd' => 1
-        ]);
-        $iddespacho = DespachoMaterial::latest('id')->first();
-        if($this->pagoefectivoven>0){ $idtipoabonoven=1; }
-        if($this->pagotransfven>0){ $idtipoabonoven=2; }
-        if($this->pagotransfven>0 and $this->pagoefectivoven>0){ $idtipoabonoven=3; }
-        if($this->pagotransfven=="" and $this->pagoefectivoven==""){ $idtipoabonoven=0; }
-        if($this->idtipopagov==2){ $this->restapagoven = (double)session('totalacumulado'); }
-        $datosc = Venta::find($venta);
-        $datosc->update([
-            'fechaventa' => date('d-m-Y'),
-            'horaventa' => date("H:i:s"),
-            'cedulav' => $this->cedulav,
-            'idlugarv' => $this->idlugarv,
-            'idestatuspagov' => $this->idestatuspagov,
-            'idtipopagov' => $this->idtipopagov,
-            'efectivo' => (double)$this->pagoefectivoven,
-            'transferencia' => (double)$this->pagotransfven,
-            'idtipoabonov' => $idtipoabonoven,
-            'placav' => $this->placav,
-            'totalcomrav' => (double)session('totalacumulado'),
-            'totalpagadov' => (double)$this->totalpagoven,
-            'diferenciapagov' => (double)$this->restapagoven,
-            'observacionesv' => $this->observacionesv,
-            'iddespacho' => $iddespacho
-        ]);
-
-        /* $actefectivo, $acttransferencia; */
-
-        $liquidez = Liquidez::find(1);
-        $this->actefectivo=(double)$liquidez->efectivo+(double)$this->pagoefectivoven;
-        $this->acttransferencia=(double)$liquidez->banco+(double)$this->pagotransfven;
-        $liquidez->update([
-            'efectivo' => (double)$this->actefectivo,
-            'banco' => (double)$this->acttransferencia
-        ]);
-
-        $productosventa=DetalleVenta::all()->where('idventa',$venta);
-        foreach ($productosventa as $productoventa){
-            //guardar la compra en el inventario
-            //buscar la existena del producto en la tabla producto
-
-            $existenciapro=Producto::find($productoventa->idproductov);
-            $datosInventario = Inventario::create([
+        /* if($this->idtipopagov==1){ $this->idestatuspagov=1; }else{ $this->idestatuspagov=2; } */
+        if($this->idtipopagov==1){ $this->idestatuspagov=1;  /* $this->cantidadprov=0; $this->precioprov=0; */
+            $this->validate(); //GENERAR DESPACHO
+            DespachoMaterial::create([
+                'fechaventad'=> date('d-m-Y'),
+                'horaventad' => date("H:i:s"),
+                'idestatusd' => 1
+            ]); //ACTUALIZA LA VENTA
+            $iddespacho = DespachoMaterial::latest('id')->first();
+            if($this->pagoefectivoven>0){ $idtipoabonoven=1; }
+            if($this->pagotransfven>0){ $idtipoabonoven=2; }
+            if($this->pagotransfven>0 and $this->pagoefectivoven>0){ $idtipoabonoven=3; }
+            if($this->pagotransfven=="" and $this->pagoefectivoven==""){ $idtipoabonoven=0; }
+            if($this->idtipopagov==2){ $this->restapagoven = (double)session('totalacumulado'); }
+            $datosc = Venta::find($venta);
+            $datosc->update([
+                'fechaventa' => date('d-m-Y'),
+                'horaventa' => date("H:i:s"),
+                'cedulav' => $this->cedulav,
+                'idlugarv' => $this->idlugarv,
+                'idestatuspagov' => $this->idestatuspagov,
+                'idtipopagov' => $this->idtipopagov,
+                'efectivo' => (double)$this->pagoefectivoven,
+                'transferencia' => (double)$this->pagotransfven,
+                'idtipoabonov' => $idtipoabonoven,
+                'placav' => $this->placav,
+                'totalcomrav' => (double)session('totalacumulado'),
+                'totalpagadov' => (double)$this->totalpagoven,
+                'diferenciapagov' => (double)$this->restapagoven,
+                'observacionesv' => $this->observacionesv,
+                'iddespacho' => $iddespacho
+            ]); //ACTUALIZA LA LIQUIDEZ
+            $liquidez = Liquidez::find(1);
+            $this->actefectivo=(double)$liquidez->efectivo+(double)$this->pagoefectivoven;
+            $this->acttransferencia=(double)$liquidez->banco+(double)$this->pagotransfven;
+            $liquidez->update([
+                'efectivo' => (double)$this->actefectivo,
+                'banco' => (double)$this->acttransferencia
+            ]); //ACTUALIZA EL INVENTARIO
+            $productosventa=DetalleVenta::all()->where('idventa',$venta);
+            foreach ($productosventa as $productoventa){ //guardar la compra en el inventario //buscar la existena del producto en la tabla producto
+                $existenciapro=Producto::find($productoventa->idproductov);
+                $datosInventario = Inventario::create([
+                    'fecha' => date('d-m-Y'),
+                    'hora' => date("H:i:s"), //COLOCAR LA HORA DE VENEZUELA
+                    'idproducto' => $existenciapro->id,
+                    'comprados' => 0,
+                    'vendidos' => (double)$productoventa['cantidadprov'],
+                    'existencia' => (double)$existenciapro->cantidad
+                ]); //ACTUALIZA LA EXISTENCIA DEL PRODUCTO
+                $datospro = Producto::find($productoventa->idproductov);
+                $nexistencia = $existenciapro->cantidad-$productoventa['cantidadprov'];
+                $datospro->update(['cantidad' => (double)$nexistencia]);
+            }
+        }else{ $this->idestatuspagov=2; //VENTA A CREDITO
+            $this->validate(); //GENERAR DESPACHO
+            DespachoMaterial::create([
+                'fechaventad'=> date('d-m-Y'),
+                'horaventad' => date("H:i:s"),
+                'idestatusd' => 1
+            ]); //ACTUALIZA LA VENTA
+            $iddespacho = DespachoMaterial::latest('id')->first();
+            if($this->pagoefectivoven>0){ $idtipoabonoven=1; }
+            if($this->pagotransfven>0){ $idtipoabonoven=2; }
+            if($this->pagotransfven>0 and $this->pagoefectivoven>0){ $idtipoabonoven=3; }
+            if($this->pagotransfven=="" and $this->pagoefectivoven==""){ $idtipoabonoven=0; }
+            if($this->idtipopagov==2){ $this->restapagoven = (double)session('totalacumulado'); }
+            $datosc = Venta::find($venta);
+            $datosc->update([
+                'fechaventa' => date('d-m-Y'),
+                'horaventa' => date("H:i:s"),
+                'cedulav' => $this->cedulav,
+                'idlugarv' => $this->idlugarv,
+                'idestatuspagov' => $this->idestatuspagov,
+                'idtipopagov' => $this->idtipopagov,
+                'efectivo' => (double)$this->pagoefectivoven,
+                'transferencia' => (double)$this->pagotransfven,
+                'idtipoabonov' => $idtipoabonoven,
+                'placav' => $this->placav,
+                'totalcomrav' => (double)session('totalacumulado'),
+                'totalpagadov' => (double)$this->totalpagoven,
+                'diferenciapagov' => (double)$this->restapagoven,
+                'observacionesv' => $this->observacionesv,
+                'iddespacho' => $iddespacho
+            ]); //ACTUALIZA EL INVENTARIO
+            $productosventa=DetalleVenta::all()->where('idventa',$venta);
+            foreach ($productosventa as $productoventa){ //guardar la compra en el inventario //buscar la   existena del producto en la tabla producto
+                $existenciapro=Producto::find($productoventa->idproductov);
+                $datosInventario = Inventario::create([
+                    'fecha' => date('d-m-Y'),
+                    'hora' => date("H:i:s"), //COLOCAR LA HORA DE VENEZUELA
+                    'idproducto' => $existenciapro->id,
+                    'comprados' => 0,
+                    'vendidos' => (double)$productoventa['cantidadprov'],
+                    'existencia' => (double)$existenciapro->cantidad
+                ]);  //ACTUALIZA LA EXISTENCIA DEL PRODUCTO
+                $datospro = Producto::find($productoventa->idproductov);
+                $nexistencia = $existenciapro->cantidad-$productoventa['cantidadprov'];
+                $datospro->update(['cantidad' => (double)$nexistencia]);
+            } //CREA LA CUENTA POR COBRAR
+            $datos = CuentasPorCobrarVentas::create([
+                'idventa' => $venta,
+                'idnegociacionventa' => 0,
                 'fecha' => date('d-m-Y'),
-                'hora' => date("H:i:s"), //COLOCAR LA HORA DE VENEZUELA
-                'idproducto' => $existenciapro->id,
-                'comprados' => 0,
-                'vendidos' => (double)$productoventa['cantidadprov'],
-                'existencia' => (double)$existenciapro->cantidad
-            ]);
-            //actualizar la existencia en la tabla del producto
-            $datospro = Producto::find($productoventa->idproductov);
-            $nexistencia = $existenciapro->cantidad-$productoventa['cantidadprov'];
-            $datospro->update([
-                'cantidad' => (double)$nexistencia
+                'hora' => date("H:i:s"),
+                'cedula' => $this->cedulav,
+                'montototal' => (double)session('totalacumulado'),
+                'totalefectivo' => (double)$this->pagoefectivoven,
+                'totaltransferencia' => (double)$this->pagotransfven,
+                'totalpagado' => (double)$this->pagoefectivoven+(double)$this->pagotransfven,
+                /* 'totalresta' => (double)$this->totalrestapagoneg, */
+                'totalresta' => (double)session('totalacumulado')-((double)$this->pagoefectivoven+(double)$this->pagotransfven),
+                'finalizada' => 'NO',
+                'amortizando' => '1'
+            ]); //CREA EL DETALLE DE LA CUENTA POR COBRAR
+            $datosdetalle = DetalleCuentasPorCobrarVentas::create([
+                'idcpcv' => $datos->id,
+                'fecha'=> date('d-m-Y'),
+                'hora' => date("H:i:s"),
+                'efectivo' => (double)$this->pagoefectivoven,
+                'transferencia' => (double)$this->pagotransfven,
+                'pagado' => (double)$this->pagoefectivoven+(double)$this->pagotransfven,
+                'resta' => (double)session('totalacumulado')-((double)$this->pagoefectivoven+(double)$this->pagotransfven)
             ]);
         }
         $this->mostrar = "false"; $this->mostrarm = "false"; $this->mostrarpagoventa='false'; $this->mostrarbotonpagoventa='false';
@@ -429,7 +466,10 @@ class VentaComponent extends Component
     public function guardaramortizacion(){
         /* $datos = NegociacionVenta::find($this->negociacion_id); */
         /* $datos = CuentasPorCobrarVentas::where('idnegociacionventa', $this->negociacion_id); */
-        $datos = CuentasPorCobrarVentas::where('idnegociacionventa', $this->negociacion_id)->get()->pluck('id')[0];
+
+        /* $datos = CuentasPorCobrarVentas::where('idnegociacionventa', $this->negociacion_id)->get()->pluck('id')[0]; */
+        $datos = CuentasPorCobrarVentas::where('idventa', $this->negociacion_id)->get()->pluck('id')[0];
+        //dd($datos);
         $datos = CuentasPorCobrarVentas::find($datos);
         $this->totalfectivoneg = (double)$datos->totalefectivo+(double)$this->pagoefectivoneg;
         $this->totaltransfneg = (double)$datos->totaltransferencia+(double)$this->pagotransfneg;
@@ -454,7 +494,7 @@ class VentaComponent extends Component
         ]); //LA FACTURA SE GENERA DESDE LA BASE DE DATOS CON UN TRIGER $
         $this->mostrar = "false"; $this->mostrarm = "false"; $this->mostrarpagoneg = 'false';
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Negociación Actualizada!']);
-        $this->reset(['cedulav', 'nombre', 'placav', 'observacionesv', 'negociacion_id', 'idtipopagov', 'idlugarv', 'precionegn', 'totalpronegn', 'recepcionmaterial_id', 'messages', 'pesotn', 'restan', 'idtipopagon', 'idtipoabonon', 'pagoefectivoneg', 'pagotransfneg', 'restapagoneg', 'totalpagoneg', 'pagotransfneg', 'totalpagoneg', 'restapagoneg', 'validamontotn']);
+        $this->reset(['cedulav', 'nombre', 'placav', 'observacionesv', 'negociacion_id', 'idtipopagov', 'idlugarv', 'totalpronegn', 'recepcionmaterial_id', 'messages', 'pesotn', 'restan', 'idtipopagon', 'idtipoabonon', 'pagoefectivoneg', 'pagotransfneg', 'restapagoneg', 'totalpagoneg', 'pagotransfneg', 'totalpagoneg', 'restapagoneg', 'validamontotn']);
     }
 
     
@@ -476,6 +516,8 @@ class VentaComponent extends Component
             ->get(); */
         $productosabonados=ConsultaAbonoNegociacionVenta::all();
         //$productosabonados=AbonoMaterialNegociacionVentas::all();
+        /* $amortizacionesdepago=ConsultaAmortizacionNegociacionVenta::all(); */
+        
         $amortizacionesdepago=ConsultaAmortizacionNegociacionVenta::all();
 
         return view('livewire.ventas.venta', [

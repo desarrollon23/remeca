@@ -151,7 +151,7 @@ class DespachoComponent extends Component
         $productosabonos = AbonoMaterialNegociacionVentas::all();
 
         $despachar = ConsultaDespachoAbonoMaterialVentas::where('despacho', $this->iddespacho)->get();
-        $despacharV = ConsultaDespachoVentas::where('despacho', $this->iddespacho)->get();
+        //$despacharV = ConsultaDespachoVentas::where('despacho', $this->iddespacho)->get();
        
         return view('livewire.despacho-component', [
                     'materiales'=>$materiales,

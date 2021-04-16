@@ -95,9 +95,9 @@ div.detalle.show { display: block !important; }
                               <table class="table table-striped"><thead><tr>
                                 {{-- <th scope="col">#</th> --}}
                                 <th scope="col">FECHA - HORA</th>
-                                <th scope="col">EFECTIVO</th>
-                                <th scope="col">TRANSFERENCIA</th>
-                                <th scope="col">TOTAL</th>
+                                <th scope="col">P/EFECTIVO</th>
+                                <th scope="col">P/TRANSFERENCIA</th>
+                                <th scope="col">PAGO</th>
                                 <th scope="col">RESTA</th>
                                 </tr></thead><tbody>
                                 @foreach ($amortizacionesdepago->where('negociacion',$negociacion->id) as $amortizaciondepago)
@@ -105,7 +105,7 @@ div.detalle.show { display: block !important; }
                                     <td>{{ $amortizaciondepago->fecha.' '.$amortizaciondepago->hora }}</td>
                                     <td>{{ $formatter->formatCurrency($amortizaciondepago->efectivo, ''), PHP_EOL }}</td>
                                     <td>{{ $formatter->formatCurrency($amortizaciondepago->transferencia, ''), PHP_EOL }}</td>
-                                    <td>{{ $formatter->formatCurrency($amortizaciondepago->total, ''), PHP_EOL }}</td>
+                                    <td>{{ $formatter->formatCurrency($amortizaciondepago->pago, ''), PHP_EOL }}</td>
                                     <td>{{ $formatter->formatCurrency($amortizaciondepago->resta, ''), PHP_EOL }}</td>
                                     </td>
                                   </tr>

@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ConsultaAmortizacionNegociacionVenta extends Model
 {
     use HasFactory;
-    public $table = 'vista_amortizacion_negociacion_venta';
+    /* public $table = 'vista_amortizacion_negociacion_venta'; */
+    public $table = 'vista_amortizaciones';
 }
