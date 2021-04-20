@@ -1,5 +1,5 @@
-<x-admin-layout>
-  @php $formatter = new NumberFormatter('', NumberFormatter::DECIMAL); @endphp
+<div>
+    @php $formatter = new NumberFormatter('', NumberFormatter::DECIMAL); @endphp
   <div style="background: white;">
     {{-- <div style="background-image: url('../../../../img/fdashboardv.png'); width: 100%; height: 100vh;  min-height: 100vh;"> --}}
     {{-- <div style="background: url(../../../../img/fdashboardv.png) no-repeat fixed center;-webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; height: 100%; width: 100%;"> --}}
@@ -8,7 +8,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0"><strong>Página Principal</strong>{{ current_user()->name }}</h1>
+            <h1 class="m-0"><strong>Página Principal</strong></h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             {{-- <ol class="breadcrumb float-sm-right">
@@ -20,7 +20,7 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-
+    
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
@@ -215,4 +215,4 @@
       </div>
     </div>
   </div>
-</x-admin-layout>
+</div>

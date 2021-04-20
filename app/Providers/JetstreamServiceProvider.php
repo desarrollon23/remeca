@@ -64,4 +64,9 @@ class JetstreamServiceProvider extends ServiceProvider
             'update',
         ])->description(__('Editor users have the ability to read, create, and update.'));
     }
+
+    /* protected function registerComponent(string $component)
+    {
+        Blade::component(class:'Jetstream::components.'.$component, alias:'jet-'.$component);
+    } */
 }

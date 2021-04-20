@@ -227,7 +227,7 @@ class NegociacionComponent extends Component
         $this->dispatchBrowserEvent('hide-form', ['message' => 'Negociación Generada']);
     }
 
-    public $totalpagonegven, $finalizadanegventa, $productosnegociacion;
+    public $totalpagonegven, $productosnegociacion;
     public function update($recepcionmaterial_id){        
         $this->validate();
         $nc = DetalleNegociacionVenta::where('negociacion_id',$recepcionmaterial_id)->get()->count();
@@ -257,7 +257,6 @@ class NegociacionComponent extends Component
             if($this->pagotransfneg=="" and $this->pagoefectivoneg==""){ $idtipoabonon=0; }
             $this->productosnegociacion=(double)$productosrecepcion->sum('cantidadprorecmatn');
             $this->totalpagonegven=(double)$this->pagoefectivoneg+(double)$this->pagotransfneg;
-            $this->finalizadanegventa = 'NO';
             /* $datos = NegociacionVenta::where('id', $this->recepcionmaterial_id)->get()->pluck('id');
             $datos = NegociacionVenta::find($datos[0]); */
             $datos->update([
@@ -273,12 +272,12 @@ class NegociacionComponent extends Component
                 'totalpagado' => (double)$this->totalpagonegven,
                 'pesotn' => (double)$this->productosnegociacion,
                 'restan' => (double)$this->restapagoneg,
-                'finalizada' => $this->finalizadanegventa,
+                'finalizada' => 'NO',
                 'amortizando' => 2
             ]); //LA FACTURA SE GENERA DESDE LA BASE DE DATOS CON UN TRIGER
             $this->mostrar = "false"; $this->mostrarm = "false"; $this->mostrarpagoneg = 'false';
             $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Negociación Actualizada!']);
-            $this->reset(['fechan', 'cedulan', 'nombren', 'idtipopagon', 'idtipoabonon', 'observaciones', 'negociacion_id', 'producto_idn', 'cantidadprorecmatn', 'precionegn', 'totalpronegn', 'recepcionmaterial_id', 'messages', 'pesotn', 'montotn', 'idtipopagon', 'idtipoabonon', 'pagoefectivoneg', 'pagotransfneg', 'restapagoneg', 'totalpagoneg']);
+            $this->reset();
         }
     }
     

@@ -333,7 +333,7 @@ class CompradorComponent extends Component
         $productos = Producto::all();
         $recepcion = Almacen::all()->where('recibido', 'NO');
         $recepciones = Almacen::all()->where('facturado', 'NO');
-        //dd($recepciones->count());
+        dd($recepciones->count());
         $materiales = Material::all();
         $este=$this->recepcion;
         $productosrecepcion=Detallealmacen::all()->where('recepcionmaterial_id', 

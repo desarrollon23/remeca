@@ -1,6 +1,7 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import 'buttons.css';
 
 .form-label{
   @apply block uppercase text-gray-700 text-xs font-bold mb-2;
@@ -13,3 +14,4 @@
 .form-control:focus{
   @apply bg-white outline-none border-gray-500;
 }
+

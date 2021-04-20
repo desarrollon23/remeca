@@ -37,50 +37,33 @@
                   <div style="width: 59%; margin-right: 2px;"><label for="nombre" style="width: 100%; margin-right: 2px;">Nombre</label>
                     <input x-bind:disabled="!{{ $mostrar }}" wire:model="nombre" wire:keyup="buspron" style="width: 100%; text-transform: uppercase;" id="nombre" type="text" name="nombre" placeholder="Ingrese el Nombre">
                   @error('nombre')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</div>
+                  @if($mostrarabono!='true')
                   <div style="width: 49%; margin-right: 2px;"><label for="idlugarv" style="width: 100%; margin-right: 2px;">Lugar</label>
                     <select x-bind:disabled="!{{ $mostrar }}" name="idlugarv" wire:model="idlugarv" id="idlugarv" style="width: 100%; text-transform: uppercase;">
-                      <option value="NULL" style="width: 100%;" selected>(SELECCIONE)</option>
+                      <option value="null" style="width: 100%;" >(SELECCIONE)</option>
                       @foreach ($lugares as $lugar)
                       <option value="{{$lugar->id}}">{{$lugar->descripcion}}</option>
                      @endforeach
                     </select>@error('idlugarv')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</div>
-                  {{-- @if($idtipopagov!=3)
-                  <div style="width: 49%; margin-right: 2px;"><label for="idestatuspagov" style="width: 100%; margin-right: 2px;">Estatus</label>
-                    <select x-bind:disabled="!{{ $mostrar }}" name="idestatuspagov" wire:model="idestatuspagov" id="idestatuspagov" style="width: 100%; text-transform: uppercase;">
-                      <option value="NULL" style="width: 100%;" selected>(SELECCIONE)</option>
-                      @if($idtipopagov!=2)
-                       <option value="1">Pagada</option>
-                      @endif
-                       <option value="2">Por Pagar</option>
-                    </select>@error('idestatuspagov')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</div>
-                  @endif --}}
                   <div style="width: 49%; margin-right: 2px;"><label for="placav" style="width: 100%; margin-right: 2px;">Placa Camión</label>
                       <input x-bind:disabled="!{{ $mostrar }}" wire:model="placav" wire:keyup="busproc" style="width: 100%;" id="placav" type="text" name="placav" placeholder="INGRESE PLACA">
                           @error('placav')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror
                       </div>
+                  @endif
                   <div style="width: 49%; margin-right: 2px;"><label for="idtipopagov" style="width: 100%; margin-right: 2px;">
-                    @if($mostrarabono!='true')
-                      Tipo de Venta
-                    @else
-                      Tipo de Abono
-                    @endif
-                  
+                    @if($mostrarabono!='true') Tipo de Venta @else Tipo de Abono @endif
                   </label>
                     <select x-bind:disabled="!{{ $mostrar }}" name="idtipopagov" wire:model="idtipopagov" id="idtipopagov" style="width: 100%; text-transform: uppercase;">
-                      <option value="NULL" style="width: 100%;" selected>(SELECCIONE)</option>
-
+                      <option value="null" style="width: 100%;" selected>(SELECCIONE)</option>
                       @if($mostrarabono!='true')
                        <option value="1">Contado</option>
                        <option value="2">Crédito</option>
                       @endif
-
                       @if($mostrarabono=='true')
                        <option value="3">Abono de Material</option>
                        <option value="4">Abono a Crédito</option>
                       @endif
-
                     </select>@error('idtipopagov')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</div>
-
                     @php if($idtipopagov==3){ $negociaciones=$this->busnegc($cedulav); } @endphp
                     @if($idtipopagov==3)
                       <div style="width: 49%; margin-right: 2px;"><label for="negociacion_id" style="width: 100%; margin-right: 2px;">Negociación</label>
@@ -88,8 +71,8 @@
                           <option value="NULL" style="width: 100%;" selected>(SELECCIONE)</option>
 {{-- @php dd($negociaciones); @endphp --}}
                           @foreach ($negociaciones as $negociacion)
-                            <option value="{{$negociacion->id}}" style="width: 100%;">{{$negociacion->id." (Fecha: ".$negociacion->fechan.")"}}</option>
-                          @endforeach
+                            <option value="{{$negociacion->id}}" style="width: 100%;">{{$negociacion->id." (FECHA: ".$negociacion->fechan}})</option>
+                          @endforeach  $restaven
                         </select>@error('negociacion_id')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</div>
                     @endif
 
@@ -97,17 +80,21 @@
                     /* dd($negociacionescredito=$this->busnegccredito('V22222222')); */
                     if($idtipopagov==4){ $negociacionescredito=$this->busnegccredito($cedulav); } @endphp
                     @if($idtipopagov==4)
-                      <div style="width: 49%; margin-right: 2px;"><label for="negociacion_id" style="width: 100%; margin-right: 2px;">Negociación</label>
-                        <select name="negociacion_id" wire:model="negociacion_id" id="negociacion_id" style="width: 100%; text-transform: uppercase;">
+                      <div style="width: 49%; margin-right: 2px;"><label for="negociacion_id" style="width: 100%; margin-right: 2px;">Crédito</label>
+                        <select name="negociacion_id" wire:model="negociacion_id" id="negociacion_id" style="width: 100%; text-transform: uppercase;" wire:onchange="cambioidcpc({{$this->negociacion_id}})">
                           <option value="NULL" style="width: 100%;" selected>(SELECCIONE)</option>
                           @foreach ($negociacionescredito as $negociacion) 
                             @if($negociacion->idnegociacionventa!=0)
-                              <option value="{{$negociacion->idventa}}" style="width: 100%;">{{$negociacion->idventa." (Fecha: ".$negociacion->fecha.")"}}</option>
+                              <option value="{{$negociacion->id}}" style="width: 100%;">N: {{$negociacion->idnegociacionventa." (POR PAGAR: ".
+                              $formatter->formatCurrency($negociacion->totalresta, ''), PHP_EOL
+                              }})</option>
                             @endif
                           @endforeach
                           @foreach ($negociacionescredito as $negociacion) 
                             @if($negociacion->idnegociacionventa==0)
-                              <option value="{{$negociacion->idventa}}" style="width: 100%;">{{$negociacion->idventa." (Fecha: ".$negociacion->fecha.")"}}</option>
+                              <option value="{{$negociacion->id}}" style="width: 100%;">V: {{$negociacion->idventa." (POR PAGAR: ".
+                              $formatter->formatCurrency($negociacion->totalresta, ''), PHP_EOL
+                              }})</option>
                             @endif
                           @endforeach
                         </select>@error('negociacion_id')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</div>
@@ -146,6 +133,8 @@
               </div>
             </div>{{-- Lista de Materiales a Recibir #336699 --}}
   {{-- VENTA DE CONTADO Y A CREDITO --}}
+  @if ($vendedores[0]->where('cedulac', $cedulav)->count())
+
   @if($idtipopagov!=3)
       @if($mostrarabono!='true')
             <div class="col-lg-8 col-md-6 col-xs-6 mt-2">
@@ -414,11 +403,17 @@
                   <div class="card-body" style="/* background-color: #9FA5AA; */ display: flex; flex-wrap: wrap; margin-right: 2px;">
                     <div style="width: 100%; display: flex; flex-wrap: wrap; margin-right: 2px;">
                           {{-- <div x-show="{{ $mostrarm }}" style="width: 19%; margin-right: 2px;"> --}}
+                @if (is_null($this->negociacion_id)!='false')
+                {{-- @if($negociacion_id!=0) --}}
                 
-                @if($negociacion_id!=0)
-{{-- @php dd($amortizacionesdepago->where('cedula','v55555555')->where('finalizada','NO')); @endphp --}}
-{{-- @php dd($negociacion_id); @endphp --}}
-                  @if($amortizacionesdepago->where('factura',$negociacion_id)->pluck('resta')[0]!=0)
+                  @if($amortizacionesdepago->where('id',$negociacion_id)->pluck('totalresta')[0]!=0)
+                    @php 
+                      if($negociacion_id!=session('valoridcpc')){
+                          $ocultarboton="false"; $this->pagoefectivoneg=''; $this->pagotransfneg='';
+                          $this->validamontotn=""; $this->totalpagoneg=0; $this->restapagoneg=0;
+                          session(['valoridcpc' => $negociacion_id]);
+                      } 
+                    @endphp
                           <table class="table table-striped"><thead><tr>
                             <tr><td><label>DEBE</label></td>
                               <td><label for="idtipopagov" style="width: 100%; margin-right: 2px;">{{-- Tipo --}}</label></td><td></td>
@@ -428,17 +423,15 @@
                               <td><label>Resta</label></td>
                             </tr><tr>
                               <td><h1 style="font-weight:900; color:red">
-                                {{-- @php dd($amortizacionesdepago); @endphp --}}
-                                {{ $formatter->formatCurrency($amortizacionesdepago->where('factura',$negociacion_id)->pluck('resta')[0], ''), PHP_EOL }}</h1></td>
-                                {{-- {{ $formatter->formatCurrency($restapagoneg, ''), PHP_EOL }} --}}
+                                {{ $formatter->formatCurrency($amortizacionesdepago->where('id',$negociacion_id)->pluck('totalresta')[0], ''), PHP_EOL }}</h1></td>
                                 <td><a><i class="color danger fas fa-minus text-success"></i></a></td>
                                 <td><h1 style="color: #28A745;"><strong>(</strong></h1></td>
                               <td>
-                                <input x-bind:disabled="!{{ $mostrar }}" type="text" wire:model="pagoefectivoneg" id="pagoefectivoneg" name="pagoefectivoneg" aria-describedby="pagoefectivoneg" placeholder="Ingresar" wire:keyup="calrestaneg({{$amortizacionesdepago->where('factura',$negociacion_id)->pluck('resta')}})" size="9" maxlength="9" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%; border-color: white white green white; font-weight:900; color:red; padding-top: 0px;">
+                                <input x-bind:disabled="!{{ $mostrar }}" type="text" wire:model="pagoefectivoneg" id="pagoefectivoneg" name="pagoefectivoneg" aria-describedby="pagoefectivoneg" placeholder="Ingresar" wire:keyup="calrestaneg({{$amortizacionesdepago->where('id',$negociacion_id)->pluck('totalresta')}})" size="9" maxlength="9" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%; border-color: white white green white; font-weight:900; color:red; padding-top: 0px;">
                               </td>
                               <td><a><i class="color danger fas fa-plus text-success"></i></a></td>
                               <td>
-                                <input x-bind:disabled="!{{ $mostrar }}" type="text" wire:model="pagotransfneg" id="pagotransfneg" name="pagotransfneg" aria-describedby="pagotransfneg" placeholder="Ingresar" wire:keyup="calrestaneg({{$amortizacionesdepago->where('factura',$negociacion_id)->pluck('resta')}})" size="9" maxlength="9" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%;border-color: white white green white; font-weight:900; color:red; padding-top: 0px;">
+                                <input x-bind:disabled="!{{ $mostrar }}" type="text" wire:model="pagotransfneg" id="pagotransfneg" name="pagotransfneg" aria-describedby="pagotransfneg" placeholder="Ingresar" wire:keyup="calrestaneg({{$amortizacionesdepago->where('id',$negociacion_id)->pluck('totalresta')}})" size="9" maxlength="9" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%;border-color: white white green white; font-weight:900; color:red; padding-top: 0px;">
                               </td>
                               <td><h1 style="color: #28A745;"><strong>)</strong></h1></td>
                               {{-- <td><a><i class="color danger fas fa-equals text-success"></i></a></td> --}}
@@ -458,20 +451,22 @@
                       @endif
                         {{-- </div> --}}
                         <div style="width: 100%; display: flex; flex-wrap: wrap; margin-right: 2px;">
-                        {{-- @php dd($negociacion_id); @endphp --}}
+                        {{-- @php dd($amortizacionesdepago->where('id',$negociacion_id)); @endphp --}}
                         {{-- $negociacionescredito=$this->busnegccredito($cedulav); --}}
-                    @if ($amortizacionesdepago->where('factura',$negociacion_id)->count())
-                            <label style="text-align: center; color: #17a2b8; ">AMORTIZACIONES DE PAGO</label>
+
+                    @if ($amortizacionesdepago->where('id',$negociacion_id)->count())
+                            <label style="text-align: center; color: #17a2b8; width: 100%;">AMORTIZACIONES DE PAGO</label><label style="text-align: right;font-weight:900; color:red; width: 95%;">CREDITO POR:
+                                {{ $formatter->formatCurrency($amortizacionesdepago->where('id',$negociacion_id)->pluck('monto')[0], ''), PHP_EOL }}</label>
                             <table class="table table-striped"><thead><tr>
-                              <th scope="col" colspan="2">FECHA</th>
+                              <th scope="col" colspan="2">FECHA - HORA</th>
                               <th scope="col">EFECTIVO</th>
                               <th scope="col">TRANSFERENCIA</th>
-                              <th scope="col">TOTAL</th>
-                              <th scope="col">RESTA</th>
+                              <th scope="col">PAGADO</th>
+                              <th scope="col">DEBIA</th>
                               </tr></thead><tbody>
-                              @foreach ($amortizacionesdepago->where('factura',$negociacion_id) as $amortizaciondepago)
+                              @foreach ($amortizacionesdepago->where('id',$negociacion_id) as $amortizaciondepago)
                                 {{-- <tr><td scope="row">{{ $loop->iteration }}</td> --}}
-                                  <td colspan="2">{{ $amortizaciondepago->fecha }}</td>
+                                  <td colspan="2">{{ $amortizaciondepago->fecha }} - {{ $amortizaciondepago->hora }}</td>
                                   <td>{{ $formatter->formatCurrency($amortizaciondepago->efectivo, ''), PHP_EOL }}</td>
                                   <td>{{ $formatter->formatCurrency($amortizaciondepago->transferencia, ''), PHP_EOL }}</td>
                                   <td>{{ $formatter->formatCurrency($amortizaciondepago->pago, ''), PHP_EOL }}</td>
@@ -482,6 +477,8 @@
                     @else <h1 style="font-weight:900;">{{ 'No tiene Amortizaciones de Pago'}}</h1>
                     @endif
                 @endif
+  @endif
+
   @endif
 
               </div>

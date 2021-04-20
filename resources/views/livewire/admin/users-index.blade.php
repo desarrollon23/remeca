@@ -1,6 +1,8 @@
 <div>
+  {{-- @livewire('profile.update-profile-information-form') --}}
     <div class="card">
         <div class="card-body">
+          {{-- @livewire('profile.update-profile-information-form') --}}
           <table id="example1" class="table table-bordered table-striped">
           {{-- <table class="table table-hover">--}}<thead><tr> 
               <th scope="col">#</th>

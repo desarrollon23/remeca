@@ -11,16 +11,21 @@
               <input wire:model="recepcionmaterial_id" wire:keyup="busnumal" style="width: 200px; border-radius: 5px; background-color: white; border: 0px solid #dc3545; color: #dc3545; margin-right: 2px; padding-top: 0;" id="recepcionmaterial_id" class="form-control" type="number" name="recepcionmaterial_id" placeholder="Ingrese el Número">@error('recepcionmaterial_id')<p ass="text-x text-red-500 italic">{{$message}}</p>@enderror
               
 
-              {{-- @php dd($recepciones->count()); @endphp
+              @php dd($recepciones); @endphp
               # de Almacen:
-                <select name="recepcionmaterial_id" wire:model="recepcionmaterial_id" 
+                
+              <select name="recepcionmaterial_id" wire:model="recepcionmaterial_id" 
                 wire:change="busnumal"
                 id="recepcionmaterial_id" class="form-control" style="text-transform: uppercase;">
+
                   <option value="NULL" style="width: 100%" selected>(SELECCIONE)</option>
+                
                   @foreach ($recepciones as $facturar)
                     <option value="{{$facturar->id}}">{{$facturar->id}}</option>
                   @endforeach
-                </select>@error('recepcionmaterial_id')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror --}}
+                
+                </select>
+                @error('recepcionmaterial_id')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror
 
 
               

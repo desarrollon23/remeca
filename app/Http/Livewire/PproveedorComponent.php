@@ -12,6 +12,9 @@ class PproveedorComponent extends Component
 
     public $cedula, $nombre, $direccion, $telefono, $correo, $pproveedor_id, $visible;
     public $accion = "store";
+
+    public $buscarproveedor;
+
     protected $rules = [
         'cedula' => 'required|max:12',
         'nombre' => 'required|max:100',
@@ -43,7 +46,8 @@ class PproveedorComponent extends Component
     ];
 
     public function render(){
-        $pproveedores = Proveedores::all();
+        $pproveedores = Proveedores::where('cedula', 'like', '%'.$this->buscarproveedor.'%')
+                        ->orwhere('nombre', 'like', '%'.$this->buscarproveedor.'%')->get();
         return view('livewire.pproveedor-component', compact('pproveedores'));
     }
 

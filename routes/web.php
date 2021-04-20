@@ -20,6 +20,7 @@ use App\Http\Controllers\VentaController;
 use App\Http\Livewire\DespachoComponent;
 use App\Http\Livewire\DetalleNegociacionVenComponent;
 use App\Http\Livewire\NegociacionComponent;
+use App\Http\Livewire\NegociacioncComponent;
 use App\Http\Livewire\VentaComponent;
 use App\Http\Livewire\VentasComponent;
 use App\Http\Livewire\AbonoVentaComponent;
@@ -98,6 +99,7 @@ Route::put('livewire/purchases/edit', CompradorComponent::class)->name('livewire
 Route::delete('livewire/purchases/delete', CompradorComponent::class)->name('livewire.purchases.delete');
 
 Route::get('livewire/ventas/negociacion', NegociacionComponent::class)->name('livewire.ventas.negociacion');
+Route::get('livewire/compras/negociacion', NegociacioncComponent::class)->name('livewire.compras.negociacion');
 
 Route::get('livewire/ventas/detallenegociacion', [DetalleNegociacionVenComponent::class, 'show'])->name('livewire.ventas.detallenegociacion');
 
