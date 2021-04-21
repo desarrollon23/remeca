@@ -488,7 +488,7 @@ class VentaComponent extends Component
         $productos = Producto::all();
         $venta = Venta::latest('id')->first();
         $materiales = Material::all();
-        $este=$this->venta;                                    
+        $este=$this->venta;
         $productosrecepcion=DetalleVenta::all()->where('idventa',$this->recepcionmaterial_id);
         $productosabonar=DB::table('detalle_negociacion_ventas')
             ->join('_pproductos', 'detalle_negociacion_ventas.producto_idn', '=', '_pproductos.id')

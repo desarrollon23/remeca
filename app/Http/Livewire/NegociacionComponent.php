@@ -228,7 +228,7 @@ class NegociacionComponent extends Component
     }
 
     public $totalpagonegven, $productosnegociacion;
-    public function update($recepcionmaterial_id){        
+    public function update($recepcionmaterial_id){ //ACTUALIZA LA NEGOCIACION DE VENTA
         $this->validate();
         $nc = DetalleNegociacionVenta::where('negociacion_id',$recepcionmaterial_id)->get()->count();
         if($nc==0){ 

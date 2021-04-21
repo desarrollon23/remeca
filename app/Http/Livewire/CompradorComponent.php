@@ -22,6 +22,8 @@ use App\Http\Livewire\Input;
 use App\Models\Inventario;
 use Illuminate\Http\Request;
 use App\Http\Livewire\Compras;
+use App\Models\Liquidez;
+use App\Models\PreciosProveedores;
 
 use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
@@ -52,6 +54,7 @@ class CompradorComponent extends Component
     public $toprod1, $toprod2, $toprod3, $toprod4, $toprod5, $toprod6, $toprod7, $toprod8, $toprod9, $toprod10;
     public $cantpro, $totalcalculado, $sobregiro, $vpeso, $recepciones;
     public $probc, $muesdesmaterial, $mostrar = "false", $mostrarm = "false";
+    public $nomostrarcalculopremantabpro="false", $mostrarpagoventas='false', $montotnc;
 
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
@@ -138,7 +141,7 @@ class CompradorComponent extends Component
             $this->pesodisponiblec=$this->pesodisponible; }
     }
 
-    public function calpreind($numero, $cantpro){
+    public function calpreind($numero, $cantpro){ /* PRECIOS MANUALES */
         (double)$this->totalcalculado=0;
         if(is_numeric($this->{"precio".$numero})){
             /* (double)$this->{"toprod".$numero}=(double)$this->{"cantidadp".$numero} * (double)$this->{"precio".$numero}; */
@@ -163,6 +166,38 @@ class CompradorComponent extends Component
                 $this->sobregiro="NO DEBE PAGAR MAS DEL TOTAL";
             }
         }
+    }
+    
+    public $efectivodisc, $bancodisc, $validamontotneventas, $validamontotntventas, $validamontotventas, $pagoefectivoventas, $pagotransfventas, $restapagoventas, $mostrarcalpagoventas, $totalpagoventas;
+    public function calrestaventas(){ //CALCULA EL RESTO DE LA NEGOCIACION
+        $this->restapagoventas=session('toprodacum');
+        if((double)$this->restapagoventas==0){
+            $this->validamontotnventas="NO DEBE"; $this->totalpagoventas=0; $this->restapagoventas=0;
+        }elseif(((double)$this->pagoefectivoventas+(double)$this->pagotransfventas)>(double)$this->restapagoventas){
+                $this->validamontotnventas="TOTAL DEBE SER MENOR O IGUAL A: ".(double)$this->restapagoventas;
+                $this->totalpagoventas=round((double)$this->pagoefectivoventas + (double)$this->pagotransfventas,2);
+                $this->restapagoventas=round((double)$this->restapagoventas-(double)$this->totalpagoventas,2);
+                /* $this->ocultarbotonc="false";  */$this->nopagarventas="true";
+        }else{
+            if((is_numeric((double)$this->pagoefectivoventas)) or (is_numeric((double)$this->pagotransfventas))){
+                //$idtipopagoneg, $pagoefectivoventas, $pagotransfventas, $totalpagoventas;
+                $this->validamontotnventas="";
+                $this->totalpagoventas=(double)$this->pagoefectivoventas + (double)$this->pagotransfventas;
+                $this->restapagoventas=(double)$this->restapagoventas-(double)$this->totalpagoventas;
+                /* $this->ocultarbotonc="true";  */$this->nopagarventas="false";
+            }
+        }
+        if($this->totalpagoventas==0){ $this->ocultarbotonventas="false"; }
+        if((double)$this->pagoefectivoventas>(double)$this->efectivodisc){
+            $this->validamontotneventas="EXEDIDO"; $this->nopagarventas="false";
+        }else{ $this->nopagarventas="true"; $this->validamontotneventas=""; } /* VALIDA EL BANCO */
+        if((double)$this->pagotransfventas>(double)$this->bancodisc){
+            $this->validamontotntventas="EXEDIDO"; $this->nopagarventas="false";
+        }else{ $this->nopagarventas="true"; $this->validamontotntventas=""; } /* VALIDA TOTAL DISPONIBLE */
+        if((double)$this->totalpagoventas>((double)$this->efectivodisc+(double)$this->bancodisc)){
+            $this->validamontotventas="NO TIENE CAPACIDAD DE PAGO, INGRESE UNA CANTIDAD MENOR";
+            $this->nopagarventas="false";
+        }else{ $this->nopagarventas="true"; }
     }
     
     public function verificarpeso(){ //CALCULA EL PESO DISPONIBLE
@@ -223,6 +258,13 @@ class CompradorComponent extends Component
         return $this->muesdesmaterial;
     }
 
+    public function traeprematerialcliente($cedula, $idproducto){
+        $probc= PreciosProveedores::where('cedula', $cedula)->where('idproducto', $idproducto)->get()/* ->pluck('precio')[0] */;
+        //dd($probc[0]->precio);
+        $this->muesdesmaterial=$probc[0]->precio;
+        return $this->muesdesmaterial;
+    }
+    
     public function generar(){ //AQUÍ SE GUARDA LA RECEPCION DESPUES SE GUARDAN LOS MATERIALES       
         if(!is_null($this->recepcionmaterial_id)){
         $nc = Compra::count();
@@ -245,7 +287,8 @@ class CompradorComponent extends Component
         ]);
         $compra = Compra::latest('id')->first();
         $this->compra=$compra->id;
-        $this->mostrar = "true"; $this->mostrarm = "true";
+        $this->mostrar = "true"; $this->mostrarm = "true"; $this->mostrarpagoventas='true';
+        auditar('COMPRA #: '.$this->compra, 'GENERAR');
         $this->dispatchBrowserEvent('hide-form', ['message' => 'Compra de Material Generada']);
         }else{
             $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'Ingrese el número de Almacen ']);
@@ -313,8 +356,10 @@ class CompradorComponent extends Component
         $compra = Compra::findOrFail($compra);
         $compra->delete();
         $this->mostrar = "false"; $this->mostrarm = "false";
+        auditar('COMPRA #: '.$this->compra, 'CANCELAR');
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Compra de Material Eliminada!']);
-        $this->limpiar();
+        /* $this->limpiar(); */
+        $this->reset();
     }
 
     public function limpiar(){
@@ -333,11 +378,13 @@ class CompradorComponent extends Component
         $productos = Producto::all();
         $recepcion = Almacen::all()->where('recibido', 'NO');
         $recepciones = Almacen::all()->where('facturado', 'NO');
-        dd($recepciones->count());
+        //dd($recepciones->count());
         $materiales = Material::all();
         $este=$this->recepcion;
         $productosrecepcion=Detallealmacen::all()->where('recepcionmaterial_id', 
         $this->recepcionmaterial_id);
+        $this->efectivodisc = Liquidez::where('id', 1)->get()->pluck('efectivo')[0];
+        $this->bancodisc = Liquidez::where('id', 1)->get()->pluck('banco')[0];
         return view('livewire.comprador-component', [
                     'materiales'=>$materiales,
             ], compact('vendedores', 'lugares', 'productos', 'recepcion', 'productosrecepcion', 'recepciones'));

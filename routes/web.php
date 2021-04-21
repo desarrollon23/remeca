@@ -19,6 +19,7 @@ use App\Http\Controllers\Livewire\PurchaseController;
 use App\Http\Controllers\VentaController;
 use App\Http\Livewire\DespachoComponent;
 use App\Http\Livewire\DetalleNegociacionVenComponent;
+use App\Http\Livewire\DetalleNegociacionComComponent;
 use App\Http\Livewire\NegociacionComponent;
 use App\Http\Livewire\NegociacioncComponent;
 use App\Http\Livewire\VentaComponent;
@@ -104,6 +105,7 @@ Route::get('livewire/compras/negociacion', NegociacioncComponent::class)->name('
 Route::get('livewire/ventas/detallenegociacion', [DetalleNegociacionVenComponent::class, 'show'])->name('livewire.ventas.detallenegociacion');
 
 Route::get('livewire/ventas/detallenegociacion/{cedula}', [DetalleNegociacionVenComponent::class, 'show'])->name('livewire.ventas.detallenegociacion');
+Route::get('livewire/compras/detallenegociacion/{cedula}', [DetalleNegociacionComComponent::class, 'show'])->name('livewire.compras.detallenegociacion');
 
 Route::get('livewire/{cedula}', [DetalleNegociacionVenComponent::class, 'show'])->name('livewire');
 

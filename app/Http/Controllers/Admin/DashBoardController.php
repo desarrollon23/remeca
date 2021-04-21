@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\almacen;
 use App\Models\Compra;
+use App\Models\ConsultaNegComMontoPorPagar;
 use App\Models\ConsultaNegVenMontoPorCobrar;
 use App\Models\CuentasMaterial;
 use App\Models\NegociacionVenta;
@@ -46,17 +47,18 @@ class DashBoardController extends Controller
 
         $inventarios = Producto::all();
         /* $materialcpp = DetalleNegociacionVenta::all(); */
-        $materialcpp = CuentasMaterial::all();
+        $materialcppcpc = CuentasMaterial::all();
         
-        $ccpp = Compra::join("proveedores","_ccompras.cedula","=","proveedores.cedula")
+        /* $ccpp = Compra::join("proveedores","_ccompras.cedula","=","proveedores.cedula")
                         ->where('_ccompras.idestatuspago','=',2) // 2 = POR PAGAR
-                        ->get();
+                        ->get(); */
+        $ccpp = ConsultaNegComMontoPorPagar::all(); //la estructura de esta consula está en la BBDD
         $ccpc = ConsultaNegVenMontoPorCobrar::all(); //la estructura de esta consula está en la BBDD
         //dd($ccpc);
         $efectivo = Liquidez::where('id', 1)->get()->pluck('efectivo');
         $banco = Liquidez::where('id', 1)->get()->pluck('banco');
         /* dd($efectivo[0]); */
         /* $efectivo; */
-        return view('admin.dashboard', compact(['emd', 'dmd' ,'inventarios', 'materialcpp', 'ccpp', 'ccpc', 'efectivo', 'banco']));
+        return view('admin.dashboard', compact(['emd', 'dmd' ,'inventarios', 'materialcppcpc', 'ccpp', 'ccpc', 'efectivo', 'banco']));
     }
 }
