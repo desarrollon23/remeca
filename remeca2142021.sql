@@ -1997,6 +1997,7 @@ ALTER TABLE `_ccategoriaproducto`
 --
 ALTER TABLE `_ccompras`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  ADD KEY `idrecepcion` (`idrecepcion`);
 
 --
 -- AUTO_INCREMENT de la tabla `_ddetallecompras`
