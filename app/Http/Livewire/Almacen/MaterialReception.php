@@ -163,9 +163,12 @@ class MaterialReception extends Component{
         return $this->muesdesmaterial;
     }
 
+    public $nrm;
     public function generar(){ //AQUÍ SE GUARDA LA RECEPCION DESPUES SE GUARDAN LOS MATERIALES       
-        $nrm = Almacen::count();       
-        if($nrm==0){ $nrm = 1; }else{ ++$nrm; }       
+        /* $nrm = Almacen::count(); 
+        if($nrm==0){ $nrm = 1; }else{ ++$nrm; } */
+        $nr = Almacen::latest('id')->first();
+        if($nr['id']==0){ $nrm = 1; }else{ $nrm=$nr['id']+1; }
         $datos = Almacen::create([
             'id' => $nrm,           
             'fecha' => $this->fecha,

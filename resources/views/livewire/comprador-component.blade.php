@@ -343,7 +343,7 @@ if ($productorecepcion->operacion=="SUMA") { //PERMITE MOSTRAR LOS INPUT
               </label></h3>
             </div>
             <div class="card-body" style="display: flex; flex-wrap: wrap; margin-right: 2px;">
-              <div style="width: 49%; margin-right: 2px;">
+              {{-- <div style="width: 49%; margin-right: 2px;">
               <label for="idestatuspago" style="width: 100%">Estatus de Pago
               <select x-bind:disabled="!{{ $mostrar }}" id="state.idestatuspago" name="state.idestatuspago" wire:model.defer="state.idestatuspago" style="width: 100%" placeholder="SELECCIONE" required>
                 <option value="SELECCIONE" selected>(SELECCIONE)</option>idestatuspago
@@ -354,15 +354,17 @@ if ($productorecepcion->operacion=="SUMA") { //PERMITE MOSTRAR LOS INPUT
               <select x-bind:disabled="!{{ $mostrar }}" id="state.idtipopago" name="state.idtipopago" wire:model.defer="state.idtipopago" style="width: 100%;" placeholder="SELECCIONE" required>
                   <option value="SELECCIONE" selected>(SELECCIONE)</option>
                   <option value="1">Contado</option><option value="2">Crédito</option><option value="3">Abono</option>
-                </select>@error('state.idtipopago')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</label></div>
+                </select>@error('state.idtipopago')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</label></div> --}}
               <div style="width: 100%; margin-right: 2px;">
               <label for="observacionesc">Observaciones
-              <textarea x-bind:disabled="!{{ $mostrar }}" id="state.observacionesc" name="state.observacionesc" wire:model.defer="state.observacionesc" rows="1" style="width: 100%; margin-right: 2px;" required>Ninguna</textarea>@error('state.observacionesc')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</label></div>
+              <textarea x-bind:disabled="!{{ $mostrar }}" id="observacionesc" name="observacionesc" wire:model="observacionesc" rows="1" style="width: 100%; margin-right: 2px;" required>Ninguna</textarea>@error('observacionesc')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</label></div>
             <div style="width: 80%; display: flex; flex-wrap: wrap;">
               <div style="width: 49%; margin-right: 2px;">
                 <button x-show="{{ $mostrar }}" wire:click="default({{ $compra }})" class="btn btn-secondary ml-2 mr-2"><i class="fa fa-times mr-1"></i> CANCELAR</button></div>
               <div style="width: 49%; margin-right: 2px;">
-                <button x-show="{{ $mostrar }}" id="btn-guardar" wire:click="update({{ $compra.','.$productosrecepcion.','.$totalcalculado }})" class="btn btn-primary  ml-2 mr-2"><i class="fa fa-save mr-1"></i> GUARDAR</button></div>
+                @if ($this->nopagarventas=="true")
+                <button x-show="{{ $mostrar }}" id="btn-guardar" wire:click="update({{ $compra.','.$productosrecepcion.','.$totalcalculado }})" class="btn btn-primary  ml-2 mr-2"><i class="fa fa-save mr-1"></i> GUARDAR</button>
+                @endif</div>
               <div style="width: 49%; margin-right: 2px;">
                 <button x-show="!{{ $mostrar }}" id="btn-generar" wire:click="generar" class="btn btn-primary  ml-2 mr-2"><i class="fa fa-save mr-1"></i> GENERAR</button></label>
               </div>

@@ -9,7 +9,7 @@ class Compra extends Model
 {
     public $table = "_ccompras";
     use HasFactory;
-    protected $fillable = ['id', 'idrecepcion', 'fecharecepcion', 'fechacompra', 'hora', 'cedula', 'idlugar', 'idestatuspago', 'idtipopago', 'totalcomra', 'totalpagado', 'diferenciapago', 'observacionesc'];
+    protected $fillable = ['id', 'idrecepcion', 'fecharecepcion', 'fechacompra', 'hora', 'cedula', 'idlugar', 'idestatuspago', 'idtipopago', 'efectivo', 'transferencia', 'totalcomra', 'totalpagado', 'diferenciapago', 'observacionesc'];
 
     //Relacion uno a muchos inversa con Proveedores y Productos
     public function Proveedores(){
