@@ -14,7 +14,7 @@ div.detalle.show { display: block !important; }
 @php $formatter = new NumberFormatter('', NumberFormatter::DECIMAL); @endphp
 <div class="pt-1">
     <div class="card-header"><h1 class="card-title text-info">
-      <strong>ADMINISTRACION -> Negociaciones de Ventas</strong>
+      <strong>ADMINISTRACION -> Ventas - CPP (KG) & CPC ($)</strong>
     </h1></div>
     {{-- <div x-data="{ open: false }" class="content"> --}}{{-- <div x-data="pdisponible()"> --}}
   @if ($totalnegov->count())
@@ -36,9 +36,9 @@ div.detalle.show { display: block !important; }
                 <div class="card">
                   @php
                   
-                  $sumamonto=(double)$negociaciones[0]->montotn+(double)$creditos[0]->montototal;
+                  /* $sumamonto=(double)$negociaciones[0]->montotn+(double)$creditos[0]->montototal;
                   $sumapagado=(double)$negociaciones[0]->totalpagado+(double)$creditos[0]->totalpagado;
-                  $sumaresta=(double)$negociaciones[0]->restan+(double)$creditos[0]->totalresta;
+                  $sumaresta=(double)$negociaciones[0]->restan+(double)$creditos[0]->totalresta; */
                       /* dd(
                          ' montotn='.$negociaciones[0]->montotn
                         .' - totalpagado='.$negociaciones[0]->totalpagado
@@ -50,6 +50,26 @@ div.detalle.show { display: block !important; }
                         .' - sumapagado='.$sumapagado
                         .' - sumaresta='.$sumaresta
                       ); */
+                      /* $sumamonto=(double)$creditos->sum('montototal');
+                      $sumapagado=(double)$creditos->count();
+                      dd(
+                          ' Suma creditos='.$sumamonto.
+                          ' creditos='.$sumapagado
+                        ); */
+                  
+                      if($negociaciones->count()>0 and $creditos->count()>0){
+                        $sumamonto=(double)$negociaciones->sum('montotn')+(double)$creditos->sum('montototal');
+                        $sumapagado=(double)$negociaciones->sum('totalpagado')+(double)$creditos->sum('totalpagado');
+                        $sumaresta=(double)$negociaciones->sum('restan')+(double)$creditos->sum('totalresta');
+                      }elseif($negociaciones->count()==0 and $creditos->count()>0){
+                        $sumamonto=(double)$creditos->sum('montototal');
+                        $sumapagado=(double)$creditos->sum('totalpagado');
+                        $sumaresta=(double)$creditos->sum('totalresta');
+                      }elseif($negociaciones->count()>0 and $creditos->count()==0){
+                        $sumamonto=(double)$negociaciones->sum('montotn');
+                        $sumapagado=(double)$negociaciones->sum('totalpagado');
+                        $sumaresta=(double)$negociaciones->sum('restan');
+                      }
                   @endphp
                   <div class="card-header bg-info">
                     <div style="display: flex; flex-wrap: wrap; margin-right: 2px;"><h3 class="card-title" style="color: #fff; text-shadow: 2px 2px 2px black;">Lista de  Negociaciones y Créditos&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Monto $: 

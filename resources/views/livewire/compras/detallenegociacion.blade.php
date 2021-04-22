@@ -14,7 +14,7 @@
   @php $formatter = new NumberFormatter('', NumberFormatter::DECIMAL); @endphp
   <div class="pt-1">
       <div class="card-header"><h1 class="card-title text-info">
-        <strong>ADMINISTRACION -> Negociaciones de Compras</strong>
+        <strong>ADMINISTRACION -> Compras - CPP ($) & CPC (KG)</strong>
       </h1></div>
       {{-- <div x-data="{ open: false }" class="content"> --}}{{-- <div x-data="pdisponible()"> --}}
     @if ($totalnegov->count())
@@ -34,9 +34,31 @@
                 </div>{{-- Lista de Materiales #336699 --}}
                 <div class="col-lg-12 col-md-12 col-xs-12 mt-2">
                   <div class="card">
+                    @php
+                      if($negociaciones->count()>0 and $creditos->count()>0){
+                        $sumamonto=(double)$negociaciones->sum('montotn')+(double)$creditos->sum('montototal');
+                        $sumapagado=(double)$negociaciones->sum('totalpagado')+(double)$creditos->sum('totalpagado');
+                        $sumaresta=(double)$negociaciones->sum('restan')+(double)$creditos->sum('totalresta');
+                      }elseif($negociaciones->count()==0 and $creditos->count()>0){
+                        $sumamonto=(double)$creditos->sum('montototal');
+                        $sumapagado=(double)$creditos->sum('totalpagado');
+                        $sumaresta=(double)$creditos->sum('totalresta');
+                      }elseif($negociaciones->count()>0 and $creditos->count()==0){
+                        $sumamonto=(double)$negociaciones->sum('montotn');
+                        $sumapagado=(double)$negociaciones->sum('totalpagado');
+                        $sumaresta=(double)$negociaciones->sum('restan');
+                      }
+                  @endphp
                     <div class="card-header bg-info">
-                      <div style="display: flex; flex-wrap: wrap; margin-right: 2px;"><h3 class="card-title" style="color: #fff; text-shadow: 2px 2px 2px black;">Lista de  Negociaciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Monto $: 
-                        {{ $formatter->formatCurrency($totalnegov[0]->monto, ''), PHP_EOL }}</h3></div>
+                      <div style="display: flex; flex-wrap: wrap; margin-right: 2px;"><h3 class="card-title" style="color: #fff; text-shadow: 2px 2px 2px black;">Lista de  Negociaciones y Créditos&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Monto $: 
+                        {{-- {{ $formatter->formatCurrency($totalnegov[0]->monto, ''), PHP_EOL }} --}}
+
+                        {{ $formatter->formatCurrency($sumamonto, ''), PHP_EOL }}
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pagado $: 
+                        {{ $formatter->formatCurrency($sumapagado, ''), PHP_EOL }}
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resta $: 
+                        {{ $formatter->formatCurrency($sumaresta, ''), PHP_EOL }}
+                      </h3></div>
                     </div>
                     <div class="card-body" style="display: flex; flex-wrap: wrap; margin-right: 2px;">
                       @foreach ($negociaciones as $negociacion)
@@ -139,6 +161,54 @@
                           </div>
                         </div>
                       @endforeach
+
+                    {{-- AMORTIZACIONES A CREDITOS --}}
+                    @foreach ($creditos as $credito)
+                    <div class="col-lg-12 col-md-12 col-xs-12 mt-2">
+                      <div class="card">
+                        <div class="card-header bg-info">
+                          <div style="display: flex; flex-wrap: wrap; margin-right: 2px;">
+                            <h3 class="card-title" style="color: #fff; text-shadow: 2px 2px 2px black;">
+                              Crédito #: {{ $credito->idcompra }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              Fecha: {{ $credito->fecha }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+                            </div>
+                          </div>
+                          <div class="card-body" style="display: flex; flex-wrap: wrap; margin-right: 2px;">
+                            <div><label style="width: 100%; margin-right: 2px;">Factura: 
+                              @if($amortizacionesdepago->count())
+                            {{ $amortizacionesdepago->where('factura',$credito->idcompra)->pluck('factura')[0] }}
+                            @endif
+                            </label></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div><label style="width: 100%; margin-right: 2px;">Observaciones: {{ $credito->observaciones }}</label></div>
+                          </div>{{-- DETALLE DE NEGOCIACION --}}
+                      {{-- @php dd($creditos);  @endphp --}}
+                          {{-- ABONOS A CREDTOS --}}
+                          @if ($amortizacionesdepago->where('id',$credito->id)->count())
+                            <label style="text-align: center; color: #17a2b8; width: 100%;">AMORTIZACIONES DE PAGO</label><label style="text-align: right;font-weight:900; color:red; width: 95%;">CREDITO POR:
+                                {{ $formatter->formatCurrency($amortizacionesdepago->where('id',$credito->id)->pluck('monto')[0], ''), PHP_EOL }}</label>
+                            <table class="table table-striped"><thead><tr>
+                              <th scope="col" colspan="2">FECHA - HORA</th>
+                              <th scope="col">EFECTIVO</th>
+                              <th scope="col">TRANSFERENCIA</th>
+                              <th scope="col">PAGADO</th>
+                              <th scope="col">RESTA</th>
+                              </tr></thead><tbody>
+                              @foreach ($amortizacionesdepago->where('id',$credito->id) as $amortizaciondepago)
+                                {{-- <tr><td scope="row">{{ $loop->iteration }}</td> --}}
+                                  <td colspan="2">{{ $amortizaciondepago->fecha }} - {{ $amortizaciondepago->hora }}</td>
+                                  <td>{{ $formatter->formatCurrency($amortizaciondepago->efectivo, ''), PHP_EOL }}</td>
+                                  <td>{{ $formatter->formatCurrency($amortizaciondepago->transferencia, ''), PHP_EOL }}</td>
+                                  <td>{{ $formatter->formatCurrency($amortizaciondepago->pago, ''), PHP_EOL }}</td>
+                                  <td>{{ $formatter->formatCurrency($amortizaciondepago->resta, ''), PHP_EOL }}</td>
+                                </tr>
+                              @endforeach</tbody>
+                            </table>
+                          @else <h1 style="font-weight:900;">{{ 'No tiene Amortizaciones de Pago'}}</h1>@endif
+
+
+                        </div>
+                      </div>
+                    @endforeach
                     </div>
                   </div>
                 </div>

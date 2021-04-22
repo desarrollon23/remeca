@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\ConsultaAbonoNegociacionCompra;
 use App\Models\ConsultaAmortizacionNegociacionCompra;
 use App\Models\ConsultaNegComMontoPorPagar;
+use App\Models\CuentasPorPagarCompras;
 use App\Models\NegociacionCompra;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -18,6 +19,11 @@ class DetalleNegociacionComComponent extends Component
         $totalnegov = ConsultaNegComMontoPorPagar::where('cedula', $cedula)->get();
         $negociaciones = NegociacionCompra::where('cedulan', $cedula)
                                             ->where('finalizada','NO')->get();
+
+        $creditos = CuentasPorPagarCompras::where('cedula', $cedula)
+                                            ->where('idnegociacioncompra', '=', 0)
+                                            ->where('finalizada','NO')->get();
+        //dd($creditos);
         if($negociaciones->count()!=0){
             $recepcionmaterial_id = $negociaciones[0]->id;
         }/* else{
@@ -25,14 +31,15 @@ class DetalleNegociacionComComponent extends Component
                                             ->where('finalizada','NO')->get();
             $recepcionmaterial_id = $negociaciones[0]->id;
         } */
-        $productosrecepcion=DB::table('detalle_negociacion_ventas')
-            ->join('_pproductos', 'detalle_negociacion_ventas.producto_idn', '=', '_pproductos.id')
+        $productosrecepcion=DB::table('detalle_negociacion_compras')
+            ->join('_pproductos', 'detalle_negociacion_compras.producto_idn', '=', '_pproductos.id')
             ->get();
+            //dd($productosrecepcion);
         $productosabonados=ConsultaAbonoNegociacionCompra::all();
         $amortizacionesdepago=ConsultaAmortizacionNegociacionCompra::all();
         
         return view('livewire.compras.detallenegociacion', 
-                compact('totalnegov', 'negociaciones', 'productosrecepcion', 'productosabonados', 'amortizacionesdepago'));
+                compact('totalnegov', 'negociaciones', 'creditos', 'productosrecepcion', 'productosabonados', 'amortizacionesdepago'));
         /* return view('livewire.detalle-negociacion-com-component'); */
     }
 }

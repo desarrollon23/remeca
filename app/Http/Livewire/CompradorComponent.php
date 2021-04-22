@@ -301,14 +301,14 @@ class CompradorComponent extends Component
         }
     }
 
-    public $idtipoabonoven;
+    //public $idtipoabonoven;
     public function update($compra, $productosrecepcion, $totalcalculado){
         //$this->validate();
 
-        if($this->pagoefectivoventas>0){ $this->idtipoabonoven=1; }
-        if($this->pagotransfventas>0){ $this->idtipoabonoven=2; }
-        if($this->pagotransfventas>0 and $this->pagoefectivoventas>0){ $this->idtipoabonoven=3; }
-        if($this->pagotransfventas=="" and $this->pagoefectivoventas==""){ $this->idtipoabonoven=0; }
+        if($this->pagoefectivoventas>0){ $idtipoabonoven=1; }
+        if($this->pagotransfventas>0){ $idtipoabonoven=2; }
+        if($this->pagotransfventas>0 and $this->pagoefectivoventas>0){ $idtipoabonoven=3; }
+        if($this->pagotransfventas=="" and $this->pagoefectivoventas==""){ $idtipoabonoven=0; }
         if($this->restapagoventas>0){ $this->idtipopagoventas=2; $this->idestatuspagoventas=2;
         }else{ $this->idtipopagoventas=1; $this->idestatuspagoventas=1; }
         
@@ -324,12 +324,19 @@ class CompradorComponent extends Component
                 'idtipopago' => $this->idtipopagoventas,
                 'efectivo' => (double)$this->pagoefectivoventas,
                 'transferencia' => (double)$this->pagotransfventas,
-                'idtipoabonov' => $this->idtipoabonoven,
+                'idtipoabonov' => $idtipoabonoven,
                 'totalcomra' => (double)session('toprodacum'),
                 'totalpagado' =>(double)$this->totalpagoventas,
                 'diferenciapago' => (double)$this->restapagoventas,
                 'observacionesc' => $this->observacionesc
-            ]);
+            ]); //ACTUALIZA LA LIQUIDEZ
+            $liquidez = Liquidez::find(1);
+            $this->actefectivo=(double)$liquidez->efectivo-(double)$this->pagoefectivoven;
+            $this->acttransferencia=(double)$liquidez->banco-(double)$this->pagotransfven;
+            $liquidez->update([
+                'efectivo' => (double)$this->actefectivo,
+                'banco' => (double)$this->acttransferencia
+            ]); //ACTUALIZA EL INVENTARIO
             $recepcion->update(['facturado' => 'SI']);
             foreach ($productosrecepcion as $productocompra){
                 $this->i=$this->i+1;
@@ -340,9 +347,7 @@ class CompradorComponent extends Component
                    'operacion' => $productocompra['operacion'],
                    'preciopro' => (double)$this->{"precio".$this->i},
                    'totalpro' => (double)$this->{"toprod".$this->i}
-                ]);
-                //guardar la compra en el inventario
-                //buscar la existena del producto en la tabla producto
+                ]); //guardar la compra en el inventario //buscar la existena del producto en la tabla producto
                 $existenciapro=Producto::find($productocompra['producto_id']);
                 $datosInventario = Inventario::create([
                     'fecha' => date('d-m-Y'),
@@ -351,8 +356,7 @@ class CompradorComponent extends Component
                     'comprados' => (double)$productocompra['cantidadprorecmat'],
                     'vendidos' => 0,
                     'existencia' => (double)$existenciapro->cantidad
-                ]);
-                //actualizar la existencia en la tabla del producto
+                ]); //actualizar la existencia en la tabla del producto
                 $datospro = Producto::find($productocompra['producto_id']);
                 $nexistencia = $existenciapro->cantidad+$productocompra['cantidadprorecmat'];
                 $datospro->update(['cantidad' => (double)$nexistencia]);
@@ -371,7 +375,7 @@ class CompradorComponent extends Component
                 'idtipopago' => $this->idtipopagoventas,
                 'efectivo' => (double)$this->pagoefectivoventas,
                 'transferencia' => (double)$this->pagotransfventas,
-                'idtipoabonov' => $this->idtipoabonoven,
+                'idtipoabonov' => $idtipoabonoven,
                 'totalcomra' => (double)session('toprodacum'),
                 'totalpagado' =>(double)$this->totalpagoventas,
                 'diferenciapago' => (double)$this->restapagoventas,
