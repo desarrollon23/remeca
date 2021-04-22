@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-04-2021 a las 05:59:06
+-- Tiempo de generación: 22-04-2021 a las 06:07:13
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 7.4.15
 
@@ -14,6 +14,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `remeca`
 --
+CREATE DATABASE IF NOT EXISTS `remeca` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `remeca`;
 
 -- --------------------------------------------------------
 
@@ -21,6 +23,7 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `abono_material_negociacion_compras`
 --
 
+DROP TABLE IF EXISTS `abono_material_negociacion_compras`;
 CREATE TABLE `abono_material_negociacion_compras` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `negociacion_id` bigint(20) UNSIGNED NOT NULL,
@@ -34,6 +37,7 @@ CREATE TABLE `abono_material_negociacion_compras` (
 --
 -- Disparadores `abono_material_negociacion_compras`
 --
+DROP TRIGGER IF EXISTS `Insert_en_abono_MatNegCom`;
 DELIMITER $$
 CREATE TRIGGER `Insert_en_abono_MatNegCom` AFTER INSERT ON `abono_material_negociacion_compras` FOR EACH ROW BEGIN
 SET @ecpc = (SELECT cpc FROM cuentasmaterial WHERE idproducto = NEW.idproducton);
@@ -49,6 +53,7 @@ DELIMITER ;
 -- Estructura de tabla para la tabla `abono_material_negociacion_ventas`
 --
 
+DROP TABLE IF EXISTS `abono_material_negociacion_ventas`;
 CREATE TABLE `abono_material_negociacion_ventas` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `negociacion_id` bigint(20) UNSIGNED NOT NULL,
@@ -76,6 +81,7 @@ INSERT INTO `abono_material_negociacion_ventas` (`id`, `negociacion_id`, `idprod
 --
 -- Disparadores `abono_material_negociacion_ventas`
 --
+DROP TRIGGER IF EXISTS `Insert_en_abono_MatNegVen`;
 DELIMITER $$
 CREATE TRIGGER `Insert_en_abono_MatNegVen` AFTER INSERT ON `abono_material_negociacion_ventas` FOR EACH ROW BEGIN
 SET @ecpp = (SELECT cpp FROM cuentasmaterial WHERE idproducto = NEW.idproducton);
@@ -91,6 +97,7 @@ DELIMITER ;
 -- Estructura de tabla para la tabla `auditoria`
 --
 
+DROP TABLE IF EXISTS `auditoria`;
 CREATE TABLE `auditoria` (
   `id` bigint(20) NOT NULL,
   `fechahora` varchar(20) NOT NULL,
@@ -332,6 +339,7 @@ INSERT INTO `auditoria` (`id`, `fechahora`, `idusuario`, `usuario`, `nombre`, `p
 -- Estructura de tabla para la tabla `clientes`
 --
 
+DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE `clientes` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `cedulac` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -362,6 +370,7 @@ INSERT INTO `clientes` (`id`, `cedulac`, `nombrec`, `direccionc`, `telefonoc`, `
 -- Estructura de tabla para la tabla `cuentasmaterial`
 --
 
+DROP TABLE IF EXISTS `cuentasmaterial`;
 CREATE TABLE `cuentasmaterial` (
   `id` bigint(20) NOT NULL,
   `idproducto` bigint(20) NOT NULL,
@@ -391,6 +400,7 @@ INSERT INTO `cuentasmaterial` (`id`, `idproducto`, `disponible`, `cpc`, `cpp`, `
 -- Estructura de tabla para la tabla `cuentas_por_cobrar_ventas`
 --
 
+DROP TABLE IF EXISTS `cuentas_por_cobrar_ventas`;
 CREATE TABLE `cuentas_por_cobrar_ventas` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `idventa` bigint(20) DEFAULT NULL,
@@ -439,6 +449,7 @@ INSERT INTO `cuentas_por_cobrar_ventas` (`id`, `idventa`, `idnegociacionventa`, 
 -- Estructura de tabla para la tabla `cuentas_por_pagar_compras`
 --
 
+DROP TABLE IF EXISTS `cuentas_por_pagar_compras`;
 CREATE TABLE `cuentas_por_pagar_compras` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `idcompra` bigint(20) DEFAULT NULL,
@@ -471,6 +482,7 @@ INSERT INTO `cuentas_por_pagar_compras` (`id`, `idcompra`, `idnegociacioncompra`
 -- Estructura de tabla para la tabla `despacho_material`
 --
 
+DROP TABLE IF EXISTS `despacho_material`;
 CREATE TABLE `despacho_material` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `fechaventad` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -515,6 +527,7 @@ INSERT INTO `despacho_material` (`id`, `fechaventad`, `horaventad`, `idlugard`, 
 -- Estructura de tabla para la tabla `detallerecmat`
 --
 
+DROP TABLE IF EXISTS `detallerecmat`;
 CREATE TABLE `detallerecmat` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `recepcionmaterial_id` bigint(20) UNSIGNED NOT NULL,
@@ -559,6 +572,7 @@ INSERT INTO `detallerecmat` (`id`, `recepcionmaterial_id`, `producto_id`, `canti
 -- Estructura de tabla para la tabla `detalle_cuentas_por_cobrar_ventas`
 --
 
+DROP TABLE IF EXISTS `detalle_cuentas_por_cobrar_ventas`;
 CREATE TABLE `detalle_cuentas_por_cobrar_ventas` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `idcpcv` bigint(20) DEFAULT NULL,
@@ -619,6 +633,7 @@ INSERT INTO `detalle_cuentas_por_cobrar_ventas` (`id`, `idcpcv`, `fecha`, `hora`
 --
 -- Disparadores `detalle_cuentas_por_cobrar_ventas`
 --
+DROP TRIGGER IF EXISTS `Delete_en_DetalleCPC`;
 DELIMITER $$
 CREATE TRIGGER `Delete_en_DetalleCPC` AFTER DELETE ON `detalle_cuentas_por_cobrar_ventas` FOR EACH ROW BEGIN
 SET @ed = (SELECT efectivo FROM liquidez WHERE id = 1);
@@ -629,6 +644,7 @@ UPDATE liquidez SET efectivo = @ne, banco = @nb WHERE id = 1;
 END
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `Insert_en_DetalleCPC`;
 DELIMITER $$
 CREATE TRIGGER `Insert_en_DetalleCPC` AFTER INSERT ON `detalle_cuentas_por_cobrar_ventas` FOR EACH ROW BEGIN
 SET @ed = (SELECT efectivo FROM liquidez WHERE id = 1);
@@ -646,6 +662,7 @@ DELIMITER ;
 -- Estructura de tabla para la tabla `detalle_cuentas_por_pagar_compras`
 --
 
+DROP TABLE IF EXISTS `detalle_cuentas_por_pagar_compras`;
 CREATE TABLE `detalle_cuentas_por_pagar_compras` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `idcppc` bigint(20) DEFAULT NULL,
@@ -670,6 +687,7 @@ INSERT INTO `detalle_cuentas_por_pagar_compras` (`id`, `idcppc`, `fecha`, `hora`
 --
 -- Disparadores `detalle_cuentas_por_pagar_compras`
 --
+DROP TRIGGER IF EXISTS `Delete_en_DetalleCPP`;
 DELIMITER $$
 CREATE TRIGGER `Delete_en_DetalleCPP` AFTER DELETE ON `detalle_cuentas_por_pagar_compras` FOR EACH ROW BEGIN
 SET @ed = (SELECT efectivo FROM liquidez WHERE id = 1);
@@ -680,6 +698,7 @@ UPDATE liquidez SET efectivo = @ne, banco = @nb WHERE id = 1;
 END
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `Insert_en_DetalleCPP`;
 DELIMITER $$
 CREATE TRIGGER `Insert_en_DetalleCPP` AFTER INSERT ON `detalle_cuentas_por_pagar_compras` FOR EACH ROW BEGIN
 SET @ed = (SELECT efectivo FROM liquidez WHERE id = 1);
@@ -697,6 +716,7 @@ DELIMITER ;
 -- Estructura de tabla para la tabla `detalle_negociacion_compras`
 --
 
+DROP TABLE IF EXISTS `detalle_negociacion_compras`;
 CREATE TABLE `detalle_negociacion_compras` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `negociacion_id` bigint(20) UNSIGNED NOT NULL,
@@ -743,6 +763,7 @@ INSERT INTO `detalle_negociacion_compras` (`id`, `negociacion_id`, `producto_idn
 -- Estructura de tabla para la tabla `detalle_negociacion_ventas`
 --
 
+DROP TABLE IF EXISTS `detalle_negociacion_ventas`;
 CREATE TABLE `detalle_negociacion_ventas` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `negociacion_id` bigint(20) UNSIGNED NOT NULL,
@@ -778,6 +799,7 @@ INSERT INTO `detalle_negociacion_ventas` (`id`, `negociacion_id`, `producto_idn`
 -- Estructura de tabla para la tabla `detalle_ventas`
 --
 
+DROP TABLE IF EXISTS `detalle_ventas`;
 CREATE TABLE `detalle_ventas` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `idventa` bigint(20) UNSIGNED NOT NULL,
@@ -818,6 +840,7 @@ INSERT INTO `detalle_ventas` (`id`, `idventa`, `idproductov`, `cantidadprov`, `o
 -- Estructura de tabla para la tabla `failed_jobs`
 --
 
+DROP TABLE IF EXISTS `failed_jobs`;
 CREATE TABLE `failed_jobs` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -834,6 +857,7 @@ CREATE TABLE `failed_jobs` (
 -- Estructura de tabla para la tabla `liquidez`
 --
 
+DROP TABLE IF EXISTS `liquidez`;
 CREATE TABLE `liquidez` (
   `id` bigint(20) NOT NULL,
   `efectivo` double(102,2) DEFAULT NULL,
@@ -858,6 +882,7 @@ INSERT INTO `liquidez` (`id`, `efectivo`, `banco`, `descripcion`, `created_at`, 
 -- Estructura de tabla para la tabla `migrations`
 --
 
+DROP TABLE IF EXISTS `migrations`;
 CREATE TABLE `migrations` (
   `id` int(10) UNSIGNED NOT NULL,
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -901,6 +926,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 -- Estructura de tabla para la tabla `model_has_permissions`
 --
 
+DROP TABLE IF EXISTS `model_has_permissions`;
 CREATE TABLE `model_has_permissions` (
   `permission_id` bigint(20) UNSIGNED NOT NULL,
   `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -913,6 +939,7 @@ CREATE TABLE `model_has_permissions` (
 -- Estructura de tabla para la tabla `model_has_roles`
 --
 
+DROP TABLE IF EXISTS `model_has_roles`;
 CREATE TABLE `model_has_roles` (
   `role_id` bigint(20) UNSIGNED NOT NULL,
   `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -939,6 +966,7 @@ INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 -- Estructura de tabla para la tabla `negociacion_compras`
 --
 
+DROP TABLE IF EXISTS `negociacion_compras`;
 CREATE TABLE `negociacion_compras` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `fechan` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -993,6 +1021,7 @@ INSERT INTO `negociacion_compras` (`id`, `fechan`, `horan`, `cedulan`, `idlugarn
 --
 -- Disparadores `negociacion_compras`
 --
+DROP TRIGGER IF EXISTS `Insert_en_Compras_CPP_DCPP`;
 DELIMITER $$
 CREATE TRIGGER `Insert_en_Compras_CPP_DCPP` AFTER UPDATE ON `negociacion_compras` FOR EACH ROW BEGIN
 IF NEW.amortizando <> 1 THEN
@@ -1025,6 +1054,7 @@ DELIMITER ;
 -- Estructura de tabla para la tabla `negociacion_ventas`
 --
 
+DROP TABLE IF EXISTS `negociacion_ventas`;
 CREATE TABLE `negociacion_ventas` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `fechan` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1067,6 +1097,7 @@ INSERT INTO `negociacion_ventas` (`id`, `fechan`, `horan`, `cedulan`, `idlugarn`
 --
 -- Disparadores `negociacion_ventas`
 --
+DROP TRIGGER IF EXISTS `Insert_en_Ventas_CPC_DCPC`;
 DELIMITER $$
 CREATE TRIGGER `Insert_en_Ventas_CPC_DCPC` AFTER UPDATE ON `negociacion_ventas` FOR EACH ROW BEGIN
 IF NEW.amortizando <> 1 THEN
@@ -1099,6 +1130,7 @@ DELIMITER ;
 -- Estructura de tabla para la tabla `pago_negociacion_ventas`
 --
 
+DROP TABLE IF EXISTS `pago_negociacion_ventas`;
 CREATE TABLE `pago_negociacion_ventas` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `idventa` bigint(20) DEFAULT NULL,
@@ -1121,6 +1153,7 @@ CREATE TABLE `pago_negociacion_ventas` (
 -- Estructura de tabla para la tabla `password_resets`
 --
 
+DROP TABLE IF EXISTS `password_resets`;
 CREATE TABLE `password_resets` (
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1133,6 +1166,7 @@ CREATE TABLE `password_resets` (
 -- Estructura de tabla para la tabla `permissions`
 --
 
+DROP TABLE IF EXISTS `permissions`;
 CREATE TABLE `permissions` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1188,6 +1222,7 @@ INSERT INTO `permissions` (`id`, `name`, `description`, `guard_name`, `created_a
 -- Estructura de tabla para la tabla `personal_access_tokens`
 --
 
+DROP TABLE IF EXISTS `personal_access_tokens`;
 CREATE TABLE `personal_access_tokens` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1206,6 +1241,7 @@ CREATE TABLE `personal_access_tokens` (
 -- Estructura de tabla para la tabla `precios_productos_prov_clie`
 --
 
+DROP TABLE IF EXISTS `precios_productos_prov_clie`;
 CREATE TABLE `precios_productos_prov_clie` (
   `id` bigint(20) NOT NULL,
   `cedula` varchar(15) NOT NULL,
@@ -1255,6 +1291,7 @@ INSERT INTO `precios_productos_prov_clie` (`id`, `cedula`, `idproducto`, `precio
 -- Estructura de tabla para la tabla `proveedores`
 --
 
+DROP TABLE IF EXISTS `proveedores`;
 CREATE TABLE `proveedores` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `cedula` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1284,6 +1321,7 @@ INSERT INTO `proveedores` (`id`, `cedula`, `nombre`, `direccion`, `telefono`, `c
 -- Estructura de tabla para la tabla `recepcionmaterial`
 --
 
+DROP TABLE IF EXISTS `recepcionmaterial`;
 CREATE TABLE `recepcionmaterial` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `fecha` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1332,6 +1370,7 @@ INSERT INTO `recepcionmaterial` (`id`, `fecha`, `cedula`, `idlugar`, `pesofull`,
 -- Estructura de tabla para la tabla `roles`
 --
 
+DROP TABLE IF EXISTS `roles`;
 CREATE TABLE `roles` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1360,6 +1399,7 @@ INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VAL
 -- Estructura de tabla para la tabla `role_has_permissions`
 --
 
+DROP TABLE IF EXISTS `role_has_permissions`;
 CREATE TABLE `role_has_permissions` (
   `permission_id` bigint(20) UNSIGNED NOT NULL,
   `role_id` bigint(20) UNSIGNED NOT NULL
@@ -1484,6 +1524,7 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 -- Estructura de tabla para la tabla `sessions`
 --
 
+DROP TABLE IF EXISTS `sessions`;
 CREATE TABLE `sessions` (
   `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` bigint(20) UNSIGNED DEFAULT NULL,
@@ -1507,6 +1548,7 @@ INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, 
 -- Estructura de tabla para la tabla `sucursales`
 --
 
+DROP TABLE IF EXISTS `sucursales`;
 CREATE TABLE `sucursales` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `descripcion` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1531,6 +1573,7 @@ INSERT INTO `sucursales` (`id`, `descripcion`, `direccion`, `telefono`, `idencar
 -- Estructura de tabla para la tabla `teams`
 --
 
+DROP TABLE IF EXISTS `teams`;
 CREATE TABLE `teams` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
@@ -1546,6 +1589,7 @@ CREATE TABLE `teams` (
 -- Estructura de tabla para la tabla `team_invitations`
 --
 
+DROP TABLE IF EXISTS `team_invitations`;
 CREATE TABLE `team_invitations` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `team_id` bigint(20) UNSIGNED NOT NULL,
@@ -1561,6 +1605,7 @@ CREATE TABLE `team_invitations` (
 -- Estructura de tabla para la tabla `team_user`
 --
 
+DROP TABLE IF EXISTS `team_user`;
 CREATE TABLE `team_user` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `team_id` bigint(20) UNSIGNED NOT NULL,
@@ -1576,6 +1621,7 @@ CREATE TABLE `team_user` (
 -- Estructura de tabla para la tabla `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1631,6 +1677,7 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `tw
 -- Estructura de tabla para la tabla `ventas`
 --
 
+DROP TABLE IF EXISTS `ventas`;
 CREATE TABLE `ventas` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `fechaventa` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1694,6 +1741,7 @@ INSERT INTO `ventas` (`id`, `fechaventa`, `horaventa`, `cedulav`, `idlugarv`, `i
 -- Estructura Stand-in para la vista `vista_abono_negociacion_compra`
 -- (Véase abajo para la vista actual)
 --
+DROP VIEW IF EXISTS `vista_abono_negociacion_compra`;
 CREATE TABLE `vista_abono_negociacion_compra` (
 `negociacion` bigint(20) unsigned
 ,`recepcion` bigint(11)
@@ -1709,6 +1757,7 @@ CREATE TABLE `vista_abono_negociacion_compra` (
 -- Estructura Stand-in para la vista `vista_abono_negociacion_venta`
 -- (Véase abajo para la vista actual)
 --
+DROP VIEW IF EXISTS `vista_abono_negociacion_venta`;
 CREATE TABLE `vista_abono_negociacion_venta` (
 `negociacion` bigint(20) unsigned
 ,`despacho` bigint(11)
@@ -1724,6 +1773,7 @@ CREATE TABLE `vista_abono_negociacion_venta` (
 -- Estructura Stand-in para la vista `vista_amortizaciones`
 -- (Véase abajo para la vista actual)
 --
+DROP VIEW IF EXISTS `vista_amortizaciones`;
 CREATE TABLE `vista_amortizaciones` (
 `cedula` varchar(15)
 ,`id` bigint(20) unsigned
@@ -1747,6 +1797,7 @@ CREATE TABLE `vista_amortizaciones` (
 -- Estructura Stand-in para la vista `vista_amortizaciones_compras`
 -- (Véase abajo para la vista actual)
 --
+DROP VIEW IF EXISTS `vista_amortizaciones_compras`;
 CREATE TABLE `vista_amortizaciones_compras` (
 `cedula` varchar(15)
 ,`id` bigint(20) unsigned
@@ -1770,6 +1821,7 @@ CREATE TABLE `vista_amortizaciones_compras` (
 -- Estructura Stand-in para la vista `vista_amortizacion_negociacion_compra`
 -- (Véase abajo para la vista actual)
 --
+DROP VIEW IF EXISTS `vista_amortizacion_negociacion_compra`;
 CREATE TABLE `vista_amortizacion_negociacion_compra` (
 `negociacion` bigint(20)
 ,`factura` bigint(20) unsigned
@@ -1790,6 +1842,7 @@ CREATE TABLE `vista_amortizacion_negociacion_compra` (
 -- Estructura Stand-in para la vista `vista_amortizacion_negociacion_venta`
 -- (Véase abajo para la vista actual)
 --
+DROP VIEW IF EXISTS `vista_amortizacion_negociacion_venta`;
 CREATE TABLE `vista_amortizacion_negociacion_venta` (
 `negociacion` bigint(20)
 ,`factura` bigint(20) unsigned
@@ -1810,6 +1863,7 @@ CREATE TABLE `vista_amortizacion_negociacion_venta` (
 -- Estructura Stand-in para la vista `vista_cantidad_productos_pagar`
 -- (Véase abajo para la vista actual)
 --
+DROP VIEW IF EXISTS `vista_cantidad_productos_pagar`;
 CREATE TABLE `vista_cantidad_productos_pagar` (
 `id` bigint(20) unsigned
 ,`producto` varchar(100)
@@ -1822,6 +1876,7 @@ CREATE TABLE `vista_cantidad_productos_pagar` (
 -- Estructura Stand-in para la vista `vista_cpc_cedula_nombre_monto`
 -- (Véase abajo para la vista actual)
 --
+DROP VIEW IF EXISTS `vista_cpc_cedula_nombre_monto`;
 CREATE TABLE `vista_cpc_cedula_nombre_monto` (
 `cedula` varchar(15)
 ,`nombre` varchar(100)
@@ -1834,6 +1889,7 @@ CREATE TABLE `vista_cpc_cedula_nombre_monto` (
 -- Estructura Stand-in para la vista `vista_cpp_cedula_nombre_monto`
 -- (Véase abajo para la vista actual)
 --
+DROP VIEW IF EXISTS `vista_cpp_cedula_nombre_monto`;
 CREATE TABLE `vista_cpp_cedula_nombre_monto` (
 `cedula` varchar(15)
 ,`nombre` varchar(100)
@@ -1846,6 +1902,7 @@ CREATE TABLE `vista_cpp_cedula_nombre_monto` (
 -- Estructura Stand-in para la vista `vista_despacho_abono_material_negociacion_ventas`
 -- (Véase abajo para la vista actual)
 --
+DROP VIEW IF EXISTS `vista_despacho_abono_material_negociacion_ventas`;
 CREATE TABLE `vista_despacho_abono_material_negociacion_ventas` (
 `despacho` bigint(11)
 ,`cedula` varchar(15)
@@ -1861,6 +1918,7 @@ CREATE TABLE `vista_despacho_abono_material_negociacion_ventas` (
 -- Estructura Stand-in para la vista `vista_despacho_ventas`
 -- (Véase abajo para la vista actual)
 --
+DROP VIEW IF EXISTS `vista_despacho_ventas`;
 CREATE TABLE `vista_despacho_ventas` (
 `despacho` bigint(20)
 ,`cedula` varchar(15)
@@ -1876,6 +1934,7 @@ CREATE TABLE `vista_despacho_ventas` (
 -- Estructura Stand-in para la vista `vista_inventario`
 -- (Véase abajo para la vista actual)
 --
+DROP VIEW IF EXISTS `vista_inventario`;
 CREATE TABLE `vista_inventario` (
 `id` bigint(20) unsigned
 ,`fecha` varchar(10)
@@ -1894,6 +1953,7 @@ CREATE TABLE `vista_inventario` (
 -- Estructura Stand-in para la vista `vista_neg_com_monto_por_pagar`
 -- (Véase abajo para la vista actual)
 --
+DROP VIEW IF EXISTS `vista_neg_com_monto_por_pagar`;
 CREATE TABLE `vista_neg_com_monto_por_pagar` (
 `cedula` varchar(15)
 ,`nombre` varchar(100)
@@ -1906,6 +1966,7 @@ CREATE TABLE `vista_neg_com_monto_por_pagar` (
 -- Estructura Stand-in para la vista `vista_neg_ven_monto_por_cobrar`
 -- (Véase abajo para la vista actual)
 --
+DROP VIEW IF EXISTS `vista_neg_ven_monto_por_cobrar`;
 CREATE TABLE `vista_neg_ven_monto_por_cobrar` (
 `cedula` varchar(15)
 ,`nombre` varchar(100)
@@ -1918,6 +1979,7 @@ CREATE TABLE `vista_neg_ven_monto_por_cobrar` (
 -- Estructura Stand-in para la vista `vista_precio_prod_cedu`
 -- (Véase abajo para la vista actual)
 --
+DROP VIEW IF EXISTS `vista_precio_prod_cedu`;
 CREATE TABLE `vista_precio_prod_cedu` (
 `idprecio` bigint(20)
 ,`cedula` varchar(15)
@@ -1932,6 +1994,7 @@ CREATE TABLE `vista_precio_prod_cedu` (
 -- Estructura de tabla para la tabla `_ccategoriaproducto`
 --
 
+DROP TABLE IF EXISTS `_ccategoriaproducto`;
 CREATE TABLE `_ccategoriaproducto` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `descripcion` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1946,6 +2009,7 @@ CREATE TABLE `_ccategoriaproducto` (
 -- Estructura de tabla para la tabla `_ccompras`
 --
 
+DROP TABLE IF EXISTS `_ccompras`;
 CREATE TABLE `_ccompras` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `idrecepcion` bigint(20) NOT NULL,
@@ -1996,6 +2060,7 @@ INSERT INTO `_ccompras` (`id`, `idrecepcion`, `fecharecepcion`, `fechacompra`, `
 --
 -- Disparadores `_ccompras`
 --
+DROP TRIGGER IF EXISTS `Update_en_Compras_Pago_Contado`;
 DELIMITER $$
 CREATE TRIGGER `Update_en_Compras_Pago_Contado` AFTER UPDATE ON `_ccompras` FOR EACH ROW BEGIN
 -- IF NEW.idtipopago = 1 THEN
@@ -2015,6 +2080,7 @@ DELIMITER ;
 -- Estructura de tabla para la tabla `_ddetallecompras`
 --
 
+DROP TABLE IF EXISTS `_ddetallecompras`;
 CREATE TABLE `_ddetallecompras` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `idcompra` bigint(20) UNSIGNED NOT NULL,
@@ -2050,6 +2116,7 @@ INSERT INTO `_ddetallecompras` (`id`, `idcompra`, `idproducto`, `cantidadpro`, `
 -- Estructura de tabla para la tabla `_iinventario`
 --
 
+DROP TABLE IF EXISTS `_iinventario`;
 CREATE TABLE `_iinventario` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `fecha` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2125,6 +2192,7 @@ INSERT INTO `_iinventario` (`id`, `fecha`, `hora`, `idproducto`, `comprados`, `v
 -- Estructura de tabla para la tabla `_pproductos`
 --
 
+DROP TABLE IF EXISTS `_pproductos`;
 CREATE TABLE `_pproductos` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `idcate` int(11) DEFAULT NULL,
@@ -2157,6 +2225,7 @@ INSERT INTO `_pproductos` (`id`, `idcate`, `descripcion`, `precio`, `cantidad`, 
 --
 DROP TABLE IF EXISTS `vista_abono_negociacion_compra`;
 
+DROP VIEW IF EXISTS `vista_abono_negociacion_compra`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_abono_negociacion_compra`  AS SELECT `abono_material_negociacion_compras`.`negociacion_id` AS `negociacion`, `abono_material_negociacion_compras`.`idrecepcion` AS `recepcion`, `abono_material_negociacion_compras`.`created_at` AS `fecha`, `abono_material_negociacion_compras`.`id` AS `id`, `_pproductos`.`descripcion` AS `material`, `abono_material_negociacion_compras`.`cantidadpron` AS `abono` FROM (`abono_material_negociacion_compras` join `_pproductos` on(`_pproductos`.`id` = `abono_material_negociacion_compras`.`idproducton`)) ;
 
 -- --------------------------------------------------------
@@ -2166,6 +2235,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `vista_abono_negociacion_venta`;
 
+DROP VIEW IF EXISTS `vista_abono_negociacion_venta`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_abono_negociacion_venta`  AS SELECT `abono_material_negociacion_ventas`.`negociacion_id` AS `negociacion`, `abono_material_negociacion_ventas`.`iddespacho` AS `despacho`, `abono_material_negociacion_ventas`.`created_at` AS `fecha`, `abono_material_negociacion_ventas`.`id` AS `id`, `_pproductos`.`descripcion` AS `material`, `abono_material_negociacion_ventas`.`cantidadpron` AS `abono` FROM (`abono_material_negociacion_ventas` join `_pproductos` on(`_pproductos`.`id` = `abono_material_negociacion_ventas`.`idproducton`)) ;
 
 -- --------------------------------------------------------
@@ -2175,6 +2245,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `vista_amortizaciones`;
 
+DROP VIEW IF EXISTS `vista_amortizaciones`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_amortizaciones`  AS SELECT `cuentas_por_cobrar_ventas`.`cedula` AS `cedula`, `cuentas_por_cobrar_ventas`.`id` AS `id`, `cuentas_por_cobrar_ventas`.`idnegociacionventa` AS `negociacion`, `cuentas_por_cobrar_ventas`.`idventa` AS `factura`, `detalle_cuentas_por_cobrar_ventas`.`fecha` AS `fecha`, `detalle_cuentas_por_cobrar_ventas`.`hora` AS `hora`, `detalle_cuentas_por_cobrar_ventas`.`efectivo` AS `efectivo`, `detalle_cuentas_por_cobrar_ventas`.`transferencia` AS `transferencia`, `detalle_cuentas_por_cobrar_ventas`.`pagado` AS `pago`, `cuentas_por_cobrar_ventas`.`totalpagado` AS `total`, `cuentas_por_cobrar_ventas`.`montototal` AS `monto`, `cuentas_por_cobrar_ventas`.`totalresta` AS `totalresta`, `detalle_cuentas_por_cobrar_ventas`.`resta` AS `resta`, `cuentas_por_cobrar_ventas`.`finalizada` AS `finalizada` FROM (`cuentas_por_cobrar_ventas` join `detalle_cuentas_por_cobrar_ventas` on(`cuentas_por_cobrar_ventas`.`id` = `detalle_cuentas_por_cobrar_ventas`.`idcpcv`)) ;
 
 -- --------------------------------------------------------
@@ -2184,6 +2255,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `vista_amortizaciones_compras`;
 
+DROP VIEW IF EXISTS `vista_amortizaciones_compras`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_amortizaciones_compras`  AS SELECT `cuentas_por_pagar_compras`.`cedula` AS `cedula`, `cuentas_por_pagar_compras`.`id` AS `id`, `cuentas_por_pagar_compras`.`idnegociacioncompra` AS `negociacion`, `cuentas_por_pagar_compras`.`idcompra` AS `factura`, `detalle_cuentas_por_pagar_compras`.`fecha` AS `fecha`, `detalle_cuentas_por_pagar_compras`.`hora` AS `hora`, `detalle_cuentas_por_pagar_compras`.`efectivo` AS `efectivo`, `detalle_cuentas_por_pagar_compras`.`transferencia` AS `transferencia`, `detalle_cuentas_por_pagar_compras`.`pagado` AS `pago`, `cuentas_por_pagar_compras`.`totalpagado` AS `total`, `cuentas_por_pagar_compras`.`montototal` AS `monto`, `cuentas_por_pagar_compras`.`totalresta` AS `totalresta`, `detalle_cuentas_por_pagar_compras`.`resta` AS `resta`, `cuentas_por_pagar_compras`.`finalizada` AS `finalizada` FROM (`cuentas_por_pagar_compras` join `detalle_cuentas_por_pagar_compras` on(`cuentas_por_pagar_compras`.`id` = `detalle_cuentas_por_pagar_compras`.`idcppc`)) ;
 
 -- --------------------------------------------------------
@@ -2193,6 +2265,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `vista_amortizacion_negociacion_compra`;
 
+DROP VIEW IF EXISTS `vista_amortizacion_negociacion_compra`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_amortizacion_negociacion_compra`  AS SELECT `_ccompras`.`negociacion_id` AS `negociacion`, `_ccompras`.`id` AS `factura`, `detalle_cuentas_por_pagar_compras`.`fecha` AS `fecha`, `detalle_cuentas_por_pagar_compras`.`hora` AS `hora`, `detalle_cuentas_por_pagar_compras`.`efectivo` AS `efectivo`, `detalle_cuentas_por_pagar_compras`.`transferencia` AS `transferencia`, `detalle_cuentas_por_pagar_compras`.`pagado` AS `pago`, `cuentas_por_pagar_compras`.`montototal` AS `monto`, `cuentas_por_pagar_compras`.`totalpagado` AS `total`, `cuentas_por_pagar_compras`.`montototal` AS `totalresta`, `detalle_cuentas_por_pagar_compras`.`resta` AS `resta` FROM ((`_ccompras` join `cuentas_por_pagar_compras` on(`cuentas_por_pagar_compras`.`idnegociacioncompra` = `_ccompras`.`negociacion_id`)) join `detalle_cuentas_por_pagar_compras` on(`cuentas_por_pagar_compras`.`id` = `detalle_cuentas_por_pagar_compras`.`idcppc`)) ORDER BY `detalle_cuentas_por_pagar_compras`.`id` DESC ;
 
 -- --------------------------------------------------------
@@ -2202,6 +2275,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `vista_amortizacion_negociacion_venta`;
 
+DROP VIEW IF EXISTS `vista_amortizacion_negociacion_venta`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_amortizacion_negociacion_venta`  AS SELECT `ventas`.`negociacion_id` AS `negociacion`, `ventas`.`id` AS `factura`, `detalle_cuentas_por_cobrar_ventas`.`fecha` AS `fecha`, `detalle_cuentas_por_cobrar_ventas`.`hora` AS `hora`, `detalle_cuentas_por_cobrar_ventas`.`efectivo` AS `efectivo`, `detalle_cuentas_por_cobrar_ventas`.`transferencia` AS `transferencia`, `detalle_cuentas_por_cobrar_ventas`.`pagado` AS `pago`, `cuentas_por_cobrar_ventas`.`montototal` AS `monto`, `cuentas_por_cobrar_ventas`.`totalpagado` AS `total`, `cuentas_por_cobrar_ventas`.`montototal` AS `totalresta`, `detalle_cuentas_por_cobrar_ventas`.`resta` AS `resta` FROM ((`ventas` join `cuentas_por_cobrar_ventas` on(`cuentas_por_cobrar_ventas`.`idnegociacionventa` = `ventas`.`negociacion_id`)) join `detalle_cuentas_por_cobrar_ventas` on(`cuentas_por_cobrar_ventas`.`id` = `detalle_cuentas_por_cobrar_ventas`.`idcpcv`)) ORDER BY `detalle_cuentas_por_cobrar_ventas`.`id` DESC ;
 
 -- --------------------------------------------------------
@@ -2211,6 +2285,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `vista_cantidad_productos_pagar`;
 
+DROP VIEW IF EXISTS `vista_cantidad_productos_pagar`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_cantidad_productos_pagar`  AS SELECT `detalle_negociacion_ventas`.`producto_idn` AS `id`, `_pproductos`.`descripcion` AS `producto`, sum(`detalle_negociacion_ventas`.`cantidadprorecmatndebe`) AS `debe` FROM (`detalle_negociacion_ventas` join `_pproductos` on(`detalle_negociacion_ventas`.`producto_idn` = `_pproductos`.`id`)) GROUP BY `detalle_negociacion_ventas`.`producto_idn` ;
 
 -- --------------------------------------------------------
@@ -2220,6 +2295,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `vista_cpc_cedula_nombre_monto`;
 
+DROP VIEW IF EXISTS `vista_cpc_cedula_nombre_monto`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_cpc_cedula_nombre_monto`  AS SELECT `clientes`.`cedulac` AS `cedula`, `clientes`.`nombrec` AS `nombre`, sum(`cuentas_por_cobrar_ventas`.`totalresta`) AS `monto` FROM (`cuentas_por_cobrar_ventas` join `clientes` on(`cuentas_por_cobrar_ventas`.`cedula` = `clientes`.`cedulac`)) GROUP BY `clientes`.`cedulac`, `clientes`.`cedulac`, `clientes`.`nombrec` ;
 
 -- --------------------------------------------------------
@@ -2229,6 +2305,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `vista_cpp_cedula_nombre_monto`;
 
+DROP VIEW IF EXISTS `vista_cpp_cedula_nombre_monto`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_cpp_cedula_nombre_monto`  AS SELECT `proveedores`.`cedula` AS `cedula`, `proveedores`.`nombre` AS `nombre`, sum(`cuentas_por_pagar_compras`.`totalresta`) AS `monto` FROM (`cuentas_por_pagar_compras` join `proveedores` on(`cuentas_por_pagar_compras`.`cedula` = `proveedores`.`cedula`)) GROUP BY `proveedores`.`cedula`, `proveedores`.`cedula`, `proveedores`.`nombre` ;
 
 -- --------------------------------------------------------
@@ -2238,6 +2315,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `vista_despacho_abono_material_negociacion_ventas`;
 
+DROP VIEW IF EXISTS `vista_despacho_abono_material_negociacion_ventas`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_despacho_abono_material_negociacion_ventas`  AS SELECT `abono_material_negociacion_ventas`.`iddespacho` AS `despacho`, `clientes`.`cedulac` AS `cedula`, `clientes`.`nombrec` AS `nombre`, `negociacion_ventas`.`observaciones` AS `observaciones`, `_pproductos`.`descripcion` AS `material`, `abono_material_negociacion_ventas`.`cantidadpron` AS `cantidad` FROM ((`negociacion_ventas` left join (`abono_material_negociacion_ventas` left join `_pproductos` on(`abono_material_negociacion_ventas`.`idproducton` = `_pproductos`.`id`)) on(`abono_material_negociacion_ventas`.`negociacion_id` = `negociacion_ventas`.`id`)) join `clientes` on(`negociacion_ventas`.`cedulan` = `clientes`.`cedulac`)) ;
 
 -- --------------------------------------------------------
@@ -2247,6 +2325,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `vista_despacho_ventas`;
 
+DROP VIEW IF EXISTS `vista_despacho_ventas`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_despacho_ventas`  AS SELECT `ventas`.`iddespacho` AS `despacho`, `clientes`.`cedulac` AS `cedula`, `clientes`.`nombrec` AS `nombre`, `ventas`.`observacionesv` AS `observaciones`, `_pproductos`.`descripcion` AS `material`, `detalle_ventas`.`cantidadprov` AS `cantidad` FROM (((`ventas` join `clientes` on(`ventas`.`cedulav` = `clientes`.`cedulac`)) join `detalle_ventas` on(`ventas`.`id` = `detalle_ventas`.`idventa`)) join `_pproductos` on(`detalle_ventas`.`idproductov` = `_pproductos`.`id`)) ;
 
 -- --------------------------------------------------------
@@ -2256,6 +2335,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `vista_inventario`;
 
+DROP VIEW IF EXISTS `vista_inventario`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_inventario`  AS SELECT `_iinventario`.`id` AS `id`, `_iinventario`.`fecha` AS `fecha`, `_iinventario`.`hora` AS `hora`, `_pproductos`.`id` AS `idproducto`, `_pproductos`.`descripcion` AS `descripcion`, `_iinventario`.`comprados` AS `comprados`, `_iinventario`.`vendidos` AS `vendidos`, `_iinventario`.`existencia` AS `existencia`, `_pproductos`.`cantidad` AS `cantidad` FROM (`_pproductos` join `_iinventario` on(`_iinventario`.`idproducto` = `_pproductos`.`id`)) ORDER BY `_iinventario`.`id` DESC ;
 
 -- --------------------------------------------------------
@@ -2265,6 +2345,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `vista_neg_com_monto_por_pagar`;
 
+DROP VIEW IF EXISTS `vista_neg_com_monto_por_pagar`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_neg_com_monto_por_pagar`  AS SELECT `proveedores`.`cedula` AS `cedula`, `proveedores`.`nombre` AS `nombre`, sum(`negociacion_compras`.`restan`) AS `monto` FROM (`negociacion_compras` join `proveedores` on(`proveedores`.`cedula` = `negociacion_compras`.`cedulan`)) WHERE `negociacion_compras`.`finalizada` = 'NO' GROUP BY `proveedores`.`cedula`, `proveedores`.`cedula`, `proveedores`.`nombre` ;
 
 -- --------------------------------------------------------
@@ -2274,6 +2355,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `vista_neg_ven_monto_por_cobrar`;
 
+DROP VIEW IF EXISTS `vista_neg_ven_monto_por_cobrar`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_neg_ven_monto_por_cobrar`  AS SELECT `clientes`.`cedulac` AS `cedula`, `clientes`.`nombrec` AS `nombre`, sum(`negociacion_ventas`.`restan`) AS `monto` FROM (`negociacion_ventas` join `clientes` on(`clientes`.`cedulac` = `negociacion_ventas`.`cedulan`)) WHERE `negociacion_ventas`.`finalizada` = 'NO' GROUP BY `clientes`.`cedulac`, `clientes`.`cedulac`, `clientes`.`nombrec` ;
 
 -- --------------------------------------------------------
@@ -2283,6 +2365,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `vista_precio_prod_cedu`;
 
+DROP VIEW IF EXISTS `vista_precio_prod_cedu`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_precio_prod_cedu`  AS SELECT `precios_productos_prov_clie`.`id` AS `idprecio`, `precios_productos_prov_clie`.`cedula` AS `cedula`, `precios_productos_prov_clie`.`idproducto` AS `idproducto`, `_pproductos`.`descripcion` AS `descripcion`, `precios_productos_prov_clie`.`precio` AS `precio` FROM (`precios_productos_prov_clie` join `_pproductos` on(`_pproductos`.`id` = `precios_productos_prov_clie`.`idproducto`)) ;
 
 --
