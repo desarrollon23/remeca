@@ -1788,6 +1788,7 @@ ALTER TABLE `_ccategoriaproducto`
 --
 ALTER TABLE `_ccompras`
   ADD PRIMARY KEY (`id`);
+  ADD KEY `_ccompras_idrecepcion_foreign` (`idrecepcion`)
 
 --
 -- Indices de la tabla `_ddetallecompras`
