@@ -1,4 +1,5 @@
-﻿-- phpMyAdmin SQL Dump
+﻿SET FOREIGN_KEY_CHECKS = 0;
+-- phpMyAdmin SQL Dump
 -- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
