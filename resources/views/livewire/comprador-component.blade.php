@@ -103,7 +103,7 @@
                       <button x-show="{{ $mostrar }}" {{-- wire:click="generardespacho" --}} class="btn btn-primary mb-1"><i class="fa fa-save mr-1"></i> GUARDAR</button></div>
                   @endif
                 @endif
-              </div>
+              {{-- </div> --}}
               </div>
             </div>
           </div>

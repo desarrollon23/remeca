@@ -25,6 +25,16 @@
               <div class="card-body" style="display: flex; flex-wrap: wrap; margin-right: 2px;">
                 {{-- <div class="form-group"> --}}
                   <div style="width: 24%; margin-right: 2px;"><label for="cedulav" style="width: 100%; margin-right: 2px;">Cédula o Rif</label>
+                    @if ($this->iddespacho>0)
+                    @php
+                    //$datalm = $recibir->where('id', $this->recepcionmaterial_id)
+
+                    //dd($despachar[0]->cedula);
+                    //dd($despachar->where('despacho', $iddespacho)->pluck('cedula')[0]);
+                        
+                    @endphp
+                    @endif
+
                     <input disabled id="cedulav" type="text" name="cedulav" style="width: 100%; text-transform: uppercase;" 
                     @if (is_null($this->iddespacho)!='true')
                     value="{{ $despachar->where('despacho', $iddespacho)->pluck('cedula')[0] }}"
@@ -66,7 +76,8 @@
                       <th scope="col">KG</th>
                     </tr></thead><tbody>
                 @if (is_null($this->iddespacho)!='true')
-                    @foreach ($despachar as $productoabono)
+                {{-- dd($despachar->where('despacho', $iddespacho)->pluck('cedula')[0]); --}}
+                    @foreach ($despachar->where('despacho', $iddespacho) as $productoabono)
                     <tr><th scope="row">{{ $loop->iteration }}</th>
                       <td>{{ $productoabono->material }}</td>
                       <td>{{ $productoabono->cantidad }}</tr>
