@@ -572,6 +572,8 @@ class CompradorComponent extends Component
         $este=$this->recepcion;
         $productosrecepcion=Detallealmacen::all()->where('recepcionmaterial_id', 
         $this->recepcionmaterial_id);
+        /* $productosrecepcion=Detallealmacen::all(); */
+
         $this->efectivodisc = Liquidez::where('id', 1)->get()->pluck('efectivo')[0];
         $this->bancodisc = Liquidez::where('id', 1)->get()->pluck('banco')[0];
         $amortizacionesdepagocompra=ConsultaAmortizacionNegociacionCompra ::all();

@@ -223,16 +223,21 @@
                 {{-- @if($amortizacionesdepagocompra->where('id',$negociacion_idcompra)->pluck('totalresta')[0]!=0) --}}
                 {{-- @php dd($amortizacionesdepagocompra->where('id',$negociacion_idcompra)->pluck('totalresta')[0]); @endphp --}}
                   @php 
+                    
                     /* $this->pagoefectivoventas=0;
                     $this->pagotransfventas =0;
                     $this->totalpagoventas =0;
                     //$this->restapagoventas=0; */
+                    
                     $datalm = $recibir->where('id', $this->recepcionmaterial_id);
                     $this->fecha = isset($datalm->pluck('fecha')[0]) ? $datalm->pluck('fecha')[0] : "";
                     $this->cedula = isset($datalm->pluck('cedula')[0]) ? $datalm->pluck('cedula')[0] : "";
-                    $datalmn=$vendedores->where('cedula',$datalm->pluck('cedula')[0])->pluck('nombre')[0];
+                    
+/* dd($vendedores[0]->where('cedula',$datalm->pluck('cedula')[0])->pluck('nombre')[0]); */
+
+                    $datalmn=$vendedores[0]->where('cedula',$datalm->pluck('cedula')[0])->pluck('nombre')[0];
                     $this->nombre = isset($datalmn) ? $datalmn : "";
-                    $datalml=$lugares->where('id',$datalm->pluck('idlugar')[0])->pluck('descripcion')[0];
+                    $datalml=$lugares[0]->where('id',$datalm->pluck('idlugar')[0])->pluck('descripcion')[0];
                     $this->idlugar = isset($datalml) ? $datalml : "";
                     $this->pesofull = isset($datalm->pluck('pesofull')[0]) ? $datalm->pluck('pesofull')[0] : "";
                     $this->pesovacio = isset($datalm->pluck('pesovacio')[0]) ? $datalm->pluck('pesovacio')[0] : "";
@@ -273,6 +278,13 @@
               {{-- <div class="d-flex justify-content-end mb-2">
                   <button x-bind:disabled="!open" wire:click.prevent="addNew" class="btn btn-primary"><i class="fa fa-plus-circle mr-1"></i> Agregar Material a la lista</button>
               </div> --}}
+              
+              
+              @if (is_null($this->recepcionmaterial_id)!='true')
+          {{-- @php
+          dd($this->recepcionmaterial_id);
+              //dd($productosrecepcion->where('recepcionmaterial_id', $this->recepcionmaterial_id));
+          @endphp --}}
               <table class="table table-striped"><thead><tr> 
                     <th scope="col">#</th>
                     <th scope="col">MATERIAL</th>
@@ -309,6 +321,12 @@
                       return $descmat;
                     }
                   @endphp --}}
+                  {{-- @php
+                      //dd($productosrecepcion->count());
+                      dd($productosrecepcion[0]->where('recepcionmaterial_id', $this->recepcionmaterial_id));
+                  @endphp --}}
+
+                  {{-- @foreach ($productosrecepcion[0]->where('recepcionmaterial_id', $this->recepcionmaterial_id) as $productorecepcion) --}}
                   @foreach ($productosrecepcion as $productorecepcion)
                   <tr><th scope="row">{{ $loop->iteration }}</th>
                     {{-- <td>{{ traemateriald($productorecepcion->producto_id) }}</td> --}}
@@ -454,7 +472,10 @@
                           echo '<a><i class="color danger fas fa-plus text-success"></i></a>';
                         }
                       @endphp
-                  </td></tr>@endforeach</tbody>
+                  </td></tr>
+                @endforeach
+              
+              </tbody>
                   <tfoot><tr><td colspan="3"><label>TOTAL A PAGAR</label></td>
                     <td>{{-- <h1 style="font-weight:900; color:red">{{ (double)$pesotn }}</h1> --}}
                     </td><td></td><td></td>
@@ -558,6 +579,7 @@
                   @endif
 
               </table>
+              @endif
             </div>
           </div>
 

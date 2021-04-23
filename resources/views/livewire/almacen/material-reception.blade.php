@@ -11,27 +11,27 @@
             </div>
             <div class="card-body" style="display: flex; flex-wrap: wrap; margin-right: 2px;">
               <div style="width: 49%; margin-right: 2px;"><label for="cedula">Cédula o Rif
-                <input x-bind:disabled="!{{ $mostrar }}" wire:model="cedula" wire:keyup="busproc" style="width: 100%" id="cedula" class="form-control" type="text" name="cedula" placeholder="INGRESE EDULA O RIF">
+                <input x-bind:disabled="!{{ $mostrar }}" wire:model="cedula" wire:keyup="busproc" style="width: 100%" id="cedula" type="text" name="cedula" placeholder="INGRESE EDULA O RIF">
                 @error('cedula')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror
               </label></div>
               <div style="width: 49%; margin-right: 2px;"><label for="nombre" style="width: 100%; margin-right: 2px;">Nombre
-                <input x-bind:disabled="!{{ $mostrar }}" wire:model="nombre" wire:keyup="buspron" style="width: 100%; text-transform: uppercase;" id="nombre" class="form-control" type="text" name="nombre" placeholder="Ingrese el Nombre">
+                <input x-bind:disabled="!{{ $mostrar }}" wire:model="nombre" wire:keyup="buspron" style="width: 100%; text-transform: uppercase;" id="nombre" type="text" name="nombre" placeholder="Ingrese el Nombre">
               @error('nombre')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</label></div>
               <div style="width: 49%; margin-right: 2px;"><label for="idlugar" style="width: 100%; margin-right: 2px;">Lugar
-                <select x-bind:disabled="!{{ $mostrar }}" name="idlugar" wire:model="idlugar" id="idlugar" class="form-control" style="text-transform: uppercase; width: 100%;">
+                <select x-bind:disabled="!{{ $mostrar }}" name="idlugar" wire:model="idlugar" id="idlugar" style="text-transform: uppercase; width: 100%;">
                   <option value="NULL" selected>(SELECCIONE LUGAR)</option>
                   @foreach ($lugares as $lugar)
                    <option value="{{$lugar->id}}">{{$lugar->descripcion}}</option>
                   @endforeach
                 </select>@error('idlugar')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</label></div>
               <div style="width: 49%; margin-right: 2px;"><label for="pesofull" style="width: 100%; margin-right: 2px;">Peso FULL
-                <input x-bind:disabled="!{{ $mostrar }}" wire:model="pesofull" wire:keyup="calpeso" style="width: 100%" id="pesofull" class="form-control" type="number" name="pesofull" placeholder="INGRESE PESO FULL">@error('pesofull')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</label></div>
+                <input x-bind:disabled="!{{ $mostrar }}" wire:model="pesofull" wire:keyup="calpeso" style="width: 100%" id="pesofull" type="number" name="pesofull" placeholder="INGRESE PESO FULL">@error('pesofull')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</label></div>
               <div style="width: 49%; margin-right: 2px;"><label for="pesovacio" style="width: 100%; margin-right: 2px;">Peso VACIO
-                <input x-bind:disabled="!{{ $mostrar }}" wire:model="pesovacio" wire:keyup="calpeso" style="width: 100%" id="pesovacio" class="form-control" type="number" name="pesovacio" placeholder="INGRESE PESO VACIO">@error('pesovacio')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</label></div>
+                <input x-bind:disabled="!{{ $mostrar }}" wire:model="pesovacio" wire:keyup="calpeso" style="width: 100%" id="pesovacio" type="number" name="pesovacio" placeholder="INGRESE PESO VACIO">@error('pesovacio')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</label></div>
               <div style="width: 49%; margin-right: 2px;"><label for="pesoneto" style="width: 100%; margin-right: 2px;">Peso NETO
-                <input disabled wire:model="pesoneto" style="width: 100%" id="pesoneto" class="form-control" type="text" name="pesoneto" placeholder="INGRESE PESO NETO">@error('pesoneto')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</label></div>
+                <input disabled wire:model="pesoneto" style="width: 100%" id="pesoneto" type="text" name="pesoneto" placeholder="INGRESE PESO NETO">@error('pesoneto')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</label></div>
               <div style="width: 100%; margin-right: 2px;"><label for="observaciones">Observaciones
-                <textarea x-bind:disabled="!{{ $mostrar }}" wire:model="observaciones" rows="1" id="observaciones" class="form-control" name="observaciones" placeholder="Ingrese las Observaciones" cols="55" style="text-transform: uppercase;"></textarea>@error('observaciones')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</label></div><br>
+                <textarea x-bind:disabled="!{{ $mostrar }}" wire:model="observaciones" rows="1" id="observaciones" name="observaciones" placeholder="Ingrese las Observaciones" cols="55" style="text-transform: uppercase;"></textarea>@error('observaciones')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</label></div><br>
               {{-- <div class="d-flex justify-content-center mb-1"> --}}{{-- BOTONES --}}
               <div style="width: 80%; display: flex; flex-wrap: wrap;">
                 <div style="width: 49%; margin-right: 2px;">

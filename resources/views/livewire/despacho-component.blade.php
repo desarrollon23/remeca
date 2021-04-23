@@ -24,16 +24,17 @@
               </div>
               <div class="card-body" style="display: flex; flex-wrap: wrap; margin-right: 2px;">
                 {{-- <div class="form-group"> --}}
+                  @if ($this->iddespacho>0)
                   <div style="width: 24%; margin-right: 2px;"><label for="cedulav" style="width: 100%; margin-right: 2px;">Cédula o Rif</label>
-                    @if ($this->iddespacho>0)
+                
                     @php
                     //$datalm = $recibir->where('id', $this->recepcionmaterial_id)
 
-                    //dd($despachar[0]->cedula);
+                //dd($despachar->where('despacho', $this->iddespacho)->pluck('cedula'));
                     //dd($despachar->where('despacho', $iddespacho)->pluck('cedula')[0]);
                         
                     @endphp
-                    @endif
+                    
 
                     <input disabled id="cedulav" type="text" name="cedulav" style="width: 100%; text-transform: uppercase;" 
                     @if (is_null($this->iddespacho)!='true')
@@ -60,6 +61,7 @@
                   {{-- </div> --}}
               </div>
             </div>
+            @endif
           </div>{{-- Lista de Materiales a Pagar --}}
           <div class="col-lg-7 col-md-6 col-xs-6 mt-2">
             <div class="card">
@@ -76,8 +78,13 @@
                       <th scope="col">KG</th>
                     </tr></thead><tbody>
                 @if (is_null($this->iddespacho)!='true')
-                {{-- dd($despachar->where('despacho', $iddespacho)->pluck('cedula')[0]); --}}
-                    @foreach ($despachar->where('despacho', $iddespacho) as $productoabono)
+                
+                @php
+                    //dd($despachar);
+                @endphp
+
+                    {{-- @foreach ($despachar->where('despacho', $iddespacho) as $productoabono) --}}
+                    @foreach ($despachar as $productoabono)
                     <tr><th scope="row">{{ $loop->iteration }}</th>
                       <td>{{ $productoabono->material }}</td>
                       <td>{{ $productoabono->cantidad }}</tr>

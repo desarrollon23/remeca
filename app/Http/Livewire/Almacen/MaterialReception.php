@@ -168,7 +168,8 @@ class MaterialReception extends Component{
         /* $nrm = Almacen::count(); 
         if($nrm==0){ $nrm = 1; }else{ ++$nrm; } */
         $nr = Almacen::latest('id')->first();
-        if($nr['id']==0){ $nrm = 1; }else{ $nrm=$nr['id']+1; }
+        //dd(is_null($nr));
+        if(is_null($nr)=="true" or $nr['id']==0){ $nrm = 1; }else{ $nrm=$nr['id']+1; }
         $datos = Almacen::create([
             'id' => $nrm,           
             'fecha' => $this->fecha,

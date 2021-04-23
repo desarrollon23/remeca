@@ -35,6 +35,7 @@
                 <div class="col-lg-12 col-md-12 col-xs-12 mt-2">
                   <div class="card">
                     @php
+                      $sumamonto=0; $sumapagado=0; $sumaresta=0;
                       if($negociaciones->count()>0 and $creditos->count()>0){
                         $sumamonto=(double)$negociaciones->sum('montotn')+(double)$creditos->sum('montototal');
                         $sumapagado=(double)$negociaciones->sum('totalpagado')+(double)$creditos->sum('totalpagado');

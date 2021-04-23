@@ -15,13 +15,15 @@ class DetalleNegociacionComComponent extends Component
     public function render($cedula){
     }
 
+    
     public function show($cedula){
         $totalnegov = ConsultaNegComMontoPorPagar::where('cedula', $cedula)->get();
+        
         $negociaciones = NegociacionCompra::where('cedulan', $cedula)
                                             ->where('finalizada','NO')->get();
-
+        //dd($negociaciones);
         $creditos = CuentasPorPagarCompras::where('cedula', $cedula)
-                                            ->where('idnegociacioncompra', '=', 0)
+                                            ->where('idnegociacioncompra', '=', null)
                                             ->where('finalizada','NO')->get();
         //dd($creditos);
         if($negociaciones->count()!=0){
