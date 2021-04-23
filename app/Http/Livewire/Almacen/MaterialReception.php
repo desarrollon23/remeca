@@ -187,7 +187,7 @@ class MaterialReception extends Component{
         $recepcion = Almacen::latest('id')->first();
         $this->recepcionmaterial_id=$recepcion->id;
         session(['pt' => 0]); session(['pf' => 0]);
-        /* auditar('RECEPCION DE MATERIAL #: '.$this->recepcionmaterial_id, 'GENERAR'); */
+        auditar('RECEPCION DE MATERIAL #: '.$this->recepcionmaterial_id, 'GENERAR');
         $this->dispatchBrowserEvent('hide-form', ['message' => 'Recepción de Material Generada']);
     }
 
