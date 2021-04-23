@@ -22,10 +22,14 @@ use App\Http\Livewire\Input;
 use App\Models\Inventario;
 use Illuminate\Http\Request;
 use App\Http\Livewire\Compras;
+use App\Models\ConsultaAmortizacionNegociacionCompra;
+use App\Models\ConsultaTraerRecepcionComprar;
 use App\Models\CuentasPorPagarCompras;
 use App\Models\DetalleCuentasPorPagarCompras;
 use App\Models\Liquidez;
 use App\Models\PreciosProveedores;
+use App\Models\Proveedor;
+use Illuminate\Support\Facades\DB;
 
 use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
@@ -57,6 +61,7 @@ class CompradorComponent extends Component
     public $cantpro, $totalcalculado, $sobregiro, $vpeso, $recepciones;
     public $probc, $muesdesmaterial, $mostrar = "false", $mostrarm = "false";
     public $nomostrarcalculopremantabpro="false", $mostrarpagoventas='false', $montotnc;
+    public $efectivodisc, $bancodisc, $validamontotneventas, $validamontotntventas, $validamontotventas, $pagoefectivoventas, $pagotransfventas, $restapagoventas, $mostrarcalpagoventas, $totalpagoventas, $nopagarventas="true";
 
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
@@ -170,7 +175,6 @@ class CompradorComponent extends Component
         }
     }
     
-    public $efectivodisc, $bancodisc, $validamontotneventas, $validamontotntventas, $validamontotventas, $pagoefectivoventas, $pagotransfventas, $restapagoventas, $mostrarcalpagoventas, $totalpagoventas, $nopagarventas="true";
     public function calrestaventas(){ //CALCULA EL RESTO DE LA NEGOCIACION
         $this->restapagoventas=session('toprodacum');
         if((double)$this->restapagoventas==0){
@@ -214,9 +218,12 @@ class CompradorComponent extends Component
         }
     }
 
-    public function busnumal(){ //BUSCA LOS DATOS DEL ALMACEN
-        //$nc = Almacen::count();
-        $nc = Almacen::latest('id')->first();
+    //no se está usando los datos se buscan directo en la vista
+    public function busnumalcompra(){ //BUSCA LOS DATOS DEL ALMACEN
+        dd($this->recepcionmaterial_id);
+        $nc = Almacen::count();
+        /* $nc = Almacen::latest('id')->first(); */
+        /* $nc = Almacen::find($idalmacen); */
         if($nc->count()>0){ 
             /* if($nr['id']==0){ $nrm = 1; }else{ $nrm=$nr['id']+1; } */
             /* if($this->recepcionmaterial_id>$nc){ */ 
@@ -270,19 +277,20 @@ class CompradorComponent extends Component
         return $this->muesdesmaterial;
     }
     
+    public $mostrarcompra="false";
     public function generar(){ //AQUÍ SE GUARDA LA RECEPCION DESPUES SE GUARDAN LOS MATERIALES       
-        if(!is_null($this->recepcionmaterial_id)){
+        /* if(!is_null($this->recepcionmaterial_id)){ */
         $nc = Compra::count();
         if($nc==0){ $nc = 1; }else{ ++$nc; }
-        $recepcion = Almacen::find($this->recepcionmaterial_id);
+        //$recepcion = Almacen::find($this->recepcionmaterial_id);
         $datosc = Compra::create([
             'id' => $nc,           
-            'idrecepcion' => $this->recepcionmaterial_id,
-            'fecharecepcion' => $recepcion->fecha,
+            /* 'idrecepcion' => $this->recepcionmaterial_id, */
+            /* 'fecharecepcion' => $recepcion->fecha,
             'fechacompra' => $this->fechacompra,
-            'hora' => $this->hora,
-            'cedula' => $recepcion->cedula,
-            'idlugar' => $recepcion->idlugar,
+            'hora' => $this->hora, */
+            /* 'cedula' => $recepcion->cedula,
+            'idlugar' => $recepcion->idlugar, */
             'idestatuspago' => 0,
             'idtipopago' => 0,
             'totalcomra' => 0,
@@ -291,17 +299,16 @@ class CompradorComponent extends Component
             'observacionesc' => 'NINGUNA'
         ]);
         $compra = Compra::latest('id')->first();
-        $this->compra=$compra->id;
+        $this->compra=$compra->id; $this->mostrarcompra="true";
         $this->mostrar = "true"; $this->mostrarm = "true"; $this->mostrarpagoventas='true';
         auditar('COMPRA #: '.$this->compra, 'GENERAR');
         $this->dispatchBrowserEvent('hide-form', ['message' => 'Compra de Material Generada']);
-        }else{
+        /* }else{
             $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'Ingrese el número de Almacen ']);
             $this->datalm=""; $this->limpiar();
-        }
+        } */
     }
 
-    //public $idtipoabonoven;
     public function update($compra, $productosrecepcion, $totalcalculado){
         //$this->validate();
 
@@ -455,6 +462,92 @@ class CompradorComponent extends Component
         $this->reset(['compra', 'cedula', 'nombre', 'idlugar', 'pesofull', 'pesovacio', 'pesoneto', 'pesocalculado', 'state', 'almacen_id', 'producto_id', 'cantidadprorecmat', "recepcionmaterial_id", 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', ]);
     }
 
+    /* ABONOS */
+    public $pesoabonarv, $mabonar='true', $mostrarabonocompra='false', $mostrarpagoventa='false', $negociacion_idcompra;
+    public $pagoefectivonegcompra, $pagotransfnegcompra, $totalfectivonegcompra, $totaltransfnegcompra, $totalpagonegcompra, $totalrestapagonegcompra, $restapagonegcompra, $validamontotncompra, $finalizadac, $ocultarbotoncompra='false', $cedulacompra, $nombrecompra;
+
+    public function nuevoabonocompra(){ //AQUÍ SE GUARDA LA RECEPCION DESPUES SE GUARDAN LOS MATERIALES
+        auditar('COMPRA - ABONO', 'GENERAR ABONO');
+        $this->mostrar = "true"; $this->mostrarm = "true"; $this->mostrarabonocompra = "true";
+        $this->dispatchBrowserEvent('hide-form', ['message' => 'Abono Generado']);
+    }
+
+    public function defaultabonocompra(){
+        auditar('COMPRA - ABONO', 'CANCELAR ABONO');
+        $this->mostrar = "false"; $this->mostrarm = "false"; $this->mostrarabonocompra = "false";
+        $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Abono Cancelado!']);
+        $this->reset();
+    }
+
+    public function busproccompra(){ //BUSCA LOS NOMBRES DE LOS PROVEEDORES
+        $probccompra=Proveedores::where('cedula',$this->cedulacompra)->get()->pluck('nombre');
+        $this->nombrecompra = isset($probccompra) ? $probccompra : "NO EXISTE";
+    }
+
+    public function busproncompra(){ //BUSCA LOS PROVEEDORES
+        $probncompra=Proveedores::where('nombre',$this->nombrecompra)->get()->pluck('cedula');
+        $this->cedulacompra = isset($probncompra) ? $probncompra : "NO EXISTE";
+    }
+
+    public function busnegccreditocompra($cedula){ //BUSCA LAS CUENTAS POR COBRAR DE VENTAS $ (negociaciones y creditos) A LOS CLIENTES
+        /* $negociacionescredito= CuentasPorCobrarVentas::where('cedula', $cedula) */
+        $negociacionescreditocompra= CuentasPorPagarCompras::where('cedula', $cedula)
+            ->where('finalizada','NO')->where('totalresta', '<>',0)->get();
+        return $negociacionescreditocompra;
+    }
+
+    public function calrestaabocredito($restan){ //CALCULA EL RESTO DE LA NEGOCIACION
+        if((double)$restan[0]==0){
+            $this->validamontotncompra="NO DEBE";
+            $this->totalpagonegcompra=0;
+            $this->restapagonegcompra=0;
+        }elseif(((double)$this->pagoefectivonegcompra+(double)$this->pagotransfnegcompra)>(double)$restan[0]){
+                $this->validamontotncompra="TOTAL DEBE SER MENOR O IGUAL A: ".(double)$restan[0];
+                $this->totalpagonegcompra=round((double)$this->pagoefectivonegcompra + (double)$this->pagotransfnegcompra,2);
+                $this->restapagonegcompra=round((double)$restan[0]-(double)$this->totalpagonegcompra,2);
+                $this->ocultarbotoncompra="false";
+        }else{
+            if((is_numeric((double)$this->pagoefectivonegcompra)) or (is_numeric((double)$this->pagotransfnegcompra))){
+                //$idtipopagoneg, $pagoefectivonegcompra, $pagotransfnegcompra, $totalpagonegcompra;
+                $this->validamontotncompra="";
+                $this->totalpagonegcompra=round((double)$this->pagoefectivonegcompra + (double)$this->pagotransfnegcompra,2);
+                $this->restapagonegcompra=round((double)$restan[0]-(double)$this->totalpagonegcompra,2);
+                $this->ocultarbotoncompra="true";
+            }
+        }
+        if($this->totalpagonegcompra==0){ $this->ocultarbotoncompra="false"; }
+    }
+
+    public function guardaramortizacion(){ //dd($this->negociacion_id);
+        $datos = CuentasPorPagarCompras::find($this->negociacion_idcompra);
+        $this->totalfectivonegcompra = (double)$datos->totalefectivo+(double)$this->pagoefectivonegcompra;
+        $this->totaltransfnegcompra = (double)$datos->totaltransferencia+(double)$this->pagotransfnegcompra;
+        $totalpagadocompra=(double)$datos->totalpagado+(double)$this->pagoefectivonegcompra+(double)$this->pagotransfnegcompra;
+        $datos->update([
+            'totalefectivo' => (double)$this->totalfectivonegcompra,
+            'totaltransferencia' => (double)$this->totaltransfnegcompra,
+            'totalpagado' => (double)$totalpagadocompra,
+            'totalresta' => (double)$this->restapagonegcompra,
+            'amortizando' => '1'
+        ]); //detalle_cuentas_por_cobrar_ventas 
+        $datosdetalle = DetalleCuentasPorPagarCompras::create([
+            'idcppc' => $datos->id,
+            'fecha'=> date('d-m-Y'),
+            'hora' => date("H:i:s"),
+            'efectivo' => (double)$this->pagoefectivonegcompra,
+            'transferencia' => (double)$this->pagotransfnegcompra,
+            'pagado' => (double)$this->pagoefectivonegcompra+(double)$this->pagotransfnegcompra,
+            'resta' => (double)$this->restapagonegcompra
+        ]); //LA FACTURA SE GENERA DESDE LA BASE DE DATOS CON UN TRIGER $
+        /* $this->mostrar = "false"; */ $this->mostrarm = "false"; $this->mostrarpagoneg = 'false';
+        if($datos->idventa==0){ auditar('COMPRA - NEGOCIACION #: '.$datos->idnegociacionventa, 'ABONO A CREDITO');
+        }else{ auditar('COMPRA - CREDITO #: '.$datos->idventa, 'AMORTIZACION A CREDITO'); }
+        $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Negociación Actualizada! '.$datos->idnegociacionventa]);
+        $this->reset(['totalfectivonegcompra', 'totaltransfnegcompra', 'restapagonegcompra', 'pagoefectivonegcompra', 'pagotransfnegcompra']);
+    }
+
+    /* FIN ABONOS */
+
     public function show(){
         $compras = Compra::all();
         return view('livewire.purchases.show', compact('compras'));
@@ -466,16 +559,25 @@ class CompradorComponent extends Component
         $lugares = Sucursal::all();
         $productos = Producto::all();
         $recepcion = Almacen::all()->where('recibido', 'NO');
-        $recepciones = Almacen::all()->where('facturado', 'NO');
-        //dd($recepciones->count());
+        /* $recepcionescompras=Almacen::all()->where('facturado', 'NO'); */
+        /* $recepcionescompras=DB::table('recepcionmaterial')
+            ->join('proveedores', 'recepcionmaterial.cedula', '=', 'proveedores.cedula')
+            ->where('recepcionmaterial.facturado', 'NO')->get(); */
+        $recepcionescompras=ConsultaTraerRecepcionComprar::all();
+        //dd($recepcionescompras);
         $materiales = Material::all();
+
+        $recibir=Almacen::all()->where('facturado', 'NO');
+
         $este=$this->recepcion;
         $productosrecepcion=Detallealmacen::all()->where('recepcionmaterial_id', 
         $this->recepcionmaterial_id);
         $this->efectivodisc = Liquidez::where('id', 1)->get()->pluck('efectivo')[0];
         $this->bancodisc = Liquidez::where('id', 1)->get()->pluck('banco')[0];
+        $amortizacionesdepagocompra=ConsultaAmortizacionNegociacionCompra ::all();
+
         return view('livewire.comprador-component', [
                     'materiales'=>$materiales,
-            ], compact('vendedores', 'lugares', 'productos', 'recepcion', 'productosrecepcion', 'recepciones'));
+            ], compact('vendedores', 'lugares', 'productos', 'recepcion', 'productosrecepcion', 'recepcionescompras', 'amortizacionesdepagocompra', 'recibir'));
     }
 }

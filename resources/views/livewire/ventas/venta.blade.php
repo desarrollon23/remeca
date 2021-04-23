@@ -69,7 +69,7 @@
                       <div style="width: 49%; margin-right: 2px;"><label for="negociacion_id" style="width: 100%; margin-right: 2px;">Negociación</label>
                         <select name="negociacion_id" wire:model="negociacion_id" id="negociacion_id" style="width: 100%; text-transform: uppercase;">
                           <option value="NULL" style="width: 100%;" selected>(SELECCIONE)</option>
-{{-- @php dd($negociaciones); @endphp --}}
+                          {{-- @php dd($negociaciones); @endphp --}}
                           @foreach ($negociaciones as $negociacion)
                             <option value="{{$negociacion->id}}" style="width: 100%;">{{$negociacion->id." (FECHA: ".$negociacion->fechan}})</option>
                           @endforeach  $restaven
@@ -77,8 +77,9 @@
                     @endif
 
                     @php 
-                    /* dd($negociacionescredito=$this->busnegccredito('V22222222')); */
-                    if($idtipopagov==4){ $negociacionescredito=$this->busnegccredito($cedulav); } @endphp
+                      /* dd($negociacionescredito=$this->busnegccredito('V22222222')); */
+                      if($idtipopagov==4){ $negociacionescredito=$this->busnegccredito($cedulav); } 
+                    @endphp
                     @if($idtipopagov==4)
                       <div style="width: 49%; margin-right: 2px;"><label for="negociacion_id" style="width: 100%; margin-right: 2px;">Crédito</label>
                         <select name="negociacion_id" wire:model="negociacion_id" id="negociacion_id" style="width: 100%; text-transform: uppercase;" wire:onchange="cambioidcpc({{$this->negociacion_id}})">
@@ -107,13 +108,9 @@
                       <div style="width: 49%; margin-right: 2px;">
                         <button x-show="{{ $mostrar }}" wire:click="default({{ $recepcionmaterial_id }})" class="btn btn-secondary mb-1 mr-2"><i class="fa fa-times mr-1"></i> CANCELAR</button></div>
                       <div style="width: 49%; margin-right: 2px;">
-
                         @if($ocultarbotonven=='true')
-                        <button x-show="{{ $mostrar }}" wire:click="update({{ $recepcionmaterial_id.','.$acumulado }})" class="btn btn-primary mb-1"><i class="fa fa-save mr-1"></i> GUARDAR</button>
-                        @endif 
-
-                        </div>
-
+                          <button x-show="{{ $mostrar }}" wire:click="update({{ $recepcionmaterial_id.','.$acumulado }})" class="btn btn-primary mb-1"><i class="fa fa-save mr-1"></i> GUARDAR</button>
+                        @endif </div>
                       @endif
                       <div style="width: 49%; margin-right: 2px;">
                         <button x-show="!{{ $mostrar }}" wire:click="generar" class="btn btn-primary mb-1"><i class="fa fa-save mr-1"></i> VENDER</button></div>
@@ -462,7 +459,7 @@
                               <th scope="col">EFECTIVO</th>
                               <th scope="col">TRANSFERENCIA</th>
                               <th scope="col">PAGADO</th>
-                              <th scope="col">DEBIA</th>
+                              <th scope="col">DEBE</th>
                               </tr></thead><tbody>
                               @foreach ($amortizacionesdepago->where('id',$negociacion_id) as $amortizaciondepago)
                                 {{-- <tr><td scope="row">{{ $loop->iteration }}</td> --}}

@@ -246,15 +246,14 @@ class NegociacioncComponent extends Component
         if($ncc==0){ 
             $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'Agrege Materiales para Guardar la Negociación']);
         }else{
-            $productosrecepcionc=DetalleNegociacionCompra::all()->where('negociacion_id', $this->idnegociacioncomprac);
+            $productosrecepcionc=DetalleNegociacionCompra::all()->where('negociacion_id', $idnegociacioncomprac);
             foreach ($productosrecepcionc as $dtosdc){
                 $this->pesotnc=$this->pesotnc+$dtosdc->cantidadprorecmatn;
                 $this->montotnc=$this->montotnc+$dtosdc->totalpronegn;
-                //ACTUALIZA LA CPP EN LA TABLA CUENTAS MATERIAL
-                $cuentamaterialc=CuentasMaterial::where('idproducto', $dtosdc->producto_idn)->get()->pluck('id');
-                $cuentamaterialc=CuentasMaterial::find($cuentamaterialc[0]);
-                $cmcppc=(double)$cuentamaterialc->cpc+(double)$dtosdc->cantidadprorecmatnc;
-                $cuentamaterialc->update(['cpc' => $cmcppc]); //FIN ACTUALIZA LA CPP EN LA TABLA CUENTAS MATERIAL
+                //ACTUALIZA LA CPC EN LA TABLA CUENTAS MATERIAL
+                $cuentamaterialc=CuentasMaterial::find($dtosdc->producto_idn);
+                $cmcpc=(double)$cuentamaterialc->cpc+(double)$dtosdc->cantidadprorecmatn;
+                $cuentamaterialc->update(['cpc' => $cmcpc]); //FIN ACTUALIZA LA CPC EN LA TABLA CUENTAS MATERIAL
             } //DETERMINA EL TIPO DE PAGO
             if($this->restapagonegc==0){ $idtipopagonc=1; }else{ $idtipopagonc=2; } //DETERMINA EL ESTATUS DE PAGO Y TIPO DE ABONO
             if($this->pagoefectivonegc>0){ $idtipoabononc=1; } //PAGO EN EFECTIVO
@@ -263,10 +262,8 @@ class NegociacioncComponent extends Component
             if($this->pagotransfnegc=="" and $this->pagoefectivonegc==""){ $idtipoabononc=0; } //NO PAGO
             $this->productosnegociacionc=(double)$productosrecepcionc->sum('cantidadprorecmatn'); //
             $this->totalpagonegvenc=(double)$this->pagoefectivonegc+(double)$this->pagotransfnegc;
-            /* $datos = NegociacionCompra::where('id', $this->idnegociacioncomprac)->get()->pluck('id');
-            $datos = NegociacionCompra::find($datos[0]); */
-            $datosc=NegociacionCompra::find($idnegociacioncomprac);
-            $datosc->update([
+            $datoscompras=NegociacionCompra::find($idnegociacioncomprac);
+            $datoscompras->update([
                 'fechan' => date('d-m-Y'),
                 'horan' => date("H:i:s"),
                 'cedulan' => (string)$this->cedulanc,

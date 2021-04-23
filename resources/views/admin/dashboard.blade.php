@@ -118,7 +118,7 @@
         <div class="row">
           <div class="col-lg-4 col-md-4 col-xs-4 mt-2">{{-- INVENTARIO --}}
             <div class="card">
-              <div class="card-header bg-warning" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;" style="text-shadow: 2px 2px 2px black;">Inventario&nbsp;
+              <div class="card-header bg-warning" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;">Inventario&nbsp;
                 <h2>{{ $inventarios->count() }}</h2></label></h3>
               </div>
               <div class="card-body">
@@ -134,10 +134,10 @@
                   @foreach ($inventarios as $inventario)<tr class="hover:bg-green-200">
                     {{-- <td scope="row" class="px-1 py-1">{{$loop->iteration}}</td> --}}
                     <td class="px-1 py-1">{{$inventario->descripcion}}</td>
-                    <td class="px-1 py-1">{{$formatter->formatCurrency($inventario->cantidad, ''), PHP_EOL}}</td>
-                    <td class="px-1 py-1">
+                    <td class="px-1 py-1" style="text-align: right;">{{$formatter->formatCurrency($inventario->cantidad, ''), PHP_EOL}}</td>
+                    <td class="px-1 py-1" style="text-align: right;">
                       {{$formatter->formatCurrency($materialcppcpc->where('idproducto', $inventario->id)->pluck('cpc')[0], ''), PHP_EOL}}</td>
-                    <td class="px-1 py-1">
+                    <td class="px-1 py-1" style="text-align: right;">
               {{-- @php dd($materialcpp->where('idproducto', $inventario->id)->pluck('cpp')[0]); @endphp --}}
                       {{$formatter->formatCurrency($materialcppcpc->where('idproducto', $inventario->id)->pluck('cpp')[0], ''), PHP_EOL}}
                       {{-- {{$formatter->formatCurrency($inventario->pagar, ''), PHP_EOL}} --}}
@@ -157,21 +157,21 @@
           <div class="col-lg-4 col-md-4 col-xs-4 mt-2">{{-- COMPRAS CTAS: P/C (KG) - P/P ($) --}}
             <div class="card">
               <div class="card-header bg-danger" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;">Negociaciones de Compras:&nbsp;
-                <h2>{{ $ccpp->count() }}</h2></label></h3>
+                <h2>{{-- {{ $ccpp->count() }} --}}</h2></label></h3>
               </div>
               <div class="card-body">
                 @if ($ccpp->count())
                 <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
                     <th scope="col">#</th>
                     <th scope="col">Proveedor</th>
-                    <th scope="col">P/Pagar</th>
+                    <th scope="col">P/P $</th>
                     {{-- <th scope="col">C/Kg</th> --}}
                     <th scope="col"></th>
                   </tr></thead><tbody>
                   @foreach ($ccpp as $cp)<tr class="hover:bg-green-200">
                     <td scope="row" class="px-1 py-1">{{$loop->iteration}}</td>
                     <td class="px-1 py-1">{{$cp->nombre}}</td>
-                    <td class="px-1 py-1">{{$formatter->formatCurrency($cp->monto, ''), PHP_EOL}}</td>
+                    <td class="px-1 py-1" style="text-align: right;">{{$formatter->formatCurrency($cp->monto, ''), PHP_EOL}}</td>
                     {{-- <td class="px-1 py-1">{{$cp->pesotn}}</td> --}}
                     <td class="px-1 py-1">
                       <a href="{{ route('livewire.compras.detallenegociacion', $cp->cedula) }}" {{-- wire:click.prevent="edit({{ $pc }})" --}}><i class="fa fa-edit mr-2"></i></a>
@@ -196,16 +196,16 @@
                 <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
                     <th scope="col">#</th>
                     <th scope="col">Cliente</th>
-                    <th scope="col">P/Cobrar</th>
+                    <th scope="col">P/C $</th>
                     {{-- <th scope="col">P/Kg</th> --}}
                     <th scope="col"></th>
                   </tr></thead><tbody>
                   @foreach ($ccpc as $pc)<tr class="hover:bg-green-200">
                     <td scope="row" class="px-1 py-1">{{$loop->iteration}}</td>
                     <td class="px-1 py-1">{{$pc->nombre}}</td>
-                    <td class="px-1 py-1">{{$formatter->formatCurrency($pc->monto, ''), PHP_EOL}}</td>
+                    <td class="px-1 py-1" style="text-align: right;">{{$formatter->formatCurrency($pc->monto, ''), PHP_EOL}}</td>
                     <td class="px-1 py-1">
-                      <a href="{{ route('livewire.ventas.detallenegociacion', $pc->cedula) }}" {{-- wire:click.prevent="edit({{ $pc }})" --}}><i class="fa fa-edit mr-2"></i></a><a href="{{ route('livewire.ventas.detallenegociacion', $pc->cedula) }}" {{-- wire:click.prevent="edit({{ $pc }})" --}}><i class="fa fa-edit mr-2"></i></a>
+                      <a href="{{ route('livewire.ventas.detallenegociacion', $pc->cedula) }}" {{-- wire:click.prevent="edit({{ $pc }})" --}}><i class="fa fa-edit mr-2"></i></a>{{-- <a href="{{ route('livewire.ventas.detallenegociacion', $pc->cedula) }}" --}} {{-- wire:click.prevent="edit({{ $pc }})" >--}}{{-- <i class="fa fa-edit mr-2"></i> --}}{{-- </a> --}}
                       {{-- <a href="" wire:click.prevent="{ {-- confirmUserRemoval({{ $producto->id } }) --} }destroy({ { $producto->id } })"><i class="fa fa-trash text-danger"></i></a> --}}
                     </td></tr>
                   @endforeach</tbody>

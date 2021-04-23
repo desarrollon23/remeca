@@ -412,13 +412,9 @@ class VentaComponent extends Component
                 $this->validamontotv="";
                 $this->totalpagoven=round((double)$this->pagoefectivoven + (double)$this->pagotransfven,2);
                 $this->restapagoven=round((double)$restaven-(double)$this->totalpagoven,2);
-                if($this->idtipopagov==1 and $this->restapagoven==0){
-                    $this->ocultarbotonven="true";
-                }elseif($this->idtipopagov==2){
-                    $this->ocultarbotonven="true";
-                }else{
-                    $this->ocultarbotonven="false";
-                }
+                if($this->idtipopagov==1 and $this->restapagoven==0){ $this->ocultarbotonven="true";
+                }elseif($this->idtipopagov==2){ $this->ocultarbotonven="true";
+                }else{ $this->ocultarbotonven="false"; }
             }
         }
     }
@@ -448,8 +444,7 @@ class VentaComponent extends Component
     }
 
     public $pagoefectivoneg, $pagotransfneg, $totalfectivoneg, $totaltransfneg, $totalpagoneg, $totalrestapagoneg, $restapagoneg, $validamontotn, $finalizada; //$mostrarpagoneg='false';
-    public function guardaramortizacion(){
-        //dd($this->negociacion_id);
+    public function guardaramortizacion(){ //dd($this->negociacion_id);
         $datos = CuentasPorCobrarVentas::find($this->negociacion_id);
         $this->totalfectivoneg = (double)$datos->totalefectivo+(double)$this->pagoefectivoneg;
         $this->totaltransfneg = (double)$datos->totaltransferencia+(double)$this->pagotransfneg;
@@ -471,11 +466,8 @@ class VentaComponent extends Component
             'resta' => (double)$this->restapagoneg
         ]); //LA FACTURA SE GENERA DESDE LA BASE DE DATOS CON UN TRIGER $
         /* $this->mostrar = "false"; */ $this->mostrarm = "false"; $this->mostrarpagoneg = 'false';
-        if($datos->idventa==0){
-            auditar('VENTA - NEGOCIACION #: '.$datos->idnegociacionventa, 'ABONO A CREDITO');
-        }else{
-            auditar('VENTA - CREDITO #: '.$datos->idventa, 'AMORTIZACION A CREDITO');
-        }
+        if($datos->idventa==0){ auditar('VENTA - NEGOCIACION #: '.$datos->idnegociacionventa, 'ABONO A CREDITO');
+        }else{ auditar('VENTA - CREDITO #: '.$datos->idventa, 'AMORTIZACION A CREDITO'); }
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Negociación Actualizada! '.$datos->idnegociacionventa]);
         $this->reset(['totalfectivoneg', 'totaltransfneg', 'restapagoneg', 'pagoefectivoneg', 'pagotransfneg', 'totalpagoneg', 'restapagoneg']);
     }
