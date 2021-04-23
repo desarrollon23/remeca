@@ -122,7 +122,7 @@ class NegociacioncComponent extends Component
             $this->restapagonegc = round((double)$this->montotnc,2);
             $this->mostrarpagonegc='true'; $this->nopagarc="true";
             $this->mostraremidc='false'; $this->mostraremc='false'; $this->mostrarempc='false';
-            auditar('COMPRA - NEGOCIACION #: '.$this->idnegociacioncomprac, 'AGREGAR MATERIAL');
+            /* auditar('COMPRA - NEGOCIACION #: '.$this->idnegociacioncomprac, 'AGREGAR MATERIAL'); */
             $this->reset(['producto_idnc', 'cantidadprorecmatnc', 'precionegnc', 'totalpronegnc']);
             $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material agregado correctamente!']);
         }
@@ -136,7 +136,7 @@ class NegociacioncComponent extends Component
         $detallenegociacionventac->delete();
         $productosrecepcionc=DetalleNegociacionCompra::all()->where('negociacion_id', $this->idnegociacioncomprac)->count();
         if($productosrecepcionc==0){ $this->mostrarpagonegc='false'; $this->mostrardc = "true"; $this->nopagarc="false"; }
-        auditar('COMPRA - NEGOCIACION #: '.$this->idnegociacioncomprac, 'ELIMINAR MATERIAL');
+        /* auditar('COMPRA - NEGOCIACION #: '.$this->idnegociacioncomprac, 'ELIMINAR MATERIAL'); */
         $this->reset(['producto_idnc', 'cantidadprorecmatnc', 'precionegnc', 'totalpronegnc'/* , 'pagoefectivonegc', 'pagotransfnegc', 'totalpagonegc', 'restapagonegc' */]);
         $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material eliminado!']);
     }
@@ -235,7 +235,7 @@ class NegociacioncComponent extends Component
         $recepcionc = NegociacionCompra::latest('id')->first();
         $this->idnegociacioncomprac=$recepcionc->id;
         /* session(['ptn' => 0]); session(['pfn' => 0]); */
-        auditar('COMPRA - NEGOCIACION #: '.$this->idnegociacioncomprac, 'GENERAR');
+        /* auditar('COMPRA - NEGOCIACION #: '.$this->idnegociacioncomprac, 'GENERAR'); */
         $this->dispatchBrowserEvent('hide-form', ['message' => 'Negociación Generada']);
     }
 
@@ -282,7 +282,7 @@ class NegociacioncComponent extends Component
             ]); //LA FACTURA SE GENERA DESDE LA BASE DE DATOS CON UN TRIGER
             $this->mostrardc = "false";
             $this->mostrarc = "false"; $this->mostrarmc = "false"; $this->mostrarpagonegc = 'false';
-            auditar('COMPRA - NEGOCIACION #: '.$this->idnegociacioncomprac, 'GUARDAR');
+            /* auditar('COMPRA - NEGOCIACION #: '.$this->idnegociacioncomprac, 'GUARDAR'); */
             $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Negociación Actualizada!']);
             $this->reset();
         }
@@ -299,7 +299,7 @@ class NegociacioncComponent extends Component
             $this->vpeso = "false"; */
             $this->mostrardc = "false";
             $this->mostrarc = "false"; $this->mostrarmc = "false"; $this->mostrarpagonegc = 'false';
-            auditar('COMPRA - NEGOCIACION #: '.$this->idnegociacioncomprac, 'CANCELAR');
+            /* auditar('COMPRA - NEGOCIACION #: '.$this->idnegociacioncomprac, 'CANCELAR'); */
             $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Negociación  Eliminada!']);
             $this->reset();
             /* $this->reset(['fechanc', 'cedulanc', 'nombrenc', 'idtipopagonc', 'idtipoabononc', 'observacionesc', 'negociacion_id', 'producto_idnc', 'cantidadprorecmatnc', 'precionegnc', 'totalpronegnc', 'idnegociacioncomprac', 'messages', 'pesotnc', 'montotnc', 'pagoefectivonegc', 'pagotransfnegc', 'restapagonegc', 'totalpagonegc']); */
