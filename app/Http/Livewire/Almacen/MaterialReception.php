@@ -13,6 +13,7 @@ use App\Models\Detallealmacen;
 use App\Models\Proveedores;
 use App\Models\Sucursal;
 use App\Models\Producto;
+use App\Models\Auditoria;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 //use App\Http\Livewire\Almacen\Request;
@@ -98,6 +99,20 @@ class MaterialReception extends Component{
         'state.operacion.required' => 'SELECCIONE'
     ];
 
+    function auditar($programa, $operacion)
+    { //dd(auth()->user());
+        $audita = Auditoria::create([
+          'fechahora' => date('d-m-Y').' '.date("H:i:s"),
+          'idusuario' => auth()->user()->id,
+          'usuario' => auth()->user()->email,
+          'nombre' => auth()->user()->name,
+          'ip' => $_SERVER['REMOTE_ADDR'],
+          'dispositivo' => $_SERVER['HTTP_USER_AGENT'],
+          'programa' => $programa,
+          'operacion' => $operacion
+        ]);
+    }
+
     public function storem()    {
         $this->validate();
         Material::create([
@@ -110,7 +125,7 @@ class MaterialReception extends Component{
         session(['pf' => (double)session('pf')-(double)$this->state['cantidadprorecmat']]);
         if(session('pf') == 0){ $this->mostrarm="false"; }
         else{ $this->reset(['state', 'producto_id', 'cantidadprorecmat', 'operacion']); }
-        /* auditar('RECEPCION DE MATERIAL #: '.$this->recepcionmaterial_id, 'AGREGAR MATERIAL'); */
+        $this->auditar('RECEPCION DE MATERIAL #: '.$this->recepcionmaterial_id, 'AGREGAR MATERIAL');
         $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material agregado correctamente!']);
     }
 
@@ -120,7 +135,7 @@ class MaterialReception extends Component{
         session(['pt' => (double)session('pt')-(double)$this->pmm]);
         session(['pf' => (double)session('pf')+(double)$this->pmm]);
         if(session('pf') > 0){ $this->mostrarm="true"; }
-        /* auditar('RECEPCION DE MATERIAL #: '.$this->recepcionmaterial_id, 'ELIMINAR MATERIAL'); */
+        $this->auditar('RECEPCION DE MATERIAL #: '.$this->recepcionmaterial_id, 'ELIMINAR MATERIAL');
         $this->reset(['producto_id', 'cantidadprorecmat', 'operacion', 'editm_id', 'pmm']);
         $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material eliminado!']);
     }
@@ -187,7 +202,7 @@ class MaterialReception extends Component{
         $recepcion = Almacen::latest('id')->first();
         $this->recepcionmaterial_id=$recepcion->id;
         session(['pt' => 0]); session(['pf' => 0]);
-        auditar('RECEPCION DE MATERIAL #: '.$this->recepcionmaterial_id, 'GENERAR');
+        $this->auditar('RECEPCION DE MATERIAL #: '.$this->recepcionmaterial_id, 'GENERAR');
         $this->dispatchBrowserEvent('hide-form', ['message' => 'Recepción de Material Generada']);
     }
 
@@ -210,7 +225,7 @@ class MaterialReception extends Component{
                 'recibido' => 'SI',
                 'facturado' => 'NO'
             ]);
-            /* auditar('RECEPCION DE MATERIAL #: '.$this->recepcionmaterial_id, 'GUARDAR'); */
+            $this->auditar('RECEPCION DE MATERIAL #: '.$this->recepcionmaterial_id, 'GUARDAR');
             $this->vpeso = "true";
             $this->mostrar = "false"; $this->mostrarm = "false";
             $this->emitTo('principal', 'render');
@@ -228,7 +243,7 @@ class MaterialReception extends Component{
             $user = Almacen::findOrFail($recepcionmaterial_id);
             $user->delete();
             session(['pt' => 0]); session(['pf' => 0]);
-            /* auditar('RECEPCION DE MATERIAL #: '.$this->recepcionmaterial_id, 'CANCELAR'); */
+            $this->auditar('RECEPCION DE MATERIAL #: '.$this->recepcionmaterial_id, 'CANCELAR');
             $this->vpeso = "false";
             $this->mostrar = "false"; $this->mostrarm = "false";
             $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Recepción de Material  Eliminada!']);

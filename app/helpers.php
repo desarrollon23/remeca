@@ -12,7 +12,7 @@ if (! function_exists('current_user')) {
     }
 }
 
-if (! function_exists('auditar')) {
+/* if (! function_exists('auditar')) {
   function auditar($programa, $operacion)
   { //dd(auth()->user());
     $audita = Auditoria::create([
@@ -25,5 +25,6 @@ if (! function_exists('auditar')) {
       'programa' => $programa,
       'operacion' => $operacion
     ]);
-  }
+  } */
+  
 }
