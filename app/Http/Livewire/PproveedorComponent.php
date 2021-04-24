@@ -84,7 +84,12 @@ class PproveedorComponent extends Component
         $this->visible = 'SI';
         $this->pproveedor_id = $pproveedor->id;
         $this->accion = "update";
-        auditar('PROVEEDOR #: '.$pproveedor->id, 'EDITAR');
+        auditar('CLIENTE #: '.$pproveedor->id.' DATOS ACTUALES: '.
+            ' Cedula: '.$pproveedor->cedula.
+            ' Nombre: '.$pproveedor->nombre.
+            ' Direccion: '.$pproveedor->direccion.
+            ' Telefono: '.$pproveedor->telefono.
+            ' correo: '.$pproveedor->correo, 'EDITAR');
     }
 
     public function update()    {

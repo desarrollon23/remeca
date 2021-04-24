@@ -50,6 +50,9 @@ class SucursalComponent extends Component
             'descripcion' => $this->descripcion,
             'direccion' => $this->direccion
         ]);
+        auditar('SUCURSAL - DATOS: '.
+            ' Descripcion: '.$this->descripcion.
+            ' Direccion: '.$this->direccion, 'CREAR');
         $this->reset(['descripcion', 'direccion']);
     }
 
@@ -58,6 +61,9 @@ class SucursalComponent extends Component
         $this->direccion = $sucursal->direccion;
         $this->sucursal_id = $sucursal->id;
         $this->accion = "update";
+        auditar('SUCURSAL # '.$sucursal->id.' DATOS ACTUALES: '.
+            ' Descripcion: '.$sucursal->descripcion.
+            ' Direccion: '.$sucursal->direccion, 'EDITAR');
     }
 
     public function update()    {
@@ -67,6 +73,9 @@ class SucursalComponent extends Component
             'descripcion' => $this->descripcion,
             'direccion' => $this->direccion
         ]);
+        auditar('SUCURSAL # '.$sucursal->id.' NUEVOS DATOS: '.
+            ' Descripcion: '.$this->descripcion.
+            ' Direccion: '.$this->direccion, 'GUARDAR');
         $this->reset(['descripcion', 'direccion', 'accion', 'sucursal_id']);
     }
 
@@ -77,12 +86,14 @@ class SucursalComponent extends Component
     }
     
     public function default()    {
+        auditar('SUCURSAL', 'CANCELAR');
         $this->reset(['descripcion', 'direccion', 'accion', 'sucursal_id']);
     }
 
     /* public function confirmUserRemoval($userId){ */
     public function confirmUserRemoval(Sucursal $sucursal){
         $sucursal->delete();
+        auditar('SUCURSAL #: '.$sucursal->id, 'ELIMINAR');
         $this->reset(['descripcion', 'direccion']);
         $this->reset(['descripcion', 'direccion', 'accion', 'sucursal_id']);
         /* $this->userIdBeingRemoved = $userId; */

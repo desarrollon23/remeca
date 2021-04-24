@@ -81,7 +81,12 @@ class Client extends Component
         $this->visible = 'SI';
         $this->cliente_id = $cliente->id;
         $this->accion = "update";
-        auditar('CLIENTE #: '.$cliente->id, 'EDITAR');
+        auditar('CLIENTE #: '.$cliente->id.' DATOS ACTUALES: '.
+            ' Cedula: '.$cliente->cedulac.
+            ' Nombre: '.$cliente->nombrec.
+            ' Direccion: '.$cliente->direccionc.
+            ' Telefono: '.$cliente->telefonoc.
+            ' correo: '.$cliente->correoc, 'EDITAR');
     }
 
     public function update()    {

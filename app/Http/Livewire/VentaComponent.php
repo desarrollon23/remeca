@@ -140,7 +140,7 @@ class VentaComponent extends Component
                 ]);
                 $this->mostrarpagoventa='true';
                 if($this->idtipopagov==2){ $this->ocultarbotonven="true"; }
-                /* auditar('VENTA #: '.$this->recepcionmaterial_id, 'AGREGAR MATERIAL'); */
+                auditar('VENTA #: '.$this->recepcionmaterial_id, 'AGREGAR MATERIAL');
                 $this->reset(['idproductov', 'cantidadprov', 'precioprov', 'totalprov']);
                 $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material agregado correctamente!']);
             }
@@ -150,7 +150,7 @@ class VentaComponent extends Component
     public function destroy(DetalleVenta $detalleventa){ //ELIMINAR MATERIAL EN VENTAS DE CONTADO Y A CREDITO
         (double)$this->pmmdn=$detalleventa->totalpronegn;
         $detalleventa->delete();
-        /* auditar('VENTA #: '.$this->recepcionmaterial_id, 'ELIMINAR MATERIAL'); */
+        auditar('VENTA #: '.$this->recepcionmaterial_id, 'ELIMINAR MATERIAL');
         $this->reset(['idproductov', 'cantidadprov', 'precioprov', 'totalprov']);
         $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material eliminado!']);
     }
@@ -166,7 +166,7 @@ class VentaComponent extends Component
             'cantidadprorecmatndebe' => (double)$debe
         ]);
         $abonomaterialnv->delete();
-        /* auditar('ABONO DE MATERIAL - NEGOCIACION #: '.$abonomaterialnv->negociacion_id, 'ELIMINAR MATERIAL'); */
+        auditar('ABONO DE MATERIAL - NEGOCIACION #: '.$abonomaterialnv->negociacion_id, 'ELIMINAR MATERIAL');
         $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material eliminado del Abono!']);
     }
 
@@ -229,7 +229,7 @@ class VentaComponent extends Component
         ]);
         $this->mostrar = "true"; $this->mostrarm = "true";
         $this->recepcionmaterial_id=$nrm;
-        /* auditar('VENTA #: '.$this->recepcionmaterial_id, 'GENERAR VENTA'); */
+        auditar('VENTA #: '.$this->recepcionmaterial_id, 'GENERAR VENTA');
         $this->dispatchBrowserEvent('hide-form', ['message' => 'Negociación Generada']);
     }
 
@@ -241,7 +241,7 @@ class VentaComponent extends Component
             $user = Venta::findOrFail($idventa);
             $user->delete();
             $this->mostrar = "false"; $this->mostrarm = "false";
-            /* auditar('VENTA #: '.$idventa, 'CANCELAR VENTA'); */
+            auditar('VENTA #: '.$idventa, 'CANCELAR VENTA');
             $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Venta Eliminada!']);
             $this->reset();
         }
@@ -375,7 +375,7 @@ class VentaComponent extends Component
             ]);
         }
         $this->mostrar = "false"; $this->mostrarm = "false"; $this->mostrarpagoventa='false'; $this->mostrarbotonpagoventa='false';
-        /* auditar('VENTA #: '.$venta, 'GUARDAR VENTA'); */
+        auditar('VENTA #: '.$venta, 'GUARDAR VENTA');
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Venta de Material Realizada!']);
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Se actualizó el Inventário!']);
         session(['totalacumulado' => 0]);
@@ -383,13 +383,13 @@ class VentaComponent extends Component
     }
     
     public function nuevoabono(){ //AQUÍ SE GUARDA LA RECEPCION DESPUES SE GUARDAN LOS MATERIALES
-        /* auditar('ABONO', 'GENERAR ABONO'); */
+        auditar('ABONO', 'GENERAR ABONO');
         $this->mostrar = "true"; $this->mostrarm = "true"; $this->mostrarabono = "true";
         $this->dispatchBrowserEvent('hide-form', ['message' => 'Abono Generado']);
     }
 
     public function defaultabono(){
-        /* auditar('ABONO', 'CANCELAR ABONO'); */
+        auditar('ABONO', 'CANCELAR ABONO');
         $this->mostrar = "false"; $this->mostrarm = "false"; $this->mostrarabono = "false";
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Abono Cancelado!']);
         $this->reset();
@@ -466,9 +466,9 @@ class VentaComponent extends Component
             'resta' => (double)$this->restapagoneg
         ]); //LA FACTURA SE GENERA DESDE LA BASE DE DATOS CON UN TRIGER $
         /* $this->mostrar = "false"; */ $this->mostrarm = "false"; $this->mostrarpagoneg = 'false';
-        /* if($datos->idventa==0){ 
+        if($datos->idventa==0){ 
             auditar('VENTA - NEGOCIACION #: '.$datos->idnegociacionventa, 'ABONO A CREDITO');
-        }else{ auditar('VENTA - CREDITO #: '.$datos->idventa, 'AMORTIZACION A CREDITO'); } */
+        }else{ auditar('VENTA - CREDITO #: '.$datos->idventa, 'AMORTIZACION A CREDITO'); }
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Negociación Actualizada! '.$datos->idnegociacionventa]);
         $this->reset(['totalfectivoneg', 'totaltransfneg', 'restapagoneg', 'pagoefectivoneg', 'pagotransfneg', 'totalpagoneg', 'restapagoneg']);
     }
@@ -522,7 +522,7 @@ class VentaComponent extends Component
                                 ->where('producto_idn', $this->idproductov)->get();
             $datosc[0]->update(['cantidadprorecmatndebe' => (double)$debe]);
             $this->cantidadprov="";
-            /* auditar('VENTAS - NEGOCIACION #: '.$this->negociacion_id, 'ABONO DE MATERIAL'); */
+            auditar('VENTAS - NEGOCIACION #: '.$this->negociacion_id, 'ABONO DE MATERIAL');
             $this->dispatchBrowserEvent('hide-form', ['message' => 'Material Abonado']);
         }
         }
@@ -559,7 +559,7 @@ class VentaComponent extends Component
                 $datospro->update(['cantidad' => (double)$nexistencia]);
             }
             $this->mostrar = "false"; $this->mostrarm = "false";
-            /* auditar('VENTAS - NEGOCIACION #: '.$this->negociacion_id, 'ABONAR MATERIAL(ES) Y CREAR ORDEN DE DESPACHO'); */
+            auditar('VENTAS - NEGOCIACION #: '.$this->negociacion_id, 'ABONAR MATERIAL(ES) Y CREAR ORDEN DE DESPACHO');
             $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Abono de Material Generado!']);
             $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Se actualizó el Inventário!']);
             $this->reset(['fechaventa', 'cedulav', 'nombre', 'idlugarv', 'idestatuspagov', 'idtipopagov', 'placav', 'observaciones', 'idventa', 'idproductov', 'cantidadprov', 'precioprov', 'recepcionmaterial_id', 'messages', 'totalacumulado', 'venta']);
