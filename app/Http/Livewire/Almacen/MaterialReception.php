@@ -101,7 +101,7 @@ class MaterialReception extends Component{
 
     function auditar($programa, $operacion)
     { //dd(auth()->user());
-        $audita = Auditoria::create([
+        Auditoria::create([
           'fechahora' => date('d-m-Y').' '.date("H:i:s"),
           'idusuario' => auth()->user()->id,
           'usuario' => auth()->user()->email,
