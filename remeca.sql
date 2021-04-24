@@ -3,10 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-04-2021 a las 19:40:27
+-- Tiempo de generación: 24-04-2021 a las 08:54:50
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 7.4.15
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -66,13 +67,6 @@ CREATE TABLE `abono_material_negociacion_ventas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Volcado de datos para la tabla `abono_material_negociacion_ventas`
---
-
-INSERT INTO `abono_material_negociacion_ventas` (`id`, `negociacion_id`, `idproducton`, `cantidadpron`, `iddespacho`, `created_at`, `updated_at`) VALUES
-(1, 2, 3, 200.00, 2, '2021-04-23 16:53:49', '2021-04-23 16:55:08');
-
---
 -- Disparadores `abono_material_negociacion_ventas`
 --
 DELIMITER $$
@@ -104,65 +98,18 @@ CREATE TABLE `auditoria` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `auditoria`
+-- Estructura de tabla para la tabla `clavemaestra`
 --
 
-INSERT INTO `auditoria` (`id`, `fechahora`, `idusuario`, `usuario`, `nombre`, `programa`, `operacion`, `ip`, `dispositivo`, `created_at`, `updated_at`) VALUES
-(1, '23-04-2021 11:02:25', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'VENTA #: 1', 'GENERAR VENTA', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:02:25', '2021-04-23 15:02:25'),
-(2, '23-04-2021 11:03:03', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'VENTA #: 1', 'AGREGAR MATERIAL', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:03:03', '2021-04-23 15:03:03'),
-(3, '23-04-2021 11:04:26', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'VENTA #: 1', 'GUARDAR VENTA', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:04:26', '2021-04-23 15:04:26'),
-(4, '23-04-2021 11:05:17', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 44', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:05:17', '2021-04-23 15:05:17'),
-(5, '23-04-2021 11:05:24', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 44', 'CANCELAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:05:24', '2021-04-23 15:05:24'),
-(6, '23-04-2021 11:05:27', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA - ABONO', 'GENERAR ABONO', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:05:27', '2021-04-23 15:05:27'),
-(7, '23-04-2021 11:05:39', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA - ABONO', 'CANCELAR ABONO', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:05:39', '2021-04-23 15:05:39'),
-(8, '23-04-2021 11:08:34', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'RECEPCION DE MATERIAL #: 1', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:08:34', '2021-04-23 15:08:34'),
-(9, '23-04-2021 11:08:38', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'RECEPCION DE MATERIAL #: 1', 'CANCELAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:08:38', '2021-04-23 15:08:38'),
-(10, '23-04-2021 11:09:06', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'RECEPCION DE MATERIAL #: 1', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:09:06', '2021-04-23 15:09:06'),
-(11, '23-04-2021 11:10:13', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'RECEPCION DE MATERIAL #: 1', 'CANCELAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:10:13', '2021-04-23 15:10:13'),
-(12, '23-04-2021 11:10:18', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'RECEPCION DE MATERIAL #: 1', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:10:18', '2021-04-23 15:10:18'),
-(13, '23-04-2021 11:10:28', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'RECEPCION DE MATERIAL #: 1', 'CANCELAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:10:28', '2021-04-23 15:10:28'),
-(14, '23-04-2021 11:11:01', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'RECEPCION DE MATERIAL #: 1', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:11:01', '2021-04-23 15:11:01'),
-(15, '23-04-2021 11:12:30', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'RECEPCION DE MATERIAL #: 1', 'CANCELAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:12:30', '2021-04-23 15:12:30'),
-(16, '23-04-2021 11:12:34', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'RECEPCION DE MATERIAL #: 1', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:12:34', '2021-04-23 15:12:34'),
-(17, '23-04-2021 11:14:33', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'RECEPCION DE MATERIAL #: 1', 'AGREGAR MATERIAL', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:14:33', '2021-04-23 15:14:33'),
-(18, '23-04-2021 11:14:38', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'RECEPCION DE MATERIAL #: 1', 'GUARDAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:14:38', '2021-04-23 15:14:38'),
-(19, '23-04-2021 11:15:53', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 44', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:15:53', '2021-04-23 15:15:53'),
-(20, '23-04-2021 11:30:00', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 44', 'CANCELAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:30:00', '2021-04-23 15:30:00'),
-(21, '23-04-2021 11:30:20', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 44', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:30:20', '2021-04-23 15:30:20'),
-(22, '23-04-2021 11:35:46', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 45', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:35:46', '2021-04-23 15:35:46'),
-(23, '23-04-2021 11:36:24', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 46', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:36:24', '2021-04-23 15:36:24'),
-(24, '23-04-2021 11:37:16', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 47', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:37:16', '2021-04-23 15:37:16'),
-(25, '23-04-2021 11:38:05', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 48', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:38:05', '2021-04-23 15:38:05'),
-(26, '23-04-2021 11:38:51', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 49', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:38:51', '2021-04-23 15:38:51'),
-(27, '23-04-2021 11:40:45', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 50', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:40:45', '2021-04-23 15:40:45'),
-(28, '23-04-2021 11:54:16', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 50', 'CANCELAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:54:16', '2021-04-23 15:54:16'),
-(29, '23-04-2021 11:54:50', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 50', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:54:50', '2021-04-23 15:54:50'),
-(30, '23-04-2021 11:55:05', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 51', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:55:05', '2021-04-23 15:55:05'),
-(31, '23-04-2021 11:55:34', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 52', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:55:34', '2021-04-23 15:55:34'),
-(32, '23-04-2021 11:56:00', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 53', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:56:00', '2021-04-23 15:56:00'),
-(33, '23-04-2021 11:56:12', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 54', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:56:12', '2021-04-23 15:56:12'),
-(34, '23-04-2021 11:56:28', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 55', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:56:28', '2021-04-23 15:56:28'),
-(35, '23-04-2021 11:57:00', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 56', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:57:00', '2021-04-23 15:57:00'),
-(36, '23-04-2021 11:58:24', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 57', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 15:58:24', '2021-04-23 15:58:24'),
-(37, '23-04-2021 12:01:01', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 58', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 16:01:01', '2021-04-23 16:01:01'),
-(38, '23-04-2021 12:01:17', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'RECEPCION DE MATERIAL #: 2', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 16:01:17', '2021-04-23 16:01:17'),
-(39, '23-04-2021 12:02:02', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'RECEPCION DE MATERIAL #: 2', 'AGREGAR MATERIAL', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 16:02:02', '2021-04-23 16:02:02'),
-(40, '23-04-2021 12:02:07', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'RECEPCION DE MATERIAL #: 2', 'GUARDAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 16:02:07', '2021-04-23 16:02:07'),
-(41, '23-04-2021 12:03:07', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA - CREDITO #: 58', 'GUARDAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 16:03:07', '2021-04-23 16:03:07'),
-(42, '23-04-2021 12:03:38', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 59', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 16:03:38', '2021-04-23 16:03:38'),
-(43, '23-04-2021 12:04:35', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA - CREDITO #: 59', 'GUARDAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 16:04:35', '2021-04-23 16:04:35'),
-(44, '23-04-2021 12:30:12', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'VENTA - NEGOCIACION #: 1', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 16:30:12', '2021-04-23 16:30:12'),
-(45, '23-04-2021 12:48:53', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'VENTA - NEGOCIACION #: 2', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 16:48:53', '2021-04-23 16:48:53'),
-(46, '23-04-2021 12:49:28', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'VENTA - NEGOCIACION #: 2', 'AGREGAR MATERIAL', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 16:49:28', '2021-04-23 16:49:28'),
-(47, '23-04-2021 12:49:49', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'VENTA - NEGOCIACION #: 2', 'GUARDAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 16:49:49', '2021-04-23 16:49:49'),
-(48, '23-04-2021 12:53:22', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'ABONO', 'GENERAR ABONO', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 16:53:22', '2021-04-23 16:53:22'),
-(49, '23-04-2021 12:53:49', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'VENTAS - NEGOCIACION #: 2', 'ABONO DE MATERIAL', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 16:53:49', '2021-04-23 16:53:49'),
-(50, '23-04-2021 12:55:09', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'VENTAS - NEGOCIACION #: 2', 'ABONAR MATERIAL(ES) Y CREAR ORDEN DE DESPACHO', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 16:55:09', '2021-04-23 16:55:09'),
-(51, '23-04-2021 13:25:54', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 60', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 17:25:54', '2021-04-23 17:25:54'),
-(52, '23-04-2021 13:26:04', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 60', 'CANCELAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 17:26:04', '2021-04-23 17:26:04'),
-(53, '23-04-2021 13:26:08', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 60', 'GENERAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 17:26:08', '2021-04-23 17:26:08'),
-(54, '23-04-2021 13:26:13', 1, 'julion23@gmail.com', 'Julio H Nuñez A', 'COMPRA #: 60', 'CANCELAR', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', '2021-04-23 17:26:13', '2021-04-23 17:26:13');
+CREATE TABLE `clavemaestra` (
+  `id` bigint(20) NOT NULL,
+  `idusuario` bigint(20) NOT NULL,
+  `descripcion` varchar(255) NOT NULL,
+  `clave` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -182,18 +129,6 @@ CREATE TABLE `clientes` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `clientes`
---
-
-INSERT INTO `clientes` (`id`, `cedulac`, `nombrec`, `direccionc`, `telefonoc`, `correoc`, `visiblec`, `created_at`, `updated_at`) VALUES
-(1, 'V11111111', 'PEDRO PEREZ', 'MARACAY', '333', 'a@b.com', NULL, '2021-03-25 04:25:59', '2021-03-25 04:25:59'),
-(2, 'V22222222', 'CARLOS', 'Animi aut odio et c', '+1 (693) 814-9635', 'wikocoj@mailinator.com', NULL, '2021-03-25 04:26:35', '2021-03-25 13:21:42'),
-(3, 'V33333333', 'JUAN', 'Est commodi aut sunt', '+1 (779) 459-5104', 'tavumasujy@mailinator.com', NULL, '2021-03-25 04:27:07', '2021-03-25 13:21:51'),
-(4, 'V44444444', 'MARCOS', 'Suscipit quia dignis', '+1 (465) 945-7076', 'qihelac@mailinator.com', NULL, '2021-03-25 04:27:53', '2021-03-25 13:22:02'),
-(5, 'V55555555', 'LUIS', 'Corporis ullam qui e', '+1 (381) 847-8426', 'qapecon@mailinator.com', NULL, '2021-03-25 04:28:16', '2021-03-25 13:22:16'),
-(6, '123', 'maria ', 'maracay ', '0412-456321', 'akire56@hotmail.com', NULL, '2021-04-16 21:10:55', '2021-04-16 21:10:55');
-
 -- --------------------------------------------------------
 
 --
@@ -209,19 +144,6 @@ CREATE TABLE `cuentasmaterial` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `cuentasmaterial`
---
-
-INSERT INTO `cuentasmaterial` (`id`, `idproducto`, `disponible`, `cpc`, `cpp`, `created_at`, `updated_at`) VALUES
-(1, 1, 0.00, 0.00, 0.00, NULL, NULL),
-(2, 2, 0.00, 0.00, 0.00, NULL, '2021-04-22 19:50:15'),
-(3, 3, 0.00, 0.00, 300.00, NULL, '2021-04-23 16:49:48'),
-(4, 4, 0.00, 0.00, 0.00, NULL, '2021-04-23 13:54:45'),
-(5, 5, 0.00, 0.00, 0.00, NULL, '2021-04-22 19:52:24'),
-(6, 6, 0.00, 0.00, 0.00, NULL, '2021-04-22 19:52:25'),
-(7, 7, 0.00, 0.00, 0.00, NULL, '2021-04-22 19:52:25');
 
 -- --------------------------------------------------------
 
@@ -247,13 +169,6 @@ CREATE TABLE `cuentas_por_cobrar_ventas` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `cuentas_por_cobrar_ventas`
---
-
-INSERT INTO `cuentas_por_cobrar_ventas` (`id`, `idventa`, `idnegociacionventa`, `fecha`, `hora`, `cedula`, `montototal`, `totalefectivo`, `totaltransferencia`, `totalpagado`, `totalresta`, `finalizada`, `amortizando`, `created_at`, `updated_at`) VALUES
-(1, 0, 2, '23-04-2021', '12:49:48', 'v55555555', 1000.00, 50.00, 50.00, 100.00, 900.00, 'NO', NULL, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -278,14 +193,6 @@ CREATE TABLE `cuentas_por_pagar_compras` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `cuentas_por_pagar_compras`
---
-
-INSERT INTO `cuentas_por_pagar_compras` (`id`, `idcompra`, `idnegociacioncompra`, `fecha`, `hora`, `cedula`, `montototal`, `totalefectivo`, `totaltransferencia`, `totalpagado`, `totalresta`, `finalizada`, `amortizando`, `created_at`, `updated_at`) VALUES
-(1, 58, NULL, '23-04-2021', '12:03:07', 'v66666666', 6710.00, 5.00, 5.00, 10.00, 6700.00, 'NO', 1, '2021-04-23 16:03:07', '2021-04-23 16:03:07'),
-(2, 59, NULL, '23-04-2021', '12:04:35', 'v77777777', 21900.00, 50.00, 95.00, 145.00, 21755.00, 'NO', 1, '2021-04-23 16:04:35', '2021-04-23 16:04:35');
-
 -- --------------------------------------------------------
 
 --
@@ -302,14 +209,6 @@ CREATE TABLE `despacho_material` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `despacho_material`
---
-
-INSERT INTO `despacho_material` (`id`, `fechaventad`, `horaventad`, `idlugard`, `idestatusd`, `created_at`, `updated_at`) VALUES
-(1, '23-04-2021', '11:04:26', NULL, 2, '2021-04-23 15:04:26', '2021-04-23 17:23:40'),
-(2, '23-04-2021', '12:55:08', NULL, 2, '2021-04-23 16:55:08', '2021-04-23 17:23:32');
-
 -- --------------------------------------------------------
 
 --
@@ -325,14 +224,6 @@ CREATE TABLE `detallerecmat` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `detallerecmat`
---
-
-INSERT INTO `detallerecmat` (`id`, `recepcionmaterial_id`, `producto_id`, `cantidadprorecmat`, `operacion`, `created_at`, `updated_at`) VALUES
-(1, 1, 2, '1100.00', 'SUMA', '2021-04-23 15:14:33', '2021-04-23 15:14:33'),
-(2, 2, 4, '3000.00', 'SUMA', '2021-04-23 16:02:02', '2021-04-23 16:02:02');
 
 -- --------------------------------------------------------
 
@@ -352,13 +243,6 @@ CREATE TABLE `detalle_cuentas_por_cobrar_ventas` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `detalle_cuentas_por_cobrar_ventas`
---
-
-INSERT INTO `detalle_cuentas_por_cobrar_ventas` (`id`, `idcpcv`, `fecha`, `hora`, `efectivo`, `transferencia`, `pagado`, `resta`, `created_at`, `updated_at`) VALUES
-(1, 1, '23-04-2021', '12:49:48', 50.00, 50.00, 100.00, 900.00, NULL, NULL);
 
 --
 -- Disparadores `detalle_cuentas_por_cobrar_ventas`
@@ -402,14 +286,6 @@ CREATE TABLE `detalle_cuentas_por_pagar_compras` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `detalle_cuentas_por_pagar_compras`
---
-
-INSERT INTO `detalle_cuentas_por_pagar_compras` (`id`, `idcppc`, `fecha`, `hora`, `efectivo`, `transferencia`, `pagado`, `resta`, `created_at`, `updated_at`) VALUES
-(1, 1, '23-04-2021', '12:03:07', 5.00, 5.00, 10.00, 6700.00, '2021-04-23 16:03:07', '2021-04-23 16:03:07'),
-(2, 2, '23-04-2021', '12:04:35', 50.00, 95.00, 145.00, 21755.00, '2021-04-23 16:04:35', '2021-04-23 16:04:35');
 
 --
 -- Disparadores `detalle_cuentas_por_pagar_compras`
@@ -471,13 +347,6 @@ CREATE TABLE `detalle_negociacion_ventas` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `detalle_negociacion_ventas`
---
-
-INSERT INTO `detalle_negociacion_ventas` (`id`, `negociacion_id`, `producto_idn`, `cantidadprorecmatn`, `precionegn`, `totalpronegn`, `cantidadprorecmatndebe`, `created_at`, `updated_at`) VALUES
-(1, 2, 3, 500.00, 2.00, 1000.00, 300.00, '2021-04-23 16:49:28', '2021-04-23 16:53:49');
-
 -- --------------------------------------------------------
 
 --
@@ -495,13 +364,6 @@ CREATE TABLE `detalle_ventas` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `detalle_ventas`
---
-
-INSERT INTO `detalle_ventas` (`id`, `idventa`, `idproductov`, `cantidadprov`, `operacionv`, `precioprov`, `totalprov`, `created_at`, `updated_at`) VALUES
-(1, 1, 2, 100.00, NULL, 5.00, 500.00, '2021-04-23 15:03:03', '2021-04-23 15:03:03');
 
 -- --------------------------------------------------------
 
@@ -533,15 +395,6 @@ CREATE TABLE `liquidez` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `liquidez`
---
-
-INSERT INTO `liquidez` (`id`, `efectivo`, `banco`, `descripcion`, `created_at`, `updated_at`) VALUES
-(1, 95.00, 350.00, 'DISPONIBLE', '2021-04-13 17:41:49', '2021-04-23 15:04:26'),
-(2, 0.00, 0.00, 'CPC', '2021-04-15 20:16:35', '2021-04-15 20:16:35'),
-(3, 0.00, 0.00, 'CPP', '2021-04-15 20:16:35', '2021-04-15 20:16:35');
 
 -- --------------------------------------------------------
 
@@ -708,14 +561,6 @@ CREATE TABLE `negociacion_ventas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Volcado de datos para la tabla `negociacion_ventas`
---
-
-INSERT INTO `negociacion_ventas` (`id`, `fechan`, `horan`, `cedulan`, `idlugarn`, `idtipopagon`, `idtipoabonon`, `observaciones`, `montotn`, `efectivo`, `transferencia`, `totalpagado`, `pesotn`, `restan`, `finalizada`, `amortizando`, `created_at`, `updated_at`) VALUES
-(1, '23-04-2021', '12:30:12', '', 0, 0, 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 'NO', 2, '2021-04-23 16:30:12', '2021-04-23 16:30:12'),
-(2, '23-04-2021', '12:49:48', 'v55555555', 0, 2, 3, 'nada', 1000.00, 50.00, 50.00, 100.00, 500.00, 900.00, 'NO', 2, '2021-04-23 16:48:53', '2021-04-23 16:49:48');
-
---
 -- Disparadores `negociacion_ventas`
 --
 DELIMITER $$
@@ -864,42 +709,6 @@ CREATE TABLE `precios_productos_prov_clie` (
   `precio` double(12,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `precios_productos_prov_clie`
---
-
-INSERT INTO `precios_productos_prov_clie` (`id`, `cedula`, `idproducto`, `precio`) VALUES
-(1, 'V12345678', 2, 2.10),
-(2, 'V12345678', 3, 2.20),
-(3, 'V12345678', 4, 2.30),
-(4, 'V12345678', 5, 2.40),
-(5, 'V12345678', 6, 2.50),
-(6, 'V12345678', 7, 2.60),
-(7, 'v66666666', 2, 6.10),
-(8, 'v66666666', 3, 6.20),
-(9, 'v66666666', 4, 6.30),
-(10, 'v66666666', 5, 6.40),
-(11, 'v66666666', 6, 6.50),
-(12, 'v66666666', 7, 6.60),
-(13, 'v77777777', 2, 7.10),
-(14, 'v77777777', 3, 7.20),
-(15, 'v77777777', 4, 7.30),
-(16, 'v77777777', 5, 7.40),
-(17, 'v77777777', 6, 7.50),
-(18, 'v77777777', 7, 7.60),
-(19, 'v88888888', 2, 8.10),
-(20, 'v88888888', 3, 8.20),
-(21, 'v88888888', 4, 8.30),
-(22, 'v88888888', 5, 8.40),
-(23, 'v88888888', 6, 8.50),
-(24, 'v88888888', 7, 8.60),
-(25, 'v99999999', 2, 9.10),
-(26, 'v99999999', 3, 9.20),
-(27, 'v99999999', 4, 9.30),
-(28, 'v99999999', 5, 9.40),
-(29, 'v99999999', 6, 9.50),
-(30, 'v99999999', 7, 9.60);
-
 -- --------------------------------------------------------
 
 --
@@ -917,17 +726,6 @@ CREATE TABLE `proveedores` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `proveedores`
---
-
-INSERT INTO `proveedores` (`id`, `cedula`, `nombre`, `direccion`, `telefono`, `correo`, `visible`, `created_at`, `updated_at`) VALUES
-(1, 'V66666666', 'JUAN CARLOS', 'Et non ut in rerum n', '+1 (923) 281-7684', 'zemeruvyf@mailinator.com', NULL, '2021-03-25 04:33:23', '2021-03-25 13:22:54'),
-(2, 'V77777777', 'MANUEL', 'Eum non nihil ab rem', '+1 (535) 878-5983', 'walolib@mailinator.com', NULL, '2021-03-25 04:33:39', '2021-03-25 13:23:06'),
-(3, 'V88888888', 'ROBERTO', 'Ab dicta sit quaerat', '+1 (941) 142-2648', 'lorunyve@mailinator.com', NULL, '2021-03-25 04:33:56', '2021-03-25 13:23:18'),
-(4, 'V99999999', 'PEDRO', 'Quaerat ullam quia i', '+1 (558) 285-4931', 'cokovuqog@mailinator.com', NULL, '2021-03-25 04:34:12', '2021-03-25 13:23:40'),
-(5, 'V12345678', 'LUIS MANUEL', 'Consequatur consequa', '+1 (488) 122-9185', 'qimy@mailinator.com', NULL, '2021-03-25 04:34:37', '2021-03-25 13:24:05');
 
 -- --------------------------------------------------------
 
@@ -950,14 +748,6 @@ CREATE TABLE `recepcionmaterial` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `recepcionmaterial`
---
-
-INSERT INTO `recepcionmaterial` (`id`, `fecha`, `cedula`, `idlugar`, `pesofull`, `pesovacio`, `pesoneto`, `pesocalculado`, `observaciones`, `recibido`, `facturado`, `created_at`, `updated_at`) VALUES
-(1, '23-04-2021', 'v66666666', 1, 1150.00, 50.00, 1100.00, 1100.00, 'nada', 'SI', 'SI', '2021-04-23 15:12:34', '2021-04-23 16:03:07'),
-(2, '23-04-2021', 'v77777777', 1, 3010.00, 10.00, 3000.00, 3000.00, 'nada', 'SI', 'SI', '2021-04-23 16:01:17', '2021-04-23 16:04:35');
 
 -- --------------------------------------------------------
 
@@ -1131,7 +921,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('f80G0gHUqJhvC9Xa44Rf6Eia2FTczACF0bi6Npue', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', 'YToxNDp7czo2OiJfdG9rZW4iO3M6NDA6IldMR3cydmxYY0pOZzEwMjlxOTlCWTVGdlVSYnJ5STBIY2t1dlU2RjkiO3M6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6MzoidXJsIjthOjA6e31zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czo1MDoiaHR0cDovL3JlbWVjYS50ZXN0L2xpdmV3aXJlL3N3ZWV0YWxlcnQyLmFsbC5taW4uanMiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO3M6MTc6InBhc3N3b3JkX2hhc2hfd2ViIjtzOjYwOiIkMnkkMTAkVWh6Rm1maXNJNVRUTFpqcFJ1a2g0LjZFYUo5Nk5DTzZlWlBVZS9BNklQdTZhWGNWWG9OYmkiO3M6MTQ6InRvdGFsYWN1bXVsYWRvIjtpOjA7czoxMDoidG9wcm9kYWN1bSI7aTowO3M6MjoicHQiO2k6MDtzOjI6InBmIjtpOjA7czo1OiJ2cGVzbyI7YjowO3M6MjQ6InZhbG9yaWRtYXRlcmlhbGFmYWN0dXJhciI7czoxOiIyIjtzOjEwOiJjYW50aWRhZHAxIjtzOjc6IjMwMDAuMDAiO3M6MjM6ImNhbnRpZGFkcHJvcmVjbWF0bmRlYmUzIjtkOjMwMDt9', 1619198774);
+('0b31l3sxAiaHHbJ7QH7IuibzAmcZAJvasfMsDUs1', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiVXlSZU8zdk1yMkh2RUpYam0zT0hXcFpaN1FOanIzS1dJOWs5RHU2NCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czoxODoiaHR0cDovL3JlbWVjYS50ZXN0Ijt9czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjQ6Imh0dHA6Ly9yZW1lY2EudGVzdC9sb2dpbiI7fX0=', 1619212887);
 
 -- --------------------------------------------------------
 
@@ -1149,13 +939,6 @@ CREATE TABLE `sucursales` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `sucursales`
---
-
-INSERT INTO `sucursales` (`id`, `descripcion`, `direccion`, `telefono`, `idencargado`, `visible`, `created_at`, `updated_at`) VALUES
-(1, 'san vicente', 'maracay edo aragua', NULL, NULL, NULL, '2021-03-25 03:39:28', '2021-03-25 03:39:28');
 
 -- --------------------------------------------------------
 
@@ -1223,40 +1006,6 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `users`
---
-
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `two_factor_secret`, `two_factor_recovery_codes`, `remember_token`, `current_team_id`, `profile_photo_path`, `created_at`, `updated_at`) VALUES
-(1, 'Julio H Nuñez A', 'julion23@gmail.com', NULL, '$2y$10$UhzFmfisI5TTLZjpRukh4.6EaJ96NCO6eZPUe/A6IPu6aXcVXoNbi', NULL, NULL, '91Cme4JWj1ooj4lk5DkqExubkwvHChFFhGeHH3dDRtBb7yRuxMm8kPI30arX', NULL, 'profile-photos/BYBkXlFVbR1CJS2pHEfsnba575kBOVSjDG9pEtVI.png', '2021-03-25 03:02:59', '2021-04-19 03:05:48'),
-(2, 'Auditor', 'auditor@remeca.test', NULL, '$2y$10$Mix4D8Ahr53GYDa9.HjsqO4NSPJiBAqQfeO7QpgwRDw89o/WNlAHi', NULL, NULL, NULL, NULL, NULL, '2021-03-25 03:03:00', '2021-03-25 03:03:00'),
-(3, 'Mantenimiento', 'mantenimiento@remeca.test', NULL, '$2y$10$XobXbgPqbGJvI342bTvu7.vyTl4j3dHVj1QiDy5B.2iF5iPpeDVAG', NULL, NULL, NULL, NULL, NULL, '2021-03-25 03:03:00', '2021-03-25 03:03:00'),
-(4, 'Sr Miguel', 'miguel@remeca.test', NULL, '$2y$10$ojlsVPm6XaFB5PIvybGZre.6.8mMMsDBnjluifHq7zM1skOqsyufO', NULL, NULL, 'sLmJaTi01frVoxuDa2cosKotIfaXmkCoHWroFotooySv36EjmGDSrmgwv1Dm', NULL, NULL, '2021-03-25 03:03:00', '2021-03-25 03:03:00'),
-(5, 'Sra Gusmary', 'gusmary@remeca.test', NULL, '$2y$10$kPkG2AL1O3EFqk9JXqpTsunzjncMNN2n6v0bE00S/ELQ1m2XKlKVy', NULL, NULL, NULL, NULL, NULL, '2021-03-25 03:03:00', '2021-03-25 03:03:00'),
-(6, 'Sra Erika', 'erika@remeca.test', NULL, '$2y$10$obvg7x578b1KDDuo1KRbBueeqA/ivpMbpc3i/MHHSyqKEozG2QZ86', NULL, NULL, NULL, NULL, NULL, '2021-03-25 03:03:01', '2021-03-25 03:03:01'),
-(7, 'Sra Katherine', 'katherine@remeca.test', NULL, '$2y$10$Up5QAmmMbCo6ZFXlb8FqtOb7McxeDmC8ZlJKLjRjY4SwSDcace5Em', NULL, NULL, 'Q8nf8JowovZzoZ7s8iRfN82zX4vsmvXpM1s6UDOmjNPNZuUOPb0IunHQcpOM', NULL, NULL, '2021-03-25 03:03:01', '2021-03-25 03:03:01'),
-(8, 'Almacen', 'almacen@remeca.test', NULL, '$2y$10$VcmgFJA.Th1tWMmExmUj2e67Pnm4bUBmKwPTkQROZtlgz4QA1roSa', NULL, NULL, NULL, NULL, NULL, '2021-03-25 03:03:01', '2021-03-25 03:03:01'),
-(9, 'Lic. Eva Andrés', 'ablasco@example.com', '2021-03-25 03:03:01', '$2y$10$gEAJ4JVd6HDw98hQ8DLv2O3SvJtCCoUGZP4pnF7i0ufnSS144ksWm', NULL, NULL, '9UNxuyY0Jn', NULL, NULL, '2021-03-25 03:03:05', '2021-03-25 03:03:05'),
-(10, 'Inés Peralta', 'miriam.valadez@example.com', '2021-03-25 03:03:02', '$2y$10$9Uasl7IMDwNyNchS9LRj8.dGGc0bDJN3mzarIGEONyeJ6prw4iptG', NULL, NULL, '3zNjclEKDQ', NULL, NULL, '2021-03-25 03:03:05', '2021-03-25 03:03:05'),
-(11, 'Verónica Román', 'marco51@example.net', '2021-03-25 03:03:02', '$2y$10$UTrbNE98fbKrvJzdJ5YlBO65O.MDMNbs7LGq6Yr7N735Y0teyLATu', NULL, NULL, 'K6UkyAXpOc', NULL, NULL, '2021-03-25 03:03:05', '2021-03-25 03:03:05'),
-(12, 'Miguel Dávila', 'afierro@example.net', '2021-03-25 03:03:02', '$2y$10$f1dlYWaZSVbnY4u1nfg/8.GCS.Y95LomIMzHkxS8PoZkMlUSKFqgy', NULL, NULL, 'rDrzMftS8P', NULL, NULL, '2021-03-25 03:03:05', '2021-03-25 03:03:05'),
-(13, 'Pau Herrero', 'wlucio@example.com', '2021-03-25 03:03:02', '$2y$10$hA1mKGl1gszuMg11IOHJsO4HGEIGjTsoIydBwP500X2BsBGlGGaD6', NULL, NULL, 'dF6ScuBxJC', NULL, NULL, '2021-03-25 03:03:05', '2021-03-25 03:03:05'),
-(14, 'D. Fernando Aguirre', 'amparo32@example.org', '2021-03-25 03:03:02', '$2y$10$6Gdahtl/o4Lj/U0PIZm08eVRI0r9cgj8iyDJhMZFD1gJT/90e5QS6', NULL, NULL, 'yDiCCuEHSW', NULL, NULL, '2021-03-25 03:03:05', '2021-03-25 03:03:05'),
-(15, 'Alejandra Curiel', 'javier.menchaca@example.net', '2021-03-25 03:03:03', '$2y$10$CuP26nVtZAb61wosIC5DmO4L07pLE3uPlOsFjfubsPUKmsDwXDxi6', NULL, NULL, 'F3TqqM06bs', NULL, NULL, '2021-03-25 03:03:05', '2021-03-25 03:03:05'),
-(16, 'Abril De Anda', 'ines86@example.org', '2021-03-25 03:03:03', '$2y$10$pR65hTKjhmvekoYeVp9RjufC0xbKB8AGAqOtXzmpUzA/UaPRDJQZK', NULL, NULL, 'oWCquf5x2u', NULL, NULL, '2021-03-25 03:03:05', '2021-03-25 03:03:05'),
-(17, 'Francisco Javier Aguado', 'vasquez.jordi@example.com', '2021-03-25 03:03:03', '$2y$10$yEyHY5Vwu5fXFLBya2Vph.icNXHUtPfKe1zOjhtzH5EhnXJwnT4Rm', NULL, NULL, 'DA9cxuksjk', NULL, NULL, '2021-03-25 03:03:05', '2021-03-25 03:03:05'),
-(18, 'Dr. Jordi Patiño Hijo', 'umarcos@example.com', '2021-03-25 03:03:03', '$2y$10$RgpTjZlNrcECNw5nVihu/OK2JYFEJpcnrqE1an4m/MKqxgNwqFAb.', NULL, NULL, 'LfWUnUsGEd', NULL, NULL, '2021-03-25 03:03:05', '2021-03-25 03:03:05'),
-(19, 'Nahia Martí Tercero', 'carla.guevara@example.net', '2021-03-25 03:03:03', '$2y$10$45XPON0Uj6Z8HAJNKSDN7e0jcwD7cvr61rhEm3RRiCbMp.zVQiv8q', NULL, NULL, 'xbBWVs8CbA', NULL, NULL, '2021-03-25 03:03:05', '2021-03-25 03:03:05'),
-(20, 'Sr. Erik Campos Tercero', 'bruno10@example.net', '2021-03-25 03:03:04', '$2y$10$TU848Hx3Z5Yg5QBmtQjigeNkhGXS7QM.ZJlS7QhL3nnEGWrsoQL7q', NULL, NULL, 'ZEhJMXvFFi', NULL, NULL, '2021-03-25 03:03:05', '2021-03-25 03:03:05'),
-(21, 'Elsa Zapata Tercero', 'luis02@example.com', '2021-03-25 03:03:04', '$2y$10$Ls.kLPQwGFnbkq6/XoxpCOlOOZWd0JApfirf9bR0sR3.1RuN/Qd.S', NULL, NULL, 'kzLwc9ums4', NULL, NULL, '2021-03-25 03:03:05', '2021-03-25 03:03:05'),
-(22, 'Dr. Mara Cepeda Segundo', 'btapia@example.com', '2021-03-25 03:03:04', '$2y$10$e0hTkyGyviwNlHHuOZfxX.Vk01fruB1I1/ieHjKM01Y45a9LdcDO6', NULL, NULL, 'YnL7WvuCqn', NULL, NULL, '2021-03-25 03:03:05', '2021-03-25 03:03:05'),
-(23, 'Sra. Ana Isabel Juárez Segundo', 'kroig@example.net', '2021-03-25 03:03:04', '$2y$10$NezUVmo670Jld6UH1qot8OxJvQRFyiyZvDdjWnoll7g5a.0Tw0A3K', NULL, NULL, 'nXwVJbhT6U', NULL, NULL, '2021-03-25 03:03:05', '2021-03-25 03:03:05'),
-(24, 'Mario Alanis', 'ivan.garay@example.net', '2021-03-25 03:03:04', '$2y$10$f1k8EeKb/UI3eUyGg3ofAOdVvcIH64FonFlJ79wbxoMb1CHwvoTW6', NULL, NULL, 'VctiiHo6uQ', NULL, NULL, '2021-03-25 03:03:05', '2021-03-25 03:03:05'),
-(25, 'María Dolores Jasso', 'sepulveda.adam@example.net', '2021-03-25 03:03:05', '$2y$10$GQxRNBU64YQgofRNL9LYseVk34xN6VPiJyLIMoovNd.Ezs.8DvnJC', NULL, NULL, 'EIdnv6SIcw', NULL, NULL, '2021-03-25 03:03:05', '2021-03-25 03:03:05'),
-(26, 'Omar Bustamante', 'olopez@example.net', '2021-03-25 03:03:05', '$2y$10$pjlUG3miewS.EWR4VRlVxOob82duuk5A7SewKba.LjOjVc5OUGQne', NULL, NULL, 'DOzB6GPTkh', NULL, NULL, '2021-03-25 03:03:06', '2021-03-25 03:03:06'),
-(27, 'Alex Roldán', 'biel.marrero@example.net', '2021-03-25 03:03:05', '$2y$10$tueoJ4m.1n/cfeZlJ5MIh.FtiTpPyV1.Bc3P5tkt1sknf/WG8qQ3G', NULL, NULL, 'L10ZS4B0hj', NULL, NULL, '2021-03-25 03:03:06', '2021-03-25 03:03:06'),
-(28, 'Alberto Téllez', 'ona.simon@example.com', '2021-03-25 03:03:05', '$2y$10$eINJhzCx16FE.Fs4FnaeW.8FBsV6.Dtr8tTE/Hbd8wrmGntPzxGV6', NULL, NULL, '1iugi7VqpF', NULL, NULL, '2021-03-25 03:03:06', '2021-03-25 03:03:06');
-
 -- --------------------------------------------------------
 
 --
@@ -1293,7 +1042,10 @@ CREATE TABLE `ventas` (
 
 INSERT INTO `ventas` (`id`, `fechaventa`, `horaventa`, `cedulav`, `idlugarv`, `idestatuspagov`, `idtipopagov`, `efectivo`, `transferencia`, `idtipoabonov`, `negociacion_id`, `placa`, `totalcomrav`, `totalpagadov`, `diferenciapagov`, `ajusteporpesov`, `observacionesv`, `despachado`, `iddespacho`, `created_at`, `updated_at`) VALUES
 (1, '23-04-2021', '11:04:26', 'v11111111', 1, 1, 1, 100.00, 400.00, 3, NULL, NULL, 500.00, 500.00, 0.00, NULL, 'nada', 'NO', 1, '2021-04-23 15:02:25', '2021-04-23 15:04:26'),
-(1084, '23-04-2021', NULL, 'v55555555', NULL, 2, 2, 50.00, 50.00, 3, 2, NULL, 1000.00, 100.00, 900.00, NULL, 'FACTURADO DESDE LA NEGOCIACION. nada', 'NO', NULL, NULL, NULL);
+(1084, '23-04-2021', NULL, 'v55555555', NULL, 2, 2, 50.00, 50.00, 3, 2, NULL, 1000.00, 100.00, 900.00, NULL, 'FACTURADO DESDE LA NEGOCIACION. nada', 'NO', NULL, NULL, NULL),
+(1085, '23-04-2021', '16:33:44', 'v44444444', 1, 1, 1, 600.00, 600.00, 3, NULL, NULL, 1200.00, 1200.00, 0.00, NULL, 'nada', 'NO', NULL, '2021-04-23 20:32:15', '2021-04-23 20:33:44'),
+(1086, '23-04-2021', '16:38:26', 'v44444444', 1, 2, 2, 5.00, 5.00, 3, NULL, NULL, 1000.00, 10.00, 1000.00, NULL, 'nada', 'NO', NULL, '2021-04-23 20:37:33', '2021-04-23 20:38:26'),
+(1087, '23-04-2021', '16:59:51', 'v33333333', 1, 2, 2, 1500.00, 0.00, 1, NULL, NULL, 2000.00, 1500.00, 2000.00, NULL, 'nada', 'NO', NULL, '2021-04-23 20:58:47', '2021-04-23 20:59:51');
 
 -- --------------------------------------------------------
 
@@ -1603,71 +1355,6 @@ CREATE TABLE `_ccompras` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `_ccompras`
---
-
-INSERT INTO `_ccompras` (`id`, `idrecepcion`, `fecharecepcion`, `fechacompra`, `hora`, `cedula`, `idlugar`, `idestatuspago`, `idtipopago`, `efectivo`, `transferencia`, `idtipoabonov`, `negociacion_id`, `totalcomra`, `totalpagado`, `diferenciapago`, `observacionesc`, `created_at`, `updated_at`) VALUES
-(1, 1, '16-04-2021', '16-04-2021', '15:30:12', 'V99999999', 1, 1, 1, NULL, NULL, NULL, NULL, 500.00, 500.00, 0.00, 'nada', '2021-04-16 19:28:20', '2021-04-16 19:30:12'),
-(2, 3, '16-04-2021', '16-04-2021', '15:43:39', 'v66666666', 1, 2, 2, NULL, NULL, NULL, NULL, 780.00, 80.00, 700.00, 'kkk', '2021-04-16 19:37:53', '2021-04-16 19:43:39'),
-(3, 2, '16-04-2021', NULL, NULL, 'V77777777', 1, 1, 1, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-16 21:02:22', '2021-04-16 21:02:22'),
-(4, 2, '16-04-2021', NULL, NULL, 'V77777777', 1, 1, 1, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-21 15:55:28', '2021-04-21 15:55:28'),
-(5, 2, '16-04-2021', NULL, NULL, 'V77777777', 1, 1, 1, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-21 16:27:43', '2021-04-21 16:27:43'),
-(6, 2, '16-04-2021', NULL, NULL, 'V77777777', 1, 1, 1, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-21 16:30:46', '2021-04-21 16:30:46'),
-(7, 2, '16-04-2021', NULL, NULL, 'V77777777', 1, 1, 1, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-21 16:31:16', '2021-04-21 16:31:16'),
-(8, 2, '16-04-2021', NULL, NULL, 'V77777777', 1, 1, 1, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-21 16:31:59', '2021-04-21 16:31:59'),
-(9, 2, '16-04-2021', NULL, NULL, 'V77777777', 1, 1, 1, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-21 16:36:38', '2021-04-21 16:36:38'),
-(10, 2, '16-04-2021', NULL, NULL, 'V77777777', 1, 1, 1, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-21 16:42:25', '2021-04-21 16:42:25'),
-(11, 2, '16-04-2021', NULL, NULL, 'V77777777', 1, 1, 1, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-21 16:44:09', '2021-04-21 16:44:09'),
-(12, 2, '16-04-2021', NULL, NULL, 'V77777777', 1, 1, 1, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-21 16:47:34', '2021-04-21 16:47:34'),
-(13, 2, '16-04-2021', NULL, NULL, 'V77777777', 1, 1, 1, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-21 16:48:37', '2021-04-21 16:48:37'),
-(14, 18, '21-04-2021', NULL, NULL, 'v99999999', 1, 1, 1, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-21 19:02:21', '2021-04-21 19:02:21'),
-(15, 18, '21-04-2021', '21-04-2021', '15:35:17', 'v99999999', 1, 1, 1, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, NULL, '2021-04-21 19:23:17', '2021-04-21 19:35:17'),
-(16, 18, '21-04-2021', '21-04-2021', '15:44:01', 'v99999999', 1, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, NULL, '2021-04-21 19:43:17', '2021-04-21 19:44:01'),
-(17, 18, '21-04-2021', '21-04-2021', '15:56:19', 'v99999999', 1, 1, 1, 46081.34, 918.66, NULL, NULL, 47000.00, 47000.00, 0.00, 'DE CONTADO', '2021-04-21 19:55:39', '2021-04-21 19:56:19'),
-(18, 19, '21-04-2021', '21-04-2021', '16:52:18', 'V77777777', 1, 2, 2, 500.00, 500.00, NULL, NULL, 34988.80, 1000.00, 33988.80, 'A CREDITO', '2021-04-21 20:38:17', '2021-04-21 20:52:18'),
-(19, 21, '21-04-2021', '21-04-2021', '17:58:57', 'V77777777', 1, 2, 2, 16000.00, 2000.00, NULL, NULL, 20880.00, 18000.00, 2880.00, 'credito', '2021-04-21 21:53:10', '2021-04-21 21:58:57'),
-(20, 22, '22-04-2021', '22-04-2021', '09:32:53', 'V99999999', 1, 2, 2, 16000.00, 2000.00, NULL, NULL, 23250.00, 18000.00, 5250.00, 'A CREDITO', '2021-04-22 13:32:15', '2021-04-22 13:32:53'),
-(21, NULL, NULL, '22-04-2021', '14:46:35', 'v88888888', 1, 2, 2, 75.00, 75.00, 3, 1, 25200.00, 150.00, 25050.00, 'FACTURADO DESDE LA NEGOCIACION. ninguna', NULL, NULL),
-(22, NULL, NULL, '22-04-2021', '14:53:13', 'v88888888', 1, 2, 2, 100.00, 100.00, 3, 2, 4200.00, 200.00, 4000.00, 'FACTURADO DESDE LA NEGOCIACION. nada', NULL, NULL),
-(23, NULL, NULL, '22-04-2021', '15:33:33', 'v88888888', 1, 2, 2, 0.00, 0.00, 0, 3, 24300.00, 0.00, 24300.00, 'FACTURADO DESDE LA NEGOCIACION. nada', NULL, NULL),
-(24, NULL, NULL, '22-04-2021', '15:50:15', 'v88888888', 1, 2, 2, 0.00, 0.00, 0, 4, 16200.00, 0.00, 16200.00, 'FACTURADO DESDE LA NEGOCIACION. nada', NULL, NULL),
-(25, NULL, NULL, '22-04-2021', '15:52:25', 'v77777777', 1, 2, 2, 0.00, 0.00, 0, 5, 44500.00, 0.00, 44500.00, 'FACTURADO DESDE LA NEGOCIACION. nada', NULL, NULL),
-(26, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 03:32:15', '2021-04-23 03:32:15'),
-(27, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 03:39:37', '2021-04-23 03:39:37'),
-(28, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 03:41:34', '2021-04-23 03:41:34'),
-(29, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 03:42:19', '2021-04-23 03:42:19'),
-(30, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 03:42:53', '2021-04-23 03:42:53'),
-(31, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 03:44:02', '2021-04-23 03:44:02'),
-(32, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 03:58:18', '2021-04-23 03:58:18'),
-(33, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 04:29:25', '2021-04-23 04:29:25'),
-(34, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 04:29:46', '2021-04-23 04:29:46'),
-(35, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 04:29:54', '2021-04-23 04:29:54'),
-(36, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 04:57:14', '2021-04-23 04:57:14'),
-(37, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 04:58:01', '2021-04-23 04:58:01'),
-(38, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 05:03:25', '2021-04-23 05:03:25'),
-(39, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 05:24:06', '2021-04-23 05:24:06'),
-(40, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 05:38:22', '2021-04-23 05:38:22'),
-(41, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 05:52:14', '2021-04-23 05:52:14'),
-(42, 23, '23-04-2021', '23-04-2021', '08:47:19', NULL, NULL, 2, 2, 50.00, 90.00, NULL, NULL, 37140.00, 140.00, 37000.00, 'ninguna', '2021-04-23 11:45:06', '2021-04-23 12:47:19'),
-(43, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 12:49:42', '2021-04-23 12:49:42'),
-(44, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 15:30:20', '2021-04-23 15:30:20'),
-(45, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 15:35:46', '2021-04-23 15:35:46'),
-(46, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 15:36:24', '2021-04-23 15:36:24'),
-(47, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 15:37:16', '2021-04-23 15:37:16'),
-(48, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 15:38:05', '2021-04-23 15:38:05'),
-(49, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 15:38:51', '2021-04-23 15:38:51'),
-(50, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 15:54:50', '2021-04-23 15:54:50'),
-(51, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 15:55:05', '2021-04-23 15:55:05'),
-(52, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 15:55:34', '2021-04-23 15:55:34'),
-(53, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 15:55:59', '2021-04-23 15:55:59'),
-(54, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 15:56:12', '2021-04-23 15:56:12'),
-(55, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 15:56:28', '2021-04-23 15:56:28'),
-(56, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 15:57:00', '2021-04-23 15:57:00'),
-(57, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 'NINGUNA', '2021-04-23 15:58:24', '2021-04-23 15:58:24'),
-(58, 1, '23-04-2021', '23-04-2021', '12:03:07', NULL, NULL, 2, 2, 5.00, 5.00, NULL, NULL, 6710.00, 10.00, 6700.00, NULL, '2021-04-23 16:01:01', '2021-04-23 16:03:07'),
-(59, 2, '23-04-2021', '23-04-2021', '12:04:35', NULL, NULL, 2, 2, 50.00, 95.00, NULL, NULL, 21900.00, 145.00, 21755.00, NULL, '2021-04-23 16:03:38', '2021-04-23 16:04:35');
-
 -- --------------------------------------------------------
 
 --
@@ -1685,28 +1372,6 @@ CREATE TABLE `_ddetallecompras` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `_ddetallecompras`
---
-
-INSERT INTO `_ddetallecompras` (`id`, `idcompra`, `idproducto`, `cantidadpro`, `operacion`, `preciopro`, `totalpro`, `created_at`, `updated_at`) VALUES
-(29, 1, 3, 100.00, 'SUMA', 3.00, 300.00, '2021-04-16 19:30:12', '2021-04-16 19:30:12'),
-(30, 1, 4, 50.00, 'SUMA', 4.00, 200.00, '2021-04-16 19:30:12', '2021-04-16 19:30:12'),
-(31, 2, 2, 290.00, 'SUMA', 0.00, 0.00, '2021-04-16 19:43:39', '2021-04-16 19:43:39'),
-(32, 2, 1, 5.00, 'RESTA', 0.00, 0.00, '2021-04-16 19:43:39', '2021-04-16 19:43:39'),
-(33, 15, 5, 5000.00, 'SUMA', 0.00, 0.00, '2021-04-21 19:35:17', '2021-04-21 19:35:17'),
-(34, 16, 5, 5000.00, 'SUMA', 0.00, 0.00, '2021-04-21 19:44:01', '2021-04-21 19:44:01'),
-(35, 17, 5, 5000.00, 'SUMA', 0.00, 0.00, '2021-04-21 19:56:19', '2021-04-21 19:56:19'),
-(37, 18, 2, 4928.00, 'SUMA', 0.00, 0.00, '2021-04-21 20:39:19', '2021-04-21 20:39:19'),
-(38, 18, 2, 4928.00, 'SUMA', 0.00, 0.00, '2021-04-21 20:46:52', '2021-04-21 20:46:52'),
-(39, 18, 2, 4928.00, 'SUMA', 0.00, 0.00, '2021-04-21 20:52:18', '2021-04-21 20:52:18'),
-(40, 19, 3, 2900.00, 'SUMA', 0.00, 0.00, '2021-04-21 21:58:57', '2021-04-21 21:58:57'),
-(41, 20, 4, 2500.00, 'SUMA', 0.00, 0.00, '2021-04-22 13:32:54', '2021-04-22 13:32:54'),
-(42, 42, 6, 3000.00, 'SUMA', 0.00, 0.00, '2021-04-23 12:47:20', '2021-04-23 12:47:20'),
-(43, 42, 7, 900.00, 'SUMA', 0.00, 0.00, '2021-04-23 12:47:20', '2021-04-23 12:47:20'),
-(44, 58, 2, 1100.00, 'SUMA', 0.00, 0.00, '2021-04-23 16:03:07', '2021-04-23 16:03:07'),
-(45, 59, 4, 3000.00, 'SUMA', 0.00, 0.00, '2021-04-23 16:04:35', '2021-04-23 16:04:35');
 
 -- --------------------------------------------------------
 
@@ -1726,23 +1391,6 @@ CREATE TABLE `_iinventario` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `_iinventario`
---
-
-INSERT INTO `_iinventario` (`id`, `fecha`, `hora`, `idproducto`, `comprados`, `vendidos`, `existencia`, `created_at`, `updated_at`) VALUES
-(131, '23-04-2021', '10:57:00', 2, 0, 0, 1000, '2021-04-23 14:57:00', '2021-04-23 14:57:00'),
-(132, '23-04-2021', '10:57:07', 3, 0, 0, 1000, '2021-04-23 14:57:07', '2021-04-23 14:57:07'),
-(133, '23-04-2021', '10:57:15', 4, 0, 0, 1000, '2021-04-23 14:57:15', '2021-04-23 14:57:15'),
-(134, '23-04-2021', '10:57:23', 5, 0, 0, 1000, '2021-04-23 14:57:23', '2021-04-23 14:57:23'),
-(135, '23-04-2021', '10:57:30', 6, 0, 0, 1000, '2021-04-23 14:57:30', '2021-04-23 14:57:30'),
-(136, '23-04-2021', '10:57:38', 7, 0, 0, 1000, '2021-04-23 14:57:38', '2021-04-23 14:57:38'),
-(137, '23-04-2021', '10:58:47', 1, 0, 0, 0, '2021-04-23 14:58:47', '2021-04-23 14:58:47'),
-(138, '23-04-2021', '11:04:26', 2, 0, 100, 1000, '2021-04-23 15:04:26', '2021-04-23 15:04:26'),
-(139, '23-04-2021', '12:03:07', 2, 1100, 0, 900, '2021-04-23 16:03:07', '2021-04-23 16:03:07'),
-(140, '23-04-2021', '12:04:35', 4, 3000, 0, 1000, '2021-04-23 16:04:35', '2021-04-23 16:04:35'),
-(141, '23-04-2021', '12:55:08', 3, 0, 200, 1000, '2021-04-23 16:55:08', '2021-04-23 16:55:08');
-
 -- --------------------------------------------------------
 
 --
@@ -1760,19 +1408,6 @@ CREATE TABLE `_pproductos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `_pproductos`
---
-
-INSERT INTO `_pproductos` (`id`, `idcate`, `descripcion`, `precio`, `cantidad`, `visiblecom`, `visibleven`, `created_at`, `updated_at`) VALUES
-(1, 1, 'DESCARTE', '0.00', 0, NULL, NULL, '2021-03-25 04:02:54', '2021-04-23 14:58:47'),
-(2, 1, 'R', '2.00', 2000, NULL, NULL, '2021-03-25 04:03:35', '2021-04-23 16:03:07'),
-(3, 1, 'A', '3.00', 800, NULL, NULL, '2021-03-25 04:03:50', '2021-04-23 16:55:08'),
-(4, 1, 'P', '4.00', 4000, NULL, NULL, '2021-03-25 04:04:07', '2021-04-23 16:04:35'),
-(5, 1, 'RL', '5.00', 1000, NULL, NULL, '2021-03-25 04:04:28', '2021-04-23 14:57:23'),
-(6, 1, 'RAC', '6.00', 1000, NULL, NULL, '2021-03-25 04:04:43', '2021-04-23 14:57:30'),
-(7, 1, 'ALUM', '7.00', 1000, NULL, NULL, '2021-03-29 14:16:07', '2021-04-23 14:57:38');
 
 -- --------------------------------------------------------
 
@@ -1952,6 +1587,12 @@ ALTER TABLE `auditoria`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `clavemaestra`
+--
+ALTER TABLE `clavemaestra`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `clientes`
 --
 ALTER TABLE `clientes`
@@ -2017,8 +1658,7 @@ ALTER TABLE `detalle_negociacion_compras`
 -- Indices de la tabla `detalle_negociacion_ventas`
 --
 ALTER TABLE `detalle_negociacion_ventas`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `detalle_negociacion_ventas_negociacion_id_foreign` (`negociacion_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `detalle_ventas`
@@ -2223,61 +1863,67 @@ ALTER TABLE `_pproductos`
 -- AUTO_INCREMENT de la tabla `abono_material_negociacion_ventas`
 --
 ALTER TABLE `abono_material_negociacion_ventas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `auditoria`
 --
 ALTER TABLE `auditoria`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `clavemaestra`
+--
+ALTER TABLE `clavemaestra`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `cuentasmaterial`
 --
 ALTER TABLE `cuentasmaterial`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `cuentas_por_cobrar_ventas`
 --
 ALTER TABLE `cuentas_por_cobrar_ventas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `cuentas_por_pagar_compras`
 --
 ALTER TABLE `cuentas_por_pagar_compras`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `despacho_material`
 --
 ALTER TABLE `despacho_material`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `detallerecmat`
 --
 ALTER TABLE `detallerecmat`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_cuentas_por_cobrar_ventas`
 --
 ALTER TABLE `detalle_cuentas_por_cobrar_ventas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_cuentas_por_pagar_compras`
 --
 ALTER TABLE `detalle_cuentas_por_pagar_compras`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_negociacion_compras`
@@ -2289,13 +1935,13 @@ ALTER TABLE `detalle_negociacion_compras`
 -- AUTO_INCREMENT de la tabla `detalle_negociacion_ventas`
 --
 ALTER TABLE `detalle_negociacion_ventas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_ventas`
 --
 ALTER TABLE `detalle_ventas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `failed_jobs`
@@ -2307,7 +1953,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT de la tabla `liquidez`
 --
 ALTER TABLE `liquidez`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
@@ -2349,19 +1995,19 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT de la tabla `precios_productos_prov_clie`
 --
 ALTER TABLE `precios_productos_prov_clie`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `recepcionmaterial`
 --
 ALTER TABLE `recepcionmaterial`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -2373,7 +2019,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `sucursales`
 --
 ALTER TABLE `sucursales`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `teams`
@@ -2397,13 +2043,13 @@ ALTER TABLE `team_user`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1085;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1088;
 
 --
 -- AUTO_INCREMENT de la tabla `_ccategoriaproducto`
@@ -2415,35 +2061,29 @@ ALTER TABLE `_ccategoriaproducto`
 -- AUTO_INCREMENT de la tabla `_ccompras`
 --
 ALTER TABLE `_ccompras`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `_ddetallecompras`
 --
 ALTER TABLE `_ddetallecompras`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `_iinventario`
 --
 ALTER TABLE `_iinventario`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=142;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `_pproductos`
 --
 ALTER TABLE `_pproductos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
 --
-
---
--- Filtros para la tabla `detalle_negociacion_ventas`
---
-ALTER TABLE `detalle_negociacion_ventas`
-  ADD CONSTRAINT `detalle_negociacion_ventas_negociacion_id_foreign` FOREIGN KEY (`negociacion_id`) REFERENCES `negociacion_ventas` (`id`);
 
 --
 -- Filtros para la tabla `detalle_ventas`
@@ -2481,6 +2121,7 @@ ALTER TABLE `role_has_permissions`
 --
 ALTER TABLE `team_invitations`
   ADD CONSTRAINT `team_invitations_team_id_foreign` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE CASCADE;
+SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
