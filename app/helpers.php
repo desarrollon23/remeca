@@ -15,7 +15,7 @@ if (! function_exists('current_user')) {
 if (! function_exists('auditar')) {
   function auditar($programa, $operacion)
   { //dd(auth()->user());
-    Auditoria::create([
+    $audita = Auditoria::create([
       'fechahora' => date('d-m-Y').' '.date("H:i:s"),
       'idusuario' => auth()->user()->id,
       'usuario' => auth()->user()->email,
