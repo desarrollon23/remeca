@@ -138,7 +138,7 @@ class NegociacionComponent extends Component
             $this->restapagoneg = (double)$this->restapagoneg+(double)$this->totalpronegn;
             $this->mostrarpagoneg='true';
             $this->mostraremid='false'; $this->mostraremc='false'; $this->mostraremp='false';
-            /* auditar('VENTA - NEGOCIACION #: '.$this->recepcionmaterial_id, 'AGREGAR MATERIAL'); */
+            auditar('VENTA - NEGOCIACION #: '.$this->recepcionmaterial_id, 'AGREGAR MATERIAL');
             $this->reset(['producto_idn', 'cantidadprorecmatn', 'precionegn', 'totalpronegn']);
             $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material agregado correctamente!']);
         }
@@ -152,7 +152,7 @@ class NegociacionComponent extends Component
         $detallenegociacionventa->delete();
         $productosrecepcion=DetalleNegociacionVenta::all()->where('negociacion_id', $this->recepcionmaterial_id)->count();
         if($productosrecepcion==0){ $this->mostrarpagoneg='false'; }
-        /* auditar('VENTA - NEGOCIACION #: '.$this->recepcionmaterial_id, 'ELIMINAR MATERIAL'); */
+        auditar('VENTA - NEGOCIACION #: '.$this->recepcionmaterial_id, 'ELIMINAR MATERIAL');
         $this->reset(['producto_idn', 'cantidadprorecmatn', 'precionegn', 'totalpronegn', 'pagoefectivoneg', 'pagotransfneg', 'totalpagoneg', 'restapagoneg']);
         $this->dispatchBrowserEvent('hide-form', ['message' => '¡Material eliminado!']);
     }
@@ -279,7 +279,7 @@ class NegociacionComponent extends Component
                 'amortizando' => 2
             ]); //LA FACTURA SE GENERA DESDE LA BASE DE DATOS CON UN TRIGER
             $this->mostrar = "false"; $this->mostrarm = "false"; $this->mostrarpagoneg = 'false';
-            /* auditar('VENTA - NEGOCIACION #: '.$recepcionmaterial_id, 'GUARDAR'); */
+            auditar('VENTA - NEGOCIACION #: '.$recepcionmaterial_id, 'GUARDAR');
             $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Negociación Actualizada!']);
             $this->reset();
         }

@@ -301,7 +301,7 @@ class CompradorComponent extends Component
         $compra = Compra::latest('id')->first();
         $this->compra=$compra->id; $this->mostrarcompra="true";
         $this->mostrar = "true"; $this->mostrarm = "true"; $this->mostrarpagoventas='true';
-        /* auditar('COMPRA #: '.$this->compra, 'GENERAR'); */
+        auditar('COMPRA #: '.$this->compra, 'GENERAR');
         $this->dispatchBrowserEvent('hide-form', ['message' => 'Compra de Material Generada']);
         /* }else{
             $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'Ingrese el número de Almacen ']);
@@ -368,7 +368,7 @@ class CompradorComponent extends Component
                 $nexistencia = $existenciapro->cantidad+$productocompra['cantidadprorecmat'];
                 $datospro->update(['cantidad' => (double)$nexistencia]);
             }
-            /* auditar('COMPRA #: '.$this->compra, 'GUARDAR'); */
+            auditar('COMPRA #: '.$this->compra, 'GUARDAR');
         }
         if($this->idtipopagoventas==2){ /* COMPRA A CREDITO */
             $recepcion = Almacen::find($this->recepcionmaterial_id);
@@ -439,7 +439,7 @@ class CompradorComponent extends Component
                 'pagado' => (double)$this->totalpagoventas,
                 'resta' => (double)$this->restapagoventas
             ]);
-            /* auditar('COMPRA - CREDITO #: '.$this->compra, 'GUARDAR'); */
+            auditar('COMPRA - CREDITO #: '.$this->compra, 'GUARDAR');
         }
         $this->mostrar = "false"; $this->mostrarm = "false";
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Compra de Material Realizada!']);
@@ -452,7 +452,7 @@ class CompradorComponent extends Component
         $compra = Compra::findOrFail($compra);
         $compra->delete();
         $this->mostrar = "false"; $this->mostrarm = "false";
-        /* auditar('COMPRA #: '.$this->compra, 'CANCELAR'); */
+        auditar('COMPRA #: '.$this->compra, 'CANCELAR');
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Compra de Material Eliminada!']);
         /* $this->limpiar(); */
         $this->reset();
@@ -467,13 +467,13 @@ class CompradorComponent extends Component
     public $pagoefectivonegcompra, $pagotransfnegcompra, $totalfectivonegcompra, $totaltransfnegcompra, $totalpagonegcompra, $totalrestapagonegcompra, $restapagonegcompra, $validamontotncompra, $finalizadac, $ocultarbotoncompra='false', $cedulacompra, $nombrecompra;
 
     public function nuevoabonocompra(){ //AQUÍ SE GUARDA LA RECEPCION DESPUES SE GUARDAN LOS MATERIALES
-        /* auditar('COMPRA - ABONO', 'GENERAR ABONO'); */
+        auditar('COMPRA - ABONO', 'GENERAR ABONO');
         $this->mostrar = "true"; $this->mostrarm = "true"; $this->mostrarabonocompra = "true";
         $this->dispatchBrowserEvent('hide-form', ['message' => 'Abono Generado']);
     }
 
     public function defaultabonocompra(){
-        /* auditar('COMPRA - ABONO', 'CANCELAR ABONO'); */
+        auditar('COMPRA - ABONO', 'CANCELAR ABONO');
         $this->mostrar = "false"; $this->mostrarm = "false"; $this->mostrarabonocompra = "false";
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Abono Cancelado!']);
         $this->reset();
@@ -540,8 +540,8 @@ class CompradorComponent extends Component
             'resta' => (double)$this->restapagonegcompra
         ]); //LA FACTURA SE GENERA DESDE LA BASE DE DATOS CON UN TRIGER $
         /* $this->mostrar = "false"; */ $this->mostrarm = "false"; $this->mostrarpagoneg = 'false';
-        /* if($datos->idventa==0){ auditar('COMPRA - NEGOCIACION #: '.$datos->idnegociacionventa, 'ABONO A CREDITO');
-        }else{ auditar('COMPRA - CREDITO #: '.$datos->idventa, 'AMORTIZACION A CREDITO'); } */
+        if($datos->idventa==0){ auditar('COMPRA - NEGOCIACION #: '.$datos->idnegociacionventa, 'ABONO A CREDITO');
+        }else{ auditar('COMPRA - CREDITO #: '.$datos->idventa, 'AMORTIZACION A CREDITO'); }
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Negociación Actualizada! '.$datos->idnegociacionventa]);
         $this->reset(['totalfectivonegcompra', 'totaltransfnegcompra', 'restapagonegcompra', 'pagoefectivonegcompra', 'pagotransfnegcompra']);
     }

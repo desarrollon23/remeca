@@ -66,6 +66,12 @@ class PproveedorComponent extends Component
             'telefono' => $this->telefono,
             'correo' => $this->correo
         ]);
+        auditar('PROVEEDOR - DATOS: '.
+            ' Cedula: '.$this->cedula.
+            ' Nombre: '.$this->nombre.
+            ' Direccion: '.$this->direccion.
+            ' Telefono: '.$this->telefono.
+            ' Correo: '.$this->correo, 'CREAR');
         $this->reset(['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'accion', 'pproveedor_id']);
     }
 
@@ -78,6 +84,7 @@ class PproveedorComponent extends Component
         $this->visible = 'SI';
         $this->pproveedor_id = $pproveedor->id;
         $this->accion = "update";
+        auditar('PROVEEDOR #: '.$pproveedor->id, 'EDITAR');
     }
 
     public function update()    {
@@ -91,16 +98,24 @@ class PproveedorComponent extends Component
             'correo' => $this->correo,
             $this->visible = 'SI'
         ]);
+        auditar('PROVEEDOR #: '.$pproveedor->id.' NUEVOS DATOS: '.
+            ' Cedula: '.$this->cedula.
+            ' Nombre: '.$this->nombre.
+            ' Direccion: '.$this->direccion.
+            ' Telefono: '.$this->telefono.
+            ' Correo: '.$this->correo, 'GUARDAR');
         $this->reset(['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'accion', 'pproveedor_id']);
     }
 
     public function destroy(Proveedores $pproveedor)    {
         $pproveedor->delete();
+        auditar('PROVEEDOR #: '.$pproveedor->id, 'ELIMINAR');
         $this->reset(['cedula', 'nombre','direccion', 'telefono', 'correo']);
         $this->reset(['cedula', 'nombre','direccion', 'telefono', 'correo', 'accion', 'pproveedor_id']);
     }
     
     public function default()    {
+        auditar('PROVEEDOR', 'CANCELAR');
         $this->reset(['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'accion', 'pproveedor_id']);
     }
 }

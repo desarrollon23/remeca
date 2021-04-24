@@ -114,6 +114,7 @@ class DespachoComponent extends Component
         ]); */
 
         $this->mostrar = "false"; $this->mostrarm = "false";
+        auditar('ENTREGA DE MATERIAL #: '.$venta, 'ENTREGAR');
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Material Despachado!']);
         //$this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Se actualizó el Inventário!']);
         $this->reset(['cedulav', 'nombre', 'observacionesv', 'recepcionmaterial_id', 'iddespacho']);

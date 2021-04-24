@@ -63,6 +63,12 @@ class Client extends Component
             'telefonoc' => $this->telefonoc,
             'correoc' => $this->correoc
         ]);
+        auditar('CLIENTE - DATOS: '.
+            ' Cedula: '.$this->cedulac.
+            ' Nombre: '.$this->nombrec.
+            ' Direccion: '.$this->direccionc.
+            ' Telefono: '.$this->telefonoc.
+            ' Correo: '.$this->correoc, 'CREAR');
         $this->reset(['cedulac', 'nombrec', 'direccionc', 'telefonoc', 'correoc', 'accion', 'cliente_id']);
     }
 
@@ -75,6 +81,7 @@ class Client extends Component
         $this->visible = 'SI';
         $this->cliente_id = $cliente->id;
         $this->accion = "update";
+        auditar('CLIENTE #: '.$cliente->id, 'EDITAR');
     }
 
     public function update()    {
@@ -88,16 +95,25 @@ class Client extends Component
             'correoc' => $this->correoc,
             $this->visible = 'SI'
         ]);
+        auditar('CLIENTE #: '.$cliente->id.' NUEVOS DATOS: '.
+            ' Cedula: '.$this->cedulac.
+            ' Nombre: '.$this->nombrec.
+            ' Direccion: '.$this->direccionc.
+            ' Telefono: '.$this->telefonoc.
+            ' Correo: '.$this->correoc, 'GUARDAR');
+
         $this->reset(['cedulac', 'nombrec', 'direccionc', 'telefonoc', 'correoc', 'accion', 'cliente_id']);
     }
 
     public function destroy(Cliente $cliente)    {
         $cliente->delete();
+        auditar('CLIENTE #: '.$cliente->id, 'ELIMINAR');
         $this->reset(['cedulac', 'nombrec','direccionc', 'telefonoc', 'correoc']);
         $this->reset(['cedulac', 'nombrec','direccionc', 'telefonoc', 'correoc', 'accion', 'cliente_id']);
     }
     
     public function default()    {
+        auditar('CLIENTE', 'CANCELAR');
         $this->reset(['cedulac', 'nombrec', 'direccionc', 'telefonoc', 'correoc', 'accion', 'cliente_id']);
     }
 }
