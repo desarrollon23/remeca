@@ -8,6 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Proveedor extends Model
 {
     use HasFactory;
-
     protected $fillable = ['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'visible'];
 }
