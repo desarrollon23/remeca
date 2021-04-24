@@ -226,7 +226,7 @@ class NegociacionComponent extends Component
         $recepcion = NegociacionVenta::latest('id')->first();
         $this->recepcionmaterial_id=$recepcion->id;
         /* session(['ptn' => 0]); session(['pfn' => 0]); */
-        /* auditar('VENTA - NEGOCIACION #: '.$this->recepcionmaterial_id, 'GENERAR'); */
+        auditar('VENTA - NEGOCIACION #: '.$this->recepcionmaterial_id, 'GENERAR');
         $this->dispatchBrowserEvent('hide-form', ['message' => 'Negociación Generada']);
     }
 

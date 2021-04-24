@@ -2,7 +2,7 @@
 
 //use App\Http\Livewire\Almacen\Request;
 use Illuminate\Http\Request;
-use App\Models\Auditoria;
+use App\Models\AuditorSeguridad;
 
 
 if (! function_exists('current_user')) {
@@ -15,7 +15,7 @@ if (! function_exists('current_user')) {
 if (! function_exists('auditar')) {
   function auditar($programa, $operacion)
   { //dd(auth()->user());
-    $audita = Auditoria::create([
+    AuditorSeguridad::create([
       'fechahora' => date('d-m-Y').' '.date("H:i:s"),
       'idusuario' => auth()->user()->id,
       'usuario' => auth()->user()->email,
