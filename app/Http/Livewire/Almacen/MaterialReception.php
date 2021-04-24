@@ -13,7 +13,7 @@ use App\Models\Detallealmacen;
 use App\Models\Proveedores;
 use App\Models\Sucursal;
 use App\Models\Producto;
-use App\Models\Auditoria;
+use App\Models\AuditorSeguridad;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 //use App\Http\Livewire\Almacen\Request;
@@ -101,7 +101,7 @@ class MaterialReception extends Component{
 
     function auditar($programa, $operacion)
     { //dd(auth()->user());
-        Auditoria::create([
+        AuditorSeguridad::create([
           'fechahora' => date('d-m-Y').' '.date("H:i:s"),
           'idusuario' => auth()->user()->id,
           'usuario' => auth()->user()->email,
