@@ -312,8 +312,6 @@ class CompradorComponent extends Component
     /* public function update($compra, $productosrecepcion, $totalcalculado){ */
     public function update($compra, $productosrecepcion){
         $this->calrestaventas();
-        //$this->validate();
-        //dd($this->restapagoventas);
         if(is_null($this->recepcionmaterial_id)=="true" or $this->recepcionmaterial_id=="NULL"){
             $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'SELECCIONE UN NUMERO DE ALMACEN']);
         }else{
@@ -323,7 +321,6 @@ class CompradorComponent extends Component
             if($this->pagotransfventas=="" and $this->pagoefectivoventas==""){ $idtipoabonoven=0; }
             if($this->restapagoventas>0){ $this->idtipopagoventas=2; $this->idestatuspagoventas=2;
             }else{ $this->idtipopagoventas=1; $this->idestatuspagoventas=1; }
-            //dd($this->idtipopagoventas);
             if($this->idtipopagoventas==1){ //PAGO DE CONTADO
                 $recepcion = Almacen::find($this->recepcionmaterial_id);
                 $datosc = Compra::find($compra);
@@ -507,7 +504,9 @@ class CompradorComponent extends Component
             ->where('finalizada','NO')->where('totalresta', '<>',0)->get();
         return $negociacionescreditocompra;
     }
-
+    
+    public $validamontotneabonocompra, $validamontotntabonocompra;
+    //CALCULA EL RESTO DEL ABONO DE LA COMPRA A CREDITO
     public function calrestaabocredito($restan){ //CALCULA EL RESTO DE LA NEGOCIACION
         if((double)$restan[0]==0){
             $this->validamontotncompra="NO DEBE";
@@ -527,19 +526,35 @@ class CompradorComponent extends Component
                 $this->ocultarbotoncompra="true";
             }
         }
-        if($this->totalpagonegcompra==0){ $this->ocultarbotoncompra="false"; }
+        if((double)$this->pagoefectivonegcompra>(double)$this->efectivodisc){
+            $this->validamontotneabonocompra="EXEDIDO"; $this->ocultarbotoncompra="false";
+        }else{ $this->ocultarbotoncompra="true"; $this->validamontotneabonocompra=""; } /* VALIDA EL BANCO */
+        if((double)$this->pagotransfnegcompra>(double)$this->bancodisc){
+            $this->validamontotntabonocompra="EXEDIDO"; $this->ocultarbotoncompra="false";
+        }else{ $this->ocultarbotoncompra="true"; $this->validamontotntabonocompra=""; } /* VALIDA TOTAL DISPONIBLE */
+        if((double)$this->totalpagonegcompra>((double)$this->efectivodisc+(double)$this->bancodisc)){
+            $this->validamontotncompra="NO TIENE CAPACIDAD DE PAGO, INGRESE UNA CANTIDAD MENOR";
+            $this->ocultarbotoncompra="false";
+        }else{ $this->ocultarbotoncompra="true"; }
+        //if($this->totalpagonegcompra<=0){ $this->ocultarbotoncompra="false"; }
+        if($this->restapagonegcompra<0){ $this->ocultarbotoncompra="false"; }
     }
 
-    public function guardaramortizacion(){ //dd($this->negociacion_id);
+    public $creditofinalizado;
+    //GUARDA EL ABONO DE LA COMPRA A CREDITO
+    public function guardaramortizacion(){
         $datos = CuentasPorPagarCompras::find($this->negociacion_idcompra);
         $this->totalfectivonegcompra = (double)$datos->totalefectivo+(double)$this->pagoefectivonegcompra;
         $this->totaltransfnegcompra = (double)$datos->totaltransferencia+(double)$this->pagotransfnegcompra;
         $totalpagadocompra=(double)$datos->totalpagado+(double)$this->pagoefectivonegcompra+(double)$this->pagotransfnegcompra;
+        if($this->restapagonegcompra==0){ $this->creditofinalizado="SI";
+        }else{ $this->creditofinalizado="NO"; }
         $datos->update([
             'totalefectivo' => (double)$this->totalfectivonegcompra,
             'totaltransferencia' => (double)$this->totaltransfnegcompra,
             'totalpagado' => (double)$totalpagadocompra,
             'totalresta' => (double)$this->restapagonegcompra,
+            'finalizada' => $this->creditofinalizado,
             'amortizando' => '1'
         ]); //detalle_cuentas_por_cobrar_ventas 
         $datosdetalle = DetalleCuentasPorPagarCompras::create([
@@ -551,13 +566,14 @@ class CompradorComponent extends Component
             'pagado' => (double)$this->pagoefectivonegcompra+(double)$this->pagotransfnegcompra,
             'resta' => (double)$this->restapagonegcompra
         ]); //LA FACTURA SE GENERA DESDE LA BASE DE DATOS CON UN TRIGER $
-        /* $this->mostrar = "false"; */ $this->mostrarm = "false"; $this->mostrarpagoneg = 'false';
+        /* $this->mostrar = "false"; */ 
+        $this->ocultarbotoncompra="false";
+        $this->mostrarm = "false"; $this->mostrarpagoneg = 'false';
         if($datos->idventa==0){ auditar('COMPRA - NEGOCIACION #: '.$datos->idnegociacionventa, 'ABONO A CREDITO');
         }else{ auditar('COMPRA - CREDITO #: '.$datos->idventa, 'AMORTIZACION A CREDITO'); }
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Negociación Actualizada! '.$datos->idnegociacionventa]);
-        $this->reset(['totalfectivonegcompra', 'totaltransfnegcompra', 'restapagonegcompra', 'pagoefectivonegcompra', 'pagotransfnegcompra']);
+        $this->reset(['totalfectivonegcompra', 'totaltransfnegcompra', 'restapagonegcompra', 'pagoefectivonegcompra', 'pagotransfnegcompra', 'creditofinalizado']);
     }
-
     /* FIN ABONOS */
 
     public function show(){

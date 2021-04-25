@@ -129,8 +129,8 @@
                           <table class="table table-striped"><thead><tr>
                             <tr><td><label>DEBE</label></td>
                               <td><label for="idtipopagov" style="width: 100%; margin-right: 2px;">{{-- Tipo --}}</label></td><td></td>
-                              <td><label for="precioprov" style="width: 100%; margin-right: 2px;">Efectivo</label></td><td></td>
-                              <td><label for="precioprov" style="width: 100%; margin-right: 2px;">Transferencia</label></td><td></td><td><label>Total</label></td><td></td>
+                              <td><label for="precioprov" style="width: 100%; margin-right: 2px;">Efectivo<label style="color: red;">{{ $formatter->formatCurrency(round($efectivodisc,2), ''), PHP_EOL }}</label></label><span class="parpadea pago">{{ $validamontotneabonocompra }}</span></td><td></td>
+                              <td><label for="precioprov" style="width: 100%; margin-right: 2px;">Transferencia<label style="color: red;">{{ $formatter->formatCurrency(round($bancodisc,2), ''), PHP_EOL }}</label></label><span class="parpadea pago">{{ $validamontotntabonocompra }}</span></td><td></td><td><label>Total</label></td><td></td>
                               <td></td>
                               <td><label>Resta</label></td>
                             </tr><tr>
@@ -139,11 +139,11 @@
                                 <td><a><i class="color danger fas fa-minus text-success"></i></a></td>
                                 <td><h1 style="color: #28A745;"><strong>(</strong></h1></td>
                               <td>
-                                <input x-bind:disabled="!{{ $mostrar }}" type="text" wire:model="pagoefectivonegcompra" id="pagoefectivonegcompra" name="pagoefectivonegcompra" aria-describedby="pagoefectivonegcompra" placeholder="Ingresar" wire:keyup="calrestaabocredito({{$amortizacionesdepagocompra->where('id',$negociacion_idcompra)->pluck('totalresta')}})" size="9" maxlength="9" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%; border-color: white white green white; font-weight:900; color:red; padding-top: 0px;">
+                                <input x-bind:disabled="!{{ $mostrar }}" type="text" wire:model="pagoefectivonegcompra" id="pagoefectivonegcompra" name="pagoefectivonegcompra" aria-describedby="pagoefectivonegcompra" placeholder="Ingresar" wire:keyup="calrestaabocredito({{$amortizacionesdepagocompra->where('id',$negociacion_idcompra)->pluck('totalresta')}})" size="10" maxlength="10" min="0" max="9999999999" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%; border-color: white white green white; font-weight:900; color:red; padding-top: 0px;">
                               </td>
                               <td><a><i class="color danger fas fa-plus text-success"></i></a></td>
                               <td>
-                                <input x-bind:disabled="!{{ $mostrar }}" type="text" wire:model="pagotransfnegcompra" id="pagotransfnegcompra" name="pagotransfnegcompra" aria-describedby="pagotransfnegcompra" placeholder="Ingresar" wire:keyup="calrestaabocredito({{$amortizacionesdepagocompra->where('id',$negociacion_idcompra)->pluck('totalresta')}})" size="9" maxlength="9" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%;border-color: white white green white; font-weight:900; color:red; padding-top: 0px;">
+                                <input x-bind:disabled="!{{ $mostrar }}" type="text" wire:model="pagotransfnegcompra" id="pagotransfnegcompra" name="pagotransfnegcompra" aria-describedby="pagotransfnegcompra" placeholder="Ingresar" wire:keyup="calrestaabocredito({{$amortizacionesdepagocompra->where('id',$negociacion_idcompra)->pluck('totalresta')}})" size="10" maxlength="10" min="0" max="9999999999" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%;border-color: white white green white; font-weight:900; color:red; padding-top: 0px;">
                               </td>
                               <td><h1 style="color: #28A745;"><strong>)</strong></h1></td>
                               <td><h1 style="font-weight:900; color:red">{{ $formatter->formatCurrency(round($totalpagonegcompra,2), ''), PHP_EOL }}</h1></td>
