@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Proveedores;
+use App\Models\PreciosProveedores;
 use Livewire\WithPagination;
 
 class PproveedorComponent extends Component
@@ -48,6 +49,10 @@ class PproveedorComponent extends Component
     public function render(){
         $pproveedores = Proveedores::where('cedula', 'like', '%'.$this->buscarproveedor.'%')
                         ->orwhere('nombre', 'like', '%'.$this->buscarproveedor.'%')->get();
+        
+        /* $precios = PreciosProveedores::where('cedula', $pproveedores->cedula)->get(); */
+
+
         return view('livewire.pproveedor-component', compact('pproveedores'));
     }
 

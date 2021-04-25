@@ -102,25 +102,28 @@
             </li><li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-truck"></i><p @php echo $textos; @endphp>Transporte</p></a>
+            </li><li class="nav-item">
+              <a href="{{ route('livewire.configuraciones') }}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
+                <i class="nav-icon fas fa-truck"></i><p @php echo $textos; @endphp>Configuraciones</p></a>
           </li></ul>
         </li>@endrole<div></div>{{-- ADMINISTRACION --}}@role('Admin|Auditor|Administracion')
         <li class="nav-item">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-money-bill-wave"></i><p @php echo $textom; @endphp>ADMINISTRACION<i class="fas fa-angle-left right"></i></p>
           </a><ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="{{ route('livewire.comprador-component') }}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
-                <i class="nav-icon fas fa-cart-plus"></i><p @php echo $textos; @endphp>Compras</p></a>
-            </li><li class="nav-item">
-              <a href="{{ route('livewire.compras.negociacion') }}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
-                <i class="nav-icon fas fa-cart-arrow-down"></i></i><p @php echo $textos; @endphp>Negociación de Compras</p></a>
+          <li class="nav-item">
+            <a href="{{ route('livewire.comprador-component') }}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
+              <i class="nav-icon fas fa-cart-plus"></i><p @php echo $textos; @endphp>Compras</p></a>
+          </li><li class="nav-item">
+            <a href="{{ route('livewire.compras.negociacion') }}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
+              <i class="nav-icon fas fa-cart-arrow-down"></i></i><p @php echo $textos; @endphp>Negociación de Compras</p></a>
           </li><li class="nav-item">
             <a href="{{ route('livewire.ventas.venta') }}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
               <i class="nav-icon fas fa-cart-arrow-down"></i></i><p @php echo $textos; @endphp>Ventas</p></a>
-        </li><li class="nav-item">
-          <a href="{{ route('livewire.ventas.negociacion') }}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
-            <i class="nav-icon fas fa-cart-arrow-down"></i></i><p @php echo $textos; @endphp>Cierre de Ventas</p></a>
-      </li></ul>
+          </li><li class="nav-item">
+            <a href="{{ route('livewire.ventas.negociacion') }}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
+              <i class="nav-icon fas fa-cart-arrow-down"></i></i><p @php echo $textos; @endphp>Negociación de Ventas</p></a>
+          </li></ul>
         </li>@endrole<div></div>{{-- ALMACEN --}}@role('Admin|Auditor|Almacen')
         <li class="nav-item">
           <a href="#" class="nav-link">

@@ -9,6 +9,7 @@ class PrecioProducto extends Model
 {
     use HasFactory;
     /* public $table = 'precios_productos_prov_clie'; */
-    public $table = 'vista_precio_prod_cedu';
-    protected $filable = ['id', 'cedula', 'idproducto', 'precio'];
+    /* public $table = 'vista_precio_prod_cedu'; */
+    public $table = 'precios_productos_prov_clie';
+    protected $fillable = ['id', 'cedula', 'idproducto', 'precio'];
 }

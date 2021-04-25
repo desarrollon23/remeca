@@ -3,7 +3,7 @@
 //use App\Http\Livewire\Almacen\Request;
 use Illuminate\Http\Request;
 use App\Models\AuditorSeguridad;
-
+use App\Models\ClaveMaestra;
 
 if (! function_exists('current_user')) {
     function current_user()
@@ -25,5 +25,11 @@ if (! function_exists('auditar')) {
       'programa' => $programa,
       'operacion' => $operacion
     ]);
+  }
+}
+
+if (! function_exists('buscarclavemaestra')) {
+  function buscarclavemaestra(){
+    session(['clavemaestraactual'.auth()->user()->id => ClaveMaestra::where('idusuario', auth()->user()->id)->get()->pluck('clave')[0]]);
   }
 }

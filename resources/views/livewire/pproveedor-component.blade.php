@@ -2,29 +2,29 @@
   <div class="card-header"><h3 class="card-title">MANTENIMIENTO DE PROVEEDORES</h3></div>
     <div class="container-fluid">
       <div class="row aling: center">
-        <div class="col-lg-4 col-md-4 col-xs-4 mt-2">
+        <div class="col-lg-12 col-md-4 col-xs-4 mt-2">
           <div class="card">
             <div class="card-header" @php echo $fondoo; @endphp>
               <h3 class="card-title" style="color: #fff; margin-right: 2px;">
                 <label class="d-flex justify-content-center">Proveedores</label></h3>
             </div>
             <div class="card-body">
-              <div class="form-group">
-                <label for="cedula" style="width: 30%">Cédula</label>{{-- <label> --}}
+              <div class="form-group" style="display: flex; flex-wrap: wrap; margin-right: 2px;">
+                <label for="cedula" style="width: 30%">Cédula{{-- <label> --}}
                   <input wire:model="cedula" style="width: 100%; text-transform: uppercase;" id="cedula" type="text"{{--  class="form-control" --}} placeholder="Ingrese la Cédula" name="cedula">
-                  @error('cedula')<p ass="text-x text-red-500 italic">{{$message}}</p>@enderror
-                <label for="nombre" style="width: 30%">Nombre</label>
+                  @error('cedula')<p ass="text-x text-red-500 italic">{{$message}}</p>@enderror</label>
+                <label for="nombre" style="width: 30%">Nombre
                   <input wire:model="nombre" style="width: 100%; text-transform: uppercase;" id="nombre"{{--  class="form-control" --}} type="text" placeholder="Ingrese el Número de Nombre" name="nombre">
-                  @error('nombre')<p class="text-x text-red-500 alic">{{$message}}</p>@enderror
-                <label for="direccion" style="width: 30%">Dirección</label>
+                  @error('nombre')<p class="text-x text-red-500 alic">{{$message}}</p>@enderror</label>
+                <label for="direccion" style="width: 30%">Dirección
                   <input wire:model="direccion" style="width: 100%; text-transform: uppercase;" id="direccion" type="text"{{--  class="form-control" --}} placeholder="Ingrese la Dirección" name="direccion">
-                  @error('direccion')<p ass="text-x text-red-500 italic">{{$message}}</p>@enderror
-                <label for="telefono" style="width: 30%">Teléfono</label>
+                  @error('direccion')<p ass="text-x text-red-500 italic">{{$message}}</p>@enderror</label>
+                <label for="telefono" style="width: 30%">Teléfono
                   <input wire:model="telefono" style="width: 100%; text-transform: uppercase;" id="telefono"{{--  class="form-control" --}} type="tel" placeholder="Ingrese el Número de Teléfono" name="telefono">
-                  @error('telefono')<p class="text-x text-red-500 alic">{{$message}}</p>@enderror
-                <label for="correo" style="width: 30%">Correo</label>
+                  @error('telefono')<p class="text-x text-red-500 alic">{{$message}}</p>@enderror</label>
+                <label for="correo" style="width: 30%">Correo
                   <input wire:model="correo" style="width: 100%" id="correo"{{--  class="form-control" --}} type="email" placeholder="INGRESE EL CORREO" name="correo">@error('correo')<p class="text-x text-red-500 alic">{{$message}}</p>
-                  @enderror
+                  @enderror</label>
                 <div class="d-flex justify-content-center mt-2">
                 {{-- <button wire:click="default" class="btn btn-secondary mb-3"><i class="fa fa-times mr-1"></i> CANCELAR</button> --}}
                 @if ($accion == "store")
@@ -38,7 +38,7 @@
             </div>
           </div>
         </div>{{-- Lista de Proveedores --}}
-        <div class="col-lg-8 col-md-6 col-xs-4 mt-2">
+        <div class="col-lg-12 col-md-6 col-xs-4 mt-2">
           <div class="card">
             <div class="card-header" @php echo $fondoo; @endphp><h3 class="card-title" style="color: #fff; margin-right: 2px;"><label>Lista de Proveedores</label></h3></div>
             <div class="card-body bg-gray-180">
@@ -56,16 +56,16 @@
                     <th scope="col">Dirección</th>
                     <th scope="col">Teléfono</th>
                     <th scope="col">Correo</th>
-                    
                     <th scope="col"></th>
                   </tr></thead><tbody>
                   @foreach ($pproveedores as $proveedor)<tr class="hover:bg-green-200">
                     <td class="px-1 py-1">{{$proveedor->id}}</td>
                         <td class="px-1 py-1">{{$proveedor->cedula}}</td>
                         <td class="px-1 py-1">{{$proveedor->nombre}}</td>
-                        <td class="px-1 py-1">
+                        {{-- <td class="px-1 py-1" style="text-align: right;">
                           @livewire('precio-producto', ['proveedor' => $proveedor, 'cedula' => $proveedor->cedula], key($proveedor->id))
-                        </td>
+                        </td> --}}
+                        <td class="px-1 py-1"></td>
                         <td class="px-1 py-1">{{$proveedor->direccion}}</td>
                         <td class="px-1 py-1">{{$proveedor->telefono}}</td>
                         <td class="px-1 py-1">{{$proveedor->correo}}</td>
@@ -73,6 +73,11 @@
                       <a href="" wire:click.prevent="edit({{ $proveedor }})"><i class="fa fa-edit mr-2"></i></a>
                       <a href="" wire:click.prevent="{{-- confirmUserRemoval({{ $proveedor->id }}) --}}destroy({{ $proveedor->id }})"><i class="fa fa-trash text-danger"></i></a>
                     </td></tr>
+                    <tr>
+                      <td class="px-1 py-1" style="text-align: right;" col-span="7" >
+                        @livewire('precio-producto', ['proveedor' => $proveedor, 'cedula' => $proveedor->cedula], key($proveedor->id))
+                      </td>
+                    </tr>
                   @endforeach</tbody>
               </table>
               @else

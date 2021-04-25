@@ -25,6 +25,7 @@ use App\Http\Livewire\NegociacioncComponent;
 use App\Http\Livewire\VentaComponent;
 use App\Http\Livewire\VentasComponent;
 use App\Http\Livewire\AbonoVentaComponent;
+use App\Http\Livewire\ConfiguracionesComponent;
 use App\Http\Livewire\InventarioComponent;
 
 /*
@@ -73,6 +74,9 @@ Route::resource('roles', RoleController::class)->except('show')->names('admin.ro
 //Route::get('admin/index', DashBoardController::class);
 //Route::get('admin/dashboard', DashBoardController::class)->name('admin.dashboard');
 */
+
+Route::get('livewire/configuraciones', ConfiguracionesComponent::class)->name('livewire.configuraciones');
+
 Route::get('livewire/sucursales', SucursalComponent::class)->name('livewire.sucursales');
 //Route::get('livewire/sucursales', SucursalComponent::class)->name('livewire.sucursales');
 Route::get('livewire/proveedores', PproveedorComponent::class)->name('livewire.pproveedores');

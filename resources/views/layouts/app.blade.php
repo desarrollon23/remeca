@@ -320,6 +320,16 @@
   });
 </script>
 <script src="{{ asset('backend/plugins/toastr/toastr.min.js') }}"></script>
+@if (session('confirmacambioclavemaestra') == 'SI') 
+{{-- MENSAJE SE CAMBIO LA CLAVE MAESTRA VISTA CONFIGURACIONES--}}
+  <script>
+      Swal.fire(
+          'ATENCION!',
+          'La Clave Maestra se ha cambiado.',
+          'success'
+      )
+  </script>
+@endif
 <script>
   $(document).ready(function(){
     toastr.options = {
@@ -363,6 +373,24 @@
           )
         }
       });
+    })
+
+    window.addEventListener('confirmarcambiodeclavemaestra', event => {
+    /* $('.formulario-cambiarclave').submit(function(e){ */
+      e.preventDefault();
+      Swal.fire({
+        title: '¿ESTÁ SEGURO DE CAMBIAR LA CLAVE?',
+        text: "",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, quiero cambiarla'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.submit();
+        }
+      })
     })
 
   });

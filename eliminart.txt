@@ -1,0 +1,187 @@
+
+
+SELECT table_name AS nombre
+FROM information_schema.tables WHERE table_schema = 'remeca';
+
+
+use remeca;
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE 
+abono_material_negociacion_compras
+,abono_material_negociacion_ventas
+,auditoria
+,clavemaestra
+,clientes
+,cuentasmaterial
+,cuentas_por_cobrar_ventas
+,cuentas_por_pagar_compras
+,despacho_material
+,detallerecmat
+,detalle_cuentas_por_cobrar_ventas
+,detalle_cuentas_por_pagar_compras
+,detalle_negociacion_compras
+,detalle_negociacion_ventas
+,detalle_ventas
+,failed_jobs
+,liquidez
+,migrations
+,model_has_permissions
+,model_has_roles
+,negociacion_compras
+
+DROP TABLE 
+negociacion_ventas
+,pago_negociacion_ventas
+,password_resets
+,permissions
+,personal_access_tokens
+,precios_productos_prov_clie
+,proveedores
+,recepcionmaterial
+,roles
+,role_has_permissions
+,sessions
+,sucursales
+,teams
+,team_invitations
+,team_user
+,users
+,ventas;
+,_ccategoriaproducto
+,_ccompras
+,_ddetallecompras
+,_iinventario
+,_pproductos;
+
+DROP VIEW vista_abono_negociacion_compra;
+DROP VIEW vista_abono_negociacion_venta;
+DROP VIEW vista_amortizaciones;
+DROP VIEW vista_amortizaciones_compras;
+DROP VIEW vista_amortizacion_negociacion_compra;
+DROP VIEW vista_amortizacion_negociacion_venta;
+DROP VIEW vista_cantidad_productos_pagar;
+DROP VIEW vista_cpc_cedula_nombre_monto;
+DROP VIEW vista_cpp_cedula_nombre_mont;
+DROP VIEW vista_despachar_todo;
+DROP VIEW vista_despacho_abono_material_negociacion_ventas;
+DROP VIEW vista_despacho_ventas;
+DROP VIEW vista_id_cedula_nombre_recepcion;
+DROP VIEW vista_inventario;
+DROP VIEW vista_neg_com_monto_por_pagar;
+DROP VIEW vista_neg_ven_monto_por_cobrar;
+DROP VIEW vista_precio_prod_cedu;
+
+DROP TABLE
+_ccategoriaproducto
+,_ccompras
+,_ddetallecompras
+,_iinventario
+,_pproductos;
+
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+
+TRUNCATE abono_material_negociacion_compras;
+TRUNCATE abono_material_negociacion_ventas;
+TRUNCATE auditoria;
+TRUNCATE clientes;
+TRUNCATE cuentasmaterial;
+TRUNCATE cuentas_por_cobrar_ventas;
+TRUNCATE cuentas_por_pagar_compras;
+TRUNCATE despacho_material;
+TRUNCATE detallerecmat;
+TRUNCATE detalle_cuentas_por_cobrar_ventas;
+TRUNCATE detalle_cuentas_por_pagar_compras;
+TRUNCATE detalle_negociacion_compras;
+TRUNCATE detalle_negociacion_ventas;
+TRUNCATE detalle_ventas;
+TRUNCATE liquidez;
+TRUNCATE negociacion_compras;
+TRUNCATE negociacion_ventas;
+TRUNCATE pago_negociacion_ventas;
+TRUNCATE precios_productos_prov_clie;
+TRUNCATE proveedores;
+TRUNCATE recepcionmaterial;
+TRUNCATE sucursales;
+TRUNCATE users;
+TRUNCATE ventas;
+TRUNCATE _ccompras;
+TRUNCATE _ddetallecompras;
+TRUNCATE _iinventario;
+TRUNCATE _pproductos;
+
+INICIALIZAR LA BBDD DATOS DE PRUEBA
+
+
+
+
+LIMPIAR TABLAS
+
+¿Realmente desea ejecutar la siguiente consulta?
+TRUNCATE `cuentasmaterial`;
+TRUNCATE `detalle_negociacion_ventas`;
+TRUNCATE `detalle_ventas`;
+TRUNCATE `liquidez`;
+TRUNCATE `negociacion_ventas`;
+TRUNCATE `precios_productos_prov_clie`;
+TRUNCATE `proveedores`;
+TRUNCATE `recepcionmaterial`;
+TRUNCATE `sucursales`;
+TRUNCATE `users`;
+TRUNCATE `ventas`;
+TRUNCATE `_ccompras`;
+TRUNCATE `_ddetallecompras`;
+TRUNCATE `_iinventario`;
+TRUNCATE `_pproductos`;
+
+
+
+
+
+
+TRUNCATE abono_material_negociacion_compras;
+TRUNCATE abono_material_negociacion_ventas;
+TRUNCATE auditoria;
+TRUNCATE clientes;
+TRUNCATE cuentasmaterial;
+TRUNCATE cuentas_por_cobrar_ventas;
+TRUNCATE cuentas_por_pagar_compras;
+TRUNCATE despacho_material;
+TRUNCATE detallerecmat;
+TRUNCATE detalle_cuentas_por_cobrar_ventas;
+TRUNCATE detalle_cuentas_por_pagar_compras;
+TRUNCATE detalle_negociacion_compras;
+TRUNCATE detalle_negociacion_ventas;
+TRUNCATE detalle_ventas;
+TRUNCATE failed_jobs;
+TRUNCATE liquidez;
+TRUNCATE migrations;
+TRUNCATE model_has_permissions;
+TRUNCATE model_has_roles;
+TRUNCATE negociacion_compras;
+TRUNCATE negociacion_ventas;
+TRUNCATE pago_negociacion_ventas;
+TRUNCATE password_resets;
+TRUNCATE permissions;
+TRUNCATE personal_access_tokens;
+TRUNCATE precios_productos_prov_clie;
+TRUNCATE proveedores;
+TRUNCATE recepcionmaterial;
+TRUNCATE roles;
+TRUNCATE role_has_permissions;
+TRUNCATE sessions;
+TRUNCATE sucursales;
+TRUNCATE teams;
+TRUNCATE team_invitations;
+TRUNCATE team_user;
+TRUNCATE users;
+TRUNCATE ventas;
+TRUNCATE _ccompras;
+TRUNCATE _ddetallecompras;
+TRUNCATE _iinventario;
+TRUNCATE _pproductos;
+
+
