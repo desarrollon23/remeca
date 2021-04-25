@@ -88,7 +88,8 @@
                 <button x-show="{{ $mostrar }}" wire:click="default({{ $compra }})" class="btn btn-secondary ml-2 mr-2"><i class="fa fa-times mr-1"></i> CANCELAR</button></div>
                 <div style="width: 49%; margin-right: 2px;">
                   @if ($this->nopagarventas=="true")
-                    <button x-show="{{ $mostrar }}" id="btn-guardar" wire:click="update({{ $compra.','.$productosrecepcion.','.$totalcalculado }})" class="btn btn-primary  ml-2 mr-2"><i class="fa fa-save mr-1"></i> GUARDAR</button>
+                    {{-- <button x-show="{{ $mostrar }}" id="btn-guardar" wire:click="update({{ $compra.','.$productosrecepcion.','.$totalcalculado }})" class="btn btn-primary  ml-2 mr-2"><i class="fa fa-save mr-1"></i> GUARDAR aqui</button> --}}
+                    <button x-show="{{ $mostrar }}" id="btn-guardar" wire:click="update({{ $compra.','.$productosrecepcion }})" class="btn btn-primary  ml-2 mr-2"><i class="fa fa-save mr-1"></i> GUARDAR</button>
                   @endif </div>
                 @endif
                 <div style="width: 49%; margin-right: 2px;">
@@ -202,6 +203,7 @@
                     <option value="{{$facturar->id}}">{{$facturar->id.' '.$facturar->fecha.' '.$facturar->cedula.' '.$facturar->nombre  }}</option>
                   @endforeach
                 </select>
+                totalcalculado 
                 @error('recepcionmaterial_id')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror
 
                 {{-- <h3 class="card-title" style="color: #fff; text-shadow: 2px 2px 2px black; margin-right: 2px;"># de Almacen:</h3>
@@ -223,7 +225,7 @@
                 {{-- @if($amortizacionesdepagocompra->where('id',$negociacion_idcompra)->pluck('totalresta')[0]!=0) --}}
                 {{-- @php dd($amortizacionesdepagocompra->where('id',$negociacion_idcompra)->pluck('totalresta')[0]); @endphp --}}
                   @php 
-                    
+                    //$this->nopagarventas=="true";
                     /* $this->pagoefectivoventas=0;
                     $this->pagotransfventas =0;
                     $this->totalpagoventas =0;
@@ -530,12 +532,15 @@
                         <tr><td></td>
                           <td colspan=3><h1 style="font-weight:900; color:red">{{ $validamontotventas }}</h1></td>
                           <td><label>Resta</label></td>
-                          <td colspan="2" style="text-align: right;"><h1 style="font-weight:900; color:red">{{ $formatter->formatCurrency($restapagoventas, ''), PHP_EOL }}</h1></td>
+                          <td colspan="2" style="text-align: right;">
+                            @php $this->calrestaventas(); @endphp
+                            <h1 style="font-weight:900; color:red">{{ $formatter->formatCurrency($restapagoventas, ''), PHP_EOL }}</h1>
+                          </td>
                         </tr>
                       @endif
                     <tr><td></td></tr>
                   </tfoot>
-            
+      
                   @if ($nomostrarcalculopremantabpro=="true") {{-- ESTO ESTÁ DESACTIVADO --}}
                     {{-- INICIO CALCULO PAGO PRECIOS MANUALES Y CALCULADOS TABLA PRODUCTOS --}}
                    <tfoot><tr><td colspan="2">

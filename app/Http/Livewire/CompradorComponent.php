@@ -296,7 +296,7 @@ class CompradorComponent extends Component
             'totalcomra' => 0,
             'totalpagado' => 0,
             'diferenciapago' => 0,
-            'observacionesc' => 'NINGUNA'
+            'observacionesc' => ''
         ]);
         $compra = Compra::latest('id')->first();
         $this->compra=$compra->id; $this->mostrarcompra="true";
@@ -309,143 +309,155 @@ class CompradorComponent extends Component
         } */
     }
 
-    public function update($compra, $productosrecepcion, $totalcalculado){
+    /* public function update($compra, $productosrecepcion, $totalcalculado){ */
+    public function update($compra, $productosrecepcion){
+        $this->calrestaventas();
         //$this->validate();
-
-        if($this->pagoefectivoventas>0){ $idtipoabonoven=1; }
-        if($this->pagotransfventas>0){ $idtipoabonoven=2; }
-        if($this->pagotransfventas>0 and $this->pagoefectivoventas>0){ $idtipoabonoven=3; }
-        if($this->pagotransfventas=="" and $this->pagoefectivoventas==""){ $idtipoabonoven=0; }
-        if($this->restapagoventas>0){ $this->idtipopagoventas=2; $this->idestatuspagoventas=2;
-        }else{ $this->idtipopagoventas=1; $this->idestatuspagoventas=1; }
-        
-        if($this->idtipopagoventas==1){ //PAGO DE CONTADO
-            $recepcion = Almacen::find($this->recepcionmaterial_id);
-            $datosc = Compra::find($compra);
-            $datosc->update([
-                'idrecepcion' => $this->recepcionmaterial_id,
-                'fecharecepcion' => $recepcion->fecha,
-                'fechacompra' => date('d-m-Y'),
-                'hora' => date("H:i:s"),
-                'idestatuspago' => $this->idestatuspagoventas,
-                'idtipopago' => $this->idtipopagoventas,
-                'efectivo' => (double)$this->pagoefectivoventas,
-                'transferencia' => (double)$this->pagotransfventas,
-                'idtipoabonov' => $idtipoabonoven,
-                'totalcomra' => (double)session('toprodacum'),
-                'totalpagado' =>(double)$this->totalpagoventas,
-                'diferenciapago' => (double)$this->restapagoventas,
-                'observacionesc' => $this->observacionesc
-            ]); //ACTUALIZA LA LIQUIDEZ
-            $liquidez = Liquidez::find(1);
-            $this->actefectivo=(double)$liquidez->efectivo-(double)$this->pagoefectivoven;
-            $this->acttransferencia=(double)$liquidez->banco-(double)$this->pagotransfven;
-            $liquidez->update([
-                'efectivo' => (double)$this->actefectivo,
-                'banco' => (double)$this->acttransferencia
-            ]); //ACTUALIZA EL INVENTARIO
-            $recepcion->update(['facturado' => 'SI']);
-            foreach ($productosrecepcion as $productocompra){
-                $this->i=$this->i+1;
-                $datosdc = DetalleComprador::create([
-                   'idcompra' => $compra,
-                   'idproducto' => $productocompra['producto_id'],
-                   'cantidadpro' => $productocompra['cantidadprorecmat'],
-                   'operacion' => $productocompra['operacion'],
-                   'preciopro' => (double)$this->{"precio".$this->i},
-                   'totalpro' => (double)$this->{"toprod".$this->i}
-                ]); //guardar la compra en el inventario //buscar la existena del producto en la tabla producto
-                $existenciapro=Producto::find($productocompra['producto_id']);
-                $datosInventario = Inventario::create([
-                    'fecha' => date('d-m-Y'),
-                    'hora' => date("H:i:s"), //COLOCAR LA HORA DE VENEZUELA
-                    'idproducto' => $productocompra['producto_id'],
-                    'comprados' => (double)$productocompra['cantidadprorecmat'],
-                    'vendidos' => 0,
-                    'existencia' => (double)$existenciapro->cantidad
-                ]); //actualizar la existencia en la tabla del producto
-                $datospro = Producto::find($productocompra['producto_id']);
-                $nexistencia = $existenciapro->cantidad+$productocompra['cantidadprorecmat'];
-                $datospro->update(['cantidad' => (double)$nexistencia]);
+        //dd($this->restapagoventas);
+        if(is_null($this->recepcionmaterial_id)=="true" or $this->recepcionmaterial_id=="NULL"){
+            $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'SELECCIONE UN NUMERO DE ALMACEN']);
+        }else{
+            if($this->pagoefectivoventas>0){ $idtipoabonoven=1; }
+            if($this->pagotransfventas>0){ $idtipoabonoven=2; }
+            if($this->pagotransfventas>0 and $this->pagoefectivoventas>0){ $idtipoabonoven=3; }
+            if($this->pagotransfventas=="" and $this->pagoefectivoventas==""){ $idtipoabonoven=0; }
+            if($this->restapagoventas>0){ $this->idtipopagoventas=2; $this->idestatuspagoventas=2;
+            }else{ $this->idtipopagoventas=1; $this->idestatuspagoventas=1; }
+            //dd($this->idtipopagoventas);
+            if($this->idtipopagoventas==1){ //PAGO DE CONTADO
+                $recepcion = Almacen::find($this->recepcionmaterial_id);
+                $datosc = Compra::find($compra);
+                $datosc->update([
+                    'idrecepcion' => $this->recepcionmaterial_id,
+                    'fecharecepcion' => $recepcion->fecha,
+                    'fechacompra' => date('d-m-Y'),
+                    'hora' => date("H:i:s"),
+                    'cedula' => $this->cedula,
+                    /* 'idlugar' => $this->idlugar, */
+                    'idestatuspago' => $this->idestatuspagoventas,
+                    'idtipopago' => $this->idtipopagoventas,
+                    'efectivo' => (double)$this->pagoefectivoventas,
+                    'transferencia' => (double)$this->pagotransfventas,
+                    'idtipoabonov' => $idtipoabonoven,
+                    'negociacion_id' => 0,
+                    'totalcomra' => (double)session('toprodacum'),
+                    'totalpagado' =>(double)$this->totalpagoventas,
+                    'diferenciapago' => (double)$this->restapagoventas,
+                    'observacionesc' => $this->observacionesc
+                ]); //ACTUALIZA LA LIQUIDEZ
+                $liquidez = Liquidez::find(1);
+                $this->actefectivo=(double)$liquidez->efectivo-(double)$this->pagoefectivoventas; 
+                $this->acttransferencia=(double)$liquidez->banco-(double)$this->pagotransfven;
+                $liquidez->update([
+                    'efectivo' => (double)$this->actefectivo,
+                    'banco' => (double)$this->acttransferencia
+                ]); //ACTUALIZA EL INVENTARIO
+                $recepcion->update(['facturado' => 'SI']);
+                foreach ($productosrecepcion as $productocompra){
+                    $this->i=$this->i+1;
+                    $datosdc = DetalleComprador::create([
+                       'idcompra' => $compra,
+                       'idproducto' => $productocompra['producto_id'],
+                       'cantidadpro' => $productocompra['cantidadprorecmat'],
+                       'operacion' => $productocompra['operacion'],
+                       'preciopro' => (double)$this->{"precio".$this->i},
+                       'totalpro' => (double)$this->{"toprod".$this->i}
+                    ]); //guardar la compra en el inventario //buscar la existena del producto en la tabla producto
+                    $existenciapro=Producto::find($productocompra['producto_id']);
+                    $datosInventario = Inventario::create([
+                        'fecha' => date('d-m-Y'),
+                        'hora' => date("H:i:s"), //COLOCAR LA HORA DE VENEZUELA
+                        'idproducto' => $productocompra['producto_id'],
+                        'comprados' => (double)$productocompra['cantidadprorecmat'],
+                        'vendidos' => 0,
+                        'existencia' => (double)$existenciapro->cantidad
+                    ]); //actualizar la existencia en la tabla del producto
+                    $datospro = Producto::find($productocompra['producto_id']);
+                    $nexistencia = $existenciapro->cantidad+$productocompra['cantidadprorecmat'];
+                    $datospro->update(['cantidad' => (double)$nexistencia]);
+                }
+                auditar('COMPRA #: '.$this->compra, 'GUARDAR');
             }
-            auditar('COMPRA #: '.$this->compra, 'GUARDAR');
-        }
-        if($this->idtipopagoventas==2){ /* COMPRA A CREDITO */
-            $recepcion = Almacen::find($this->recepcionmaterial_id);
-            $datosc = Compra::find($compra);
-            $datosc->update([
-                'idrecepcion' => $this->recepcionmaterial_id,
-                'fecharecepcion' => $recepcion->fecha,
-                'fechacompra' => date('d-m-Y'),
-                'hora' => date("H:i:s"),
-                'idestatuspago' => $this->idestatuspagoventas,
-                'idtipopago' => $this->idtipopagoventas,
-                'efectivo' => (double)$this->pagoefectivoventas,
-                'transferencia' => (double)$this->pagotransfventas,
-                'idtipoabonov' => $idtipoabonoven,
-                'totalcomra' => (double)session('toprodacum'),
-                'totalpagado' =>(double)$this->totalpagoventas,
-                'diferenciapago' => (double)$this->restapagoventas,
-                'observacionesc' => $this->observacionesc
-            ]);
-            $recepcion->update(['facturado' => 'SI']);
-            foreach ($productosrecepcion as $productocompra){
-                $this->i=$this->i+1;
-                $datosdc = DetalleComprador::create([
-                   'idcompra' => $compra,
-                   'idproducto' => $productocompra['producto_id'],
-                   'cantidadpro' => $productocompra['cantidadprorecmat'],
-                   'operacion' => $productocompra['operacion'],
-                   'preciopro' => (double)$this->{"precio".$this->i},
-                   'totalpro' => (double)$this->{"toprod".$this->i}
+            if($this->idtipopagoventas==2){ /* COMPRA A CREDITO */
+                $recepcion = Almacen::find($this->recepcionmaterial_id);
+                $datosc = Compra::find($compra);
+                $datosc->update([
+                    'idrecepcion' => $this->recepcionmaterial_id,
+                    'fecharecepcion' => $recepcion->fecha,
+                    'fechacompra' => date('d-m-Y'),
+                    'hora' => date("H:i:s"),
+                    'cedula' => $this->cedula,
+                    /* 'idlugar' => $this->idlugar, */
+                    'idestatuspago' => $this->idestatuspagoventas,
+                    'idtipopago' => $this->idtipopagoventas,
+                    'efectivo' => (double)$this->pagoefectivoventas,
+                    'transferencia' => (double)$this->pagotransfventas,
+                    'idtipoabonov' => $idtipoabonoven,
+                    'negociacion_id' => 0,
+                    'totalcomra' => (double)session('toprodacum'),
+                    'totalpagado' =>(double)$this->totalpagoventas,
+                    'diferenciapago' => (double)$this->restapagoventas,
+                    'observacionesc' => $this->observacionesc
                 ]);
-                //guardar la compra en el inventario
-                //buscar la existena del producto en la tabla producto
-                $existenciapro=Producto::find($productocompra['producto_id']);
-                $datosInventario = Inventario::create([
+                $recepcion->update(['facturado' => 'SI']);
+                foreach ($productosrecepcion as $productocompra){
+                    $this->i=$this->i+1;
+                    $datosdc = DetalleComprador::create([
+                       'idcompra' => $compra,
+                       'idproducto' => $productocompra['producto_id'],
+                       'cantidadpro' => $productocompra['cantidadprorecmat'],
+                       'operacion' => $productocompra['operacion'],
+                       'preciopro' => (double)$this->{"precio".$this->i},
+                       'totalpro' => (double)$this->{"toprod".$this->i}
+                    ]);
+                    //guardar la compra en el inventario
+                    //buscar la existena del producto en la tabla producto
+                    $existenciapro=Producto::find($productocompra['producto_id']);
+                    $datosInventario = Inventario::create([
+                        'fecha' => date('d-m-Y'),
+                        'hora' => date("H:i:s"), //COLOCAR LA HORA DE VENEZUELA
+                        'idproducto' => $productocompra['producto_id'],
+                        'comprados' => (double)$productocompra['cantidadprorecmat'],
+                        'vendidos' => 0,
+                        'existencia' => (double)$existenciapro->cantidad
+                    ]);
+                    //actualizar la existencia en la tabla del producto
+                    $datospro = Producto::find($productocompra['producto_id']);
+                    $nexistencia = $existenciapro->cantidad+$productocompra['cantidadprorecmat'];
+                    $datospro->update(['cantidad' => (double)$nexistencia]);
+                } //CREA CUENTA POR PAGAR
+                $datos = CuentasPorPagarCompras ::create([
+                    'idcompra' => $compra,
+                    'idnegociacionventa' => 0,
                     'fecha' => date('d-m-Y'),
-                    'hora' => date("H:i:s"), //COLOCAR LA HORA DE VENEZUELA
-                    'idproducto' => $productocompra['producto_id'],
-                    'comprados' => (double)$productocompra['cantidadprorecmat'],
-                    'vendidos' => 0,
-                    'existencia' => (double)$existenciapro->cantidad
+                    'hora' => date("H:i:s"),
+                    'cedula' => $this->cedula,
+                    'montototal' => (double)session('toprodacum'),
+                    'totalefectivo' => (double)$this->pagoefectivoventas,
+                    'totaltransferencia' => (double)$this->pagotransfventas,
+                    'totalpagado' => (double)$this->totalpagoventas,
+                    /* 'totalresta' => (double)$this->totalrestapagoneg, */
+                    'totalresta' => (double)$this->restapagoventas,
+                    'finalizada' => 'NO',
+                    'amortizando' => '1'
+                ]); //CREA EL DETALLE DE LA CUENTA POR PAGAR
+                $datosdetalle = DetalleCuentasPorPagarCompras::create([
+                    'idcppc' => $datos->id,
+                    'fecha'=> date('d-m-Y'),
+                    'hora' => date("H:i:s"),
+                    'efectivo' => (double)$this->pagoefectivoventas,
+                    'transferencia' => (double)$this->pagotransfventas,
+                    'pagado' => (double)$this->totalpagoventas,
+                    'resta' => (double)$this->restapagoventas
                 ]);
-                //actualizar la existencia en la tabla del producto
-                $datospro = Producto::find($productocompra['producto_id']);
-                $nexistencia = $existenciapro->cantidad+$productocompra['cantidadprorecmat'];
-                $datospro->update(['cantidad' => (double)$nexistencia]);
-            } //CREA CUENTA POR PAGAR
-            $datos = CuentasPorPagarCompras ::create([
-                'idcompra' => $compra,
-                'idnegociacionventa' => 0,
-                'fecha' => date('d-m-Y'),
-                'hora' => date("H:i:s"),
-                'cedula' => $this->cedula,
-                'montototal' => (double)session('toprodacum'),
-                'totalefectivo' => (double)$this->pagoefectivoventas,
-                'totaltransferencia' => (double)$this->pagotransfventas,
-                'totalpagado' => (double)$this->totalpagoventas,
-                /* 'totalresta' => (double)$this->totalrestapagoneg, */
-                'totalresta' => (double)$this->restapagoventas,
-                'finalizada' => 'NO',
-                'amortizando' => '1'
-            ]); //CREA EL DETALLE DE LA CUENTA POR PAGAR
-            $datosdetalle = DetalleCuentasPorPagarCompras::create([
-                'idcppc' => $datos->id,
-                'fecha'=> date('d-m-Y'),
-                'hora' => date("H:i:s"),
-                'efectivo' => (double)$this->pagoefectivoventas,
-                'transferencia' => (double)$this->pagotransfventas,
-                'pagado' => (double)$this->totalpagoventas,
-                'resta' => (double)$this->restapagoventas
-            ]);
-            auditar('COMPRA - CREDITO #: '.$this->compra, 'GUARDAR');
+                auditar('COMPRA - CREDITO #: '.$this->compra, 'GUARDAR');
+            }
+            $this->mostrar = "false"; $this->mostrarm = "false";
+            $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Compra de Material Realizada!']);
+            $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Se actualizó el Inventário!']);
+            $this->reset();
+            /* $this->reset(['compra', 'cedula', 'nombre', 'idlugar', 'pesofull', 'pesovacio', 'pesoneto', 'observaciones', 'pesocalculado', 'almacen_id', 'producto_id', 'cantidadprorecmat', "recepcionmaterial_id", 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', 'fecharecepcion', 'fechacompra', 'fechacomprau', 'idlugar', 'datalcl', 'idestatuspago', 'idtipopago', 'totalcomra', 'totalpagado', 'diferenciapago', 'idestatuspago', 'idtipopago', 'idestatuspagoc', 'idtipopagoc', 'observacionesc', 'datos', 'state', 'nexistencia', 'diferenciapago', 'totalpagado', 'totalcalculado', 'acumulado']); */
         }
-        $this->mostrar = "false"; $this->mostrarm = "false";
-        $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Compra de Material Realizada!']);
-        $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Se actualizó el Inventário!']);
-        $this->reset();
-        /* $this->reset(['compra', 'cedula', 'nombre', 'idlugar', 'pesofull', 'pesovacio', 'pesoneto', 'observaciones', 'pesocalculado', 'almacen_id', 'producto_id', 'cantidadprorecmat', "recepcionmaterial_id", 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', 'fecharecepcion', 'fechacompra', 'fechacomprau', 'idlugar', 'datalcl', 'idestatuspago', 'idtipopago', 'totalcomra', 'totalpagado', 'diferenciapago', 'idestatuspago', 'idtipopago', 'idestatuspagoc', 'idtipopagoc', 'observacionesc', 'datos', 'state', 'nexistencia', 'diferenciapago', 'totalpagado', 'totalcalculado', 'acumulado']); */
     }
     
     public function default($compra)    {

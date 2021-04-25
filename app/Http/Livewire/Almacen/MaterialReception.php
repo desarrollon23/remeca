@@ -63,7 +63,7 @@ class MaterialReception extends Component{
         'observaciones' => 'max:250',
         'state.producto_id' => 'required',
         'state.cantidadprorecmat' => 'required',
-        'state.operacion' => 'required|max:10',
+        /* 'state.operacion' => 'required|max:10', */
     ];
 
     protected $validationattributs = [
@@ -76,7 +76,7 @@ class MaterialReception extends Component{
         'observaciones.max' => 'Observaciones',
         'state.producto_id' => 'MATERIAL',
         'state.cantidadprorecmat' => 'PESO',
-        'state.operacion' => 'OPERACION'
+        /* 'state.operacion' => 'OPERACION' */
     ];
 
     protected $messages = [
@@ -95,11 +95,17 @@ class MaterialReception extends Component{
         'state.producto_id.required' => 'SELECCIONE',
         'state.cantidadprorecmat.required' => 'INGRESE',
         'state.cantidadprorecmat.max' => 'MAXIMO 8 CIFRAS',
-        'state.operacion.required' => 'SELECCIONE'
+        /* 'state.operacion.required' => 'SELECCIONE' */
     ];
 
     public function storem()    {
+        //dd($this->state['producto_id']);
         $this->validate();
+        if($this->state['producto_id']==1){
+            $this->state['operacion'] = "RESTA";
+        }else{
+            $this->state['operacion'] = "SUMA";
+        }
         Material::create([
             'recepcionmaterial_id' => $this->recepcionmaterial_id,
             'producto_id' => $this->state['producto_id'],

@@ -67,14 +67,14 @@
                       <input x-show="{{ $mostrar }}" x-bind:disabled="!{{ $mostrar }}" x-on:input="cambio(event)" type="number" wire:model.defer="state.cantidadprorecmat" {{-- wire:keyup="verificarpeso" --}} class="form-control" id="state.cantidadprorecmat" name="state.cantidadprorecmat" aria-describedby="state.cantidadprorecmat" placeholder="Ingrese la cantidad" wire:keyup="verificarpeso">@error('state.cantidadprorecmat')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror
                       <small id="emailHelp" class="form-text text-muted"></small></label>
                     </div>
-                    <div x-show="{{ $mostrarm }}" style="width: 24%; margin-right: 2px;">
+                    {{-- <div x-show="{{ $mostrarm }}" style="width: 24%; margin-right: 2px;">
                       <label style="width: 100%; margin-right: 2px;">Operación
                       <select x-show="{{ $mostrar }}" x-bind:disabled="!{{ $mostrar }}" name="state.operacion" wire:model.defer="state.operacion" id="state.operacion" placeholder="SELECCIONE LA OPERACION" class="form-control">
                         <option value="SELECCIONE" selected>(SELECCIONE)</option>
                         <option value="SUMA" selected>SUMA</option><option value="RESTA">RESTA</option>
                       </select>
                       @error('state.operacion')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</label>
-                    </div>
+                    </div> --}}
                     <div x-show="{{ $mostrarm }}" style="width: 24%; margin-right: 2px;"{{-- x-show="!v peso" --} } class="modal-footer" --}}>
                       <label for="" style="width: 100%; margin-right: 2px;" class="align-self-baseline">
                         <button x-show="{{ $mostrar }}" {{-- x-bind:disabled="{{ $vpeso }}"  --}}wire:click="storem" class="btn btn-primary mt-4"><i class="fa fa-save mr-1"></i>Agregar</button>
