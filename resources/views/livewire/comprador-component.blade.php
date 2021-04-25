@@ -89,7 +89,8 @@
                 <div style="width: 49%; margin-right: 2px;">
                   @if ($this->nopagarventas=="true")
                     {{-- <button x-show="{{ $mostrar }}" id="btn-guardar" wire:click="update({{ $compra.','.$productosrecepcion.','.$totalcalculado }})" class="btn btn-primary  ml-2 mr-2"><i class="fa fa-save mr-1"></i> GUARDAR aqui</button> --}}
-                    <button x-show="{{ $mostrar }}" id="btn-guardar" wire:click="update({{ $compra.','.$productosrecepcion }})" class="btn btn-primary  ml-2 mr-2"><i class="fa fa-save mr-1"></i> GUARDAR</button>
+                    {{-- <div x-show="{{ $this->monostrarpagoexedido }}"> --}}
+                    <button x-show="{{ $mostrar }}" x-bind:disabled="{{ $btnpagoexedido }}" id="btn-guardar" wire:click="update({{ $compra.','.$productosrecepcion }})" class="btn btn-primary  ml-2 mr-2"><i class="fa fa-save mr-1"></i> GUARDAR</button>{{-- </div> --}}
                   @endif </div>
                 @endif
                 <div style="width: 49%; margin-right: 2px;">
@@ -203,7 +204,6 @@
                     <option value="{{$facturar->id}}">{{$facturar->id.' '.$facturar->fecha.' '.$facturar->cedula.' '.$facturar->nombre  }}</option>
                   @endforeach
                 </select>
-                totalcalculado 
                 @error('recepcionmaterial_id')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror
 
                 {{-- <h3 class="card-title" style="color: #fff; text-shadow: 2px 2px 2px black; margin-right: 2px;"># de Almacen:</h3>
@@ -283,6 +283,9 @@
               
               
               @if (is_null($this->recepcionmaterial_id)!='true')
+              {{-- @php
+                  $this->btnpagoexedido="false";
+              @endphp --}}
           {{-- @php
           dd($this->recepcionmaterial_id);
               //dd($productosrecepcion->where('recepcionmaterial_id', $this->recepcionmaterial_id));
@@ -484,7 +487,7 @@
                     <td>{{-- <h1 style="font-weight:900; color:red">{{ $formatter->formatCurrency($montotnc, ''), PHP_EOL }}
                       </h1> --}}
                       {{-- PRECIOS CLIENTES --}}
-                    <h1 style="font-weight:900; color:red">
+                    <h1 style="font-weight:900; color:red; text-align: right;">
                       {{-- {{ $formatter->formatCurrency($this->totalcalculado, ''), PHP_EOL }} --}}
                       {{ $formatter->formatCurrency(session('toprodacum'), ''), PHP_EOL }}
                       {{-- /* PRECIOS DE CLIENTES */

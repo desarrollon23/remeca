@@ -70,12 +70,12 @@ class ConfiguracionesComponent extends Component
             if($cp!=0){
                  $idp = PrecioProducto::where('cedula', $this->cedulaproveedorprecios)->where('idproducto', $i)->get()->pluck('id')[0];
                 $np = PrecioProducto::find($idp);
-                $np->update(['precio' => $this->{"p".$i}]);
+                $np->update(['precio' => round((double)$this->{"p".$i}, 2)]);
             }else{
                 PrecioProducto::create([
                     'cedula' => $this->cedulaproveedorprecios,
                     'idproducto' => $i,
-                    'precio' => (double)$this->{"p".$i} ]);
+                    'precio' => round((double)$this->{"p".$i}, 2) ]);
             }
         }
         auditar('CONFIGURACIONES GENERALES - CAMBIAR PRECIOS', 'SE CAMBIARON');
@@ -89,8 +89,7 @@ class ConfiguracionesComponent extends Component
     }
     /* FIN PRECIOS PROVEEDOR */
 
-    public function render()
-    {
+    public function render(){
         /* dd(PrecioProducto::where('cedula', 'v77777777')
         ->where('idproducto', 2)->get()->pluck('precio')[0]); */
 

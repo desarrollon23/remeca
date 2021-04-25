@@ -56,7 +56,7 @@ class CompradorComponent extends Component
     public $datosInventario, $datosc, $datosdc, $nexistencia;
     public $verificaoperacion;
     public $cantidadp1, $cantidadp2, $cantidadp3, $cantidadp4, $cantidadp5, $cantidadp6, $cantidadp7, $cantidadp8, $cantidadp9, $cantidadp10;
-    public $precio1, $precio2, $precio3, $precio4, $precio5, $precio6, $precio7, $precio8, $precio9, $precio10;
+    public $precio1, $precio2, $precio3, $precio4, $precio5, $precio6, $precio7, $precio8, $precio9, $precio10, $precio11, $precio12, $precio13, $precio14, $precio15, $precio16, $precio17, $precio18, $precio19, $precio20, $precio21, $precio22, $precio23, $precio24, $precio25, $precio26, $precio27, $precio28, $precio29, $precio30, $precio31, $precio32, $precio33, $precio34, $precio35, $precio36, $precio37, $precio38, $precio39, $precio40, $precio41, $precio42, $precio43, $precio44, $precio45, $precio46, $precio47, $precio48, $precio49, $precio50;
     public $toprod1, $toprod2, $toprod3, $toprod4, $toprod5, $toprod6, $toprod7, $toprod8, $toprod9, $toprod10;
     public $cantpro, $totalcalculado, $sobregiro, $vpeso, $recepciones;
     public $probc, $muesdesmaterial, $mostrar = "false", $mostrarm = "false";
@@ -175,6 +175,7 @@ class CompradorComponent extends Component
         }
     }
     
+    public $btnpagoexedido="false";
     public function calrestaventas(){ //CALCULA EL RESTO DE LA NEGOCIACION
         $this->restapagoventas=session('toprodacum');
         if((double)$this->restapagoventas==0){
@@ -183,6 +184,7 @@ class CompradorComponent extends Component
                 $this->validamontotventas="TOTAL DEBE SER MENOR O IGUAL A: ".(double)$this->restapagoventas;
                 $this->totalpagoventas=round((double)$this->pagoefectivoventas + (double)$this->pagotransfventas,2);
                 $this->restapagoventas=round((double)$this->restapagoventas-(double)$this->totalpagoventas,2);
+                $this->btnpagoexedido="true";
                 /* $this->ocultarbotonc="false";  */$this->nopagarventas="true";
         }else{
             if((is_numeric((double)$this->pagoefectivoventas)) or (is_numeric((double)$this->pagotransfventas))){
@@ -190,7 +192,9 @@ class CompradorComponent extends Component
                 $this->validamontotventas="";
                 $this->totalpagoventas=(double)$this->pagoefectivoventas + (double)$this->pagotransfventas;
                 $this->restapagoventas=(double)$this->restapagoventas-(double)$this->totalpagoventas;
-                /* $this->ocultarbotonc="true";  */$this->nopagarventas="false";
+                /* $this->ocultarbotonc="true";  */
+                $this->btnpagoexedido="false";
+                $this->nopagarventas="false";
             }
         }
         if($this->totalpagoventas==0){ $this->ocultarbotonventas="false"; }
@@ -344,7 +348,7 @@ class CompradorComponent extends Component
                 ]); //ACTUALIZA LA LIQUIDEZ
                 $liquidez = Liquidez::find(1);
                 $this->actefectivo=(double)$liquidez->efectivo-(double)$this->pagoefectivoventas; 
-                $this->acttransferencia=(double)$liquidez->banco-(double)$this->pagotransfven;
+                $this->acttransferencia=(double)$liquidez->banco-(double)$this->pagotransfventas;
                 $liquidez->update([
                     'efectivo' => (double)$this->actefectivo,
                     'banco' => (double)$this->acttransferencia

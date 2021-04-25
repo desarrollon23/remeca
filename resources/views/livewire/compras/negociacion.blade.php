@@ -83,9 +83,6 @@
                             </label>
                           </div>
                         </div>
-                        {{-- <div value="{{ $vpesoc }}"><p class="text-x text-red-500 italic">{{ $pesoic }}</p></div> --}}
-                      {{-- </form> --}}
-                    {{-- </div> --}}
                   </div>
                   <table class="table table-striped" {{-- style="background-color: #9FA5AA;" --}}><thead><tr> 
                       <th scope="col">#</th>
@@ -116,7 +113,7 @@
                     <tfoot><tr><td colspan="3"><label>TOTAL A PAGAR</label></td>
                       <td>{{-- <h1 style="font-weight:900; color:red">{{ (double)$pesotn }}</h1> --}}
                       </td><td></td><td></td>
-                      <td><h1 style="font-weight:900; color:red">{{ $formatter->formatCurrency($montotnc, ''), PHP_EOL }}
+                      <td style="text-align: right;"><h1 style="font-weight:900; color:red">{{ $formatter->formatCurrency($montotnc, ''), PHP_EOL }}
                       </h1>
                       {{-- @php $restapagoneg = $montotn; @endphp --}}
                       </td><td></td></tr>
