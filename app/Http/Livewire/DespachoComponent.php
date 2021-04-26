@@ -137,8 +137,7 @@ class DespachoComponent extends Component
     }
 
     /* public $despachos; */
-    public function render()
-    {
+    public function render(){
         $vendedores = Proveedores::all();
         $lugares = Sucursal::all();
         $productos = Producto::all();
@@ -149,19 +148,13 @@ class DespachoComponent extends Component
         $this->recepcionmaterial_id);
         
         $despachos = DespachoMaterial::all()->where('idestatusd', 1);
-
         $productosabonos = AbonoMaterialNegociacionVentas::all();
         /* dd($this->iddespacho); */
         //$despachar = ConsultaDespachoAbonoMaterialVentas::where('despacho', $this->iddespacho);
-        
         $despachar = ConsultaDespachoAbonoMaterialVentas::all()->where('despacho', $this->iddespacho);
 
-
-        /* $productosventas = ConsultaProductosVentas::all()->where('despacho', $this->iddespacho);
-        dd($despachar); */
-
-
-
+        /* $productosventas = ConsultaProductosVentas::all()->where('despacho', $this->iddespacho); */
+        //dd($despachar);
 
         //$despacharV = ConsultaDespachoVentas::where('despacho', $this->iddespacho)->get();
        
