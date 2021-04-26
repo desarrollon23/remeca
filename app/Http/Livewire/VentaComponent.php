@@ -260,6 +260,7 @@ class VentaComponent extends Component
                 DespachoMaterial::create([
                     'fechaventad'=> date('d-m-Y'),
                     'horaventad' => date("H:i:s"),
+                    'cedula' => $this->cedulav,
                     'idestatusd' => 1
                 ]); //ACTUALIZA LA VENTA
                 $iddespacho = DespachoMaterial::latest('id')->first();
@@ -320,6 +321,7 @@ class VentaComponent extends Component
                 DespachoMaterial::create([
                     'fechaventad'=> date('d-m-Y'),
                     'horaventad' => date("H:i:s"),
+                    'cedula' => $this->cedulav,
                     'idestatusd' => 1
                 ]); //ACTUALIZA LA VENTA
                 $iddespacho = DespachoMaterial::latest('id')->first();
@@ -559,6 +561,7 @@ class VentaComponent extends Component
             DespachoMaterial::create([
                 'fechaventad'=> date('d-m-Y'),
                 'horaventad' => date("H:i:s"),
+                'cedula' => $this->cedulav,
                 'idestatusd' => 1
             ]);
             $despacho = DespachoMaterial::latest('id')->first();

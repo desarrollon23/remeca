@@ -8,9 +8,9 @@
               <div class="card-header bg-warning" @php echo $fondoo; @endphp>
                 <div style="display: flex; flex-wrap: wrap; margin-right: 2px;"><h1 class="card-title" style="color: black;"><label>Entregar: </label></h1>
 
-    {{-- @php dd($despachos->where('id', 1)->pluck('id') ); @endphp --}}
+                  {{-- @php dd($despachos->where('id', 1)->pluck('id') ); @endphp --}}
                   <select name="iddespacho" wire:model="iddespacho" id="iddespacho" style="width: 25%;">
-                    <option value="NULL" selected>(SELECCIONE)</option>
+                    <option value="0" selected>(SELECCIONE)</option>
                     @if ($despachos->count())
                       @foreach ($despachos as $despacho)
                         <option value="{{$despacho->id}}">
@@ -19,49 +19,32 @@
                       @endforeach
                     @endif
                   </select>
-                {{-- <input wire:model="recepcionmaterial_id" wire:keyup="busnumal" style="width: 200px; border-radius: 5px; background-color: white; border: 0px solid #dc3545; color: #dc3545; margin-right: 2px; padding-top: 0;" id="recepcionmaterial_id" class="form-control" type="number" name="recepcionmaterial_id" placeholder="Ingrese el Número">@error('recepcionmaterial_id')<p ass="text-x text-red-500 italic">{{$message}}</p>@enderror --}}
+                  {{-- <input wire:model="recepcionmaterial_id" wire:keyup="busnumal" style="width: 200px; border-radius: 5px; background-color: white; border: 0px solid #dc3545; color: #dc3545; margin-right: 2px; padding-top: 0;" id="recepcionmaterial_id" class="form-control" type="number" name="recepcionmaterial_id" placeholder="Ingrese el Número">@error('recepcionmaterial_id')<p ass="text-x text-red-500 italic">{{$message}}</p>@enderror --}}
                 <h1 class="card-title" style="color: black;"><label>Fecha de Entrega: {{ date('d-m-Y') }}</label></h1></div>
               </div>
               <div class="card-body" style="display: flex; flex-wrap: wrap; margin-right: 2px;">
                 {{-- <div class="form-group"> --}}
-                  @if ($this->iddespacho>0)
+                @if ($this->iddespacho>0)
                   <div style="width: 24%; margin-right: 2px;"><label for="cedulav" style="width: 100%; margin-right: 2px;">Cédula o Rif</label>
-                
-                    @php
-                    //$datalm = $recibir->where('id', $this->recepcionmaterial_id)
-//dd($despachar->where('despacho', $iddespacho));
-                //dd($despachar->where('despacho', $this->iddespacho)->pluck('cedula'));
-                    //dd($despachar->where('despacho', $iddespacho)->pluck('cedula')[0]);
-                        
-                    @endphp
-                    
-
-                    <input disabled id="cedulav" type="text" name="cedulav" style="width: 100%; text-transform: uppercase;" 
-                    @if (is_null($this->iddespacho)!='true')
-                    value="{{ $despachar->where('despacho', $iddespacho)->pluck('cedula')[0] }}"
-                    @endif >
+                    <input disabled id="cedulav" type="text" name="cedulav" style="width: 100%; text-transform: uppercase;"  wire:model="cedulav">
                   </div>
                   <div style="width: 24%; margin-right: 2px;"><label for="nombre" style="width: 100%; margin-right: 2px;">Nombre</label>
-                    <input disabled id="nombre" type="text" name="nombre" style="width: 100%; text-transform: uppercase;" 
-                    @if (is_null($this->iddespacho)!='true')
-                    value="{{ $despachar->where('despacho', $iddespacho)->pluck('nombre')[0] }}"
-                    @endif >
+                    <input disabled id="nombre" type="text" wire:model="nombre" name="nombre" style="width: 100%; text-transform: uppercase;">
                   </div>
-                    <div style="width: 24%; margin-right: 2px;"><label for="observacionesv" style="width: 100%; margin-right: 2px;">Observaciones</label>
+                    {{-- <div style="width: 24%; margin-right: 2px;"><label for="observacionesv" style="width: 100%; margin-right: 2px;">Observaciones</label>
                     <textarea disabled rows="1" id="observacionesv" cols="30" name="observacionesv" style="width: 100%; text-transform: uppercase;" 
                     @if (is_null($this->iddespacho)!='true')
                     value="{{ $despachar->where('despacho', $iddespacho)->pluck('observaciones')[0] }}"
                     @endif
-                    ></textarea></div>
-                    <div style="width: 24%; margin-right: 2px; padding-top: 4px;">
-                      
-                      <label for="" style="width: 100%; margin-right: 2px;" class="align-self-baseline"></label>
-                      <button x-show="!{{ $mostrar }}" id="btn-generar" wire:click="update({{ $iddespacho }})" class="btn btn-primary mt-2"><i class="fa fa-save mr-1"></i> ACEPTAR</button>
-                    </div>
-                  {{-- </div> --}}
+                    ></textarea></div> --}}
+                  <div style="width: 24%; margin-right: 2px; padding-top: 4px;">    
+                    <label for="" style="width: 100%; margin-right: 2px;" class="align-self-baseline"></label>
+                    <button x-show="!{{ $mostrar }}" id="btn-generar" wire:click="update({{ $iddespacho }})" class="btn btn-primary mt-2"><i class="fa fa-save mr-1"></i> ACEPTAR</button>
+                  </div>
+                @endif
+                {{-- </div> --}}
               </div>
             </div>
-            @endif
           </div>{{-- Lista de Materiales a Pagar --}}
           <div class="col-lg-7 col-md-6 col-xs-6 mt-2">
             <div class="card">
@@ -77,19 +60,13 @@
                       <th scope="col">MATERIAL</th>
                       <th scope="col">KG</th>
                     </tr></thead><tbody>
-                @if (is_null($this->iddespacho)!='true')
-                
-                @php
-                    dd($despachar);
-                @endphp
-
-                    {{-- @foreach ($despachar->where('despacho', $iddespacho) as $productoabono) --}}
-                    @foreach ($despachar as $productoabono)
-                    <tr><th scope="row">{{ $loop->iteration }}</th>
-                      <td>{{ $productoabono->material }}</td>
-                      <td>{{ $productoabono->cantidad }}</tr>
-                    @endforeach
-                @endif</tbody>
+                      @if (is_null($this->iddespacho)!='true')
+                          @foreach ($productosdespachos as $productodespacho)
+                          <tr><th scope="row">{{ $loop->iteration }}</th>
+                            <td>{{ $this->traedesmaterial($productodespacho->idproducto) }}</td>
+                            <td>{{ $productodespacho->cantidadpro }}</tr>
+                          @endforeach
+                      @endif</tbody>
                     <tfoot><tr><td colspan="2"></td></tfoot>
                 </table>
               </div>

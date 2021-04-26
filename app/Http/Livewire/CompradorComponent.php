@@ -607,7 +607,7 @@ class CompradorComponent extends Component
 
         $this->efectivodisc = Liquidez::where('id', 1)->get()->pluck('efectivo')[0];
         $this->bancodisc = Liquidez::where('id', 1)->get()->pluck('banco')[0];
-        $amortizacionesdepagocompra=ConsultaAmortizacionNegociacionCompra ::all();
+        $amortizacionesdepagocompra=ConsultaAmortizacionNegociacionCompra::all();
 
         return view('livewire.comprador-component', [
                     'materiales'=>$materiales,

@@ -29,6 +29,7 @@ use App\Http\Livewire\Compras;
 use App\Models\Cliente;
 use App\Models\ConsultaDespachoAbono;
 use App\Models\ConsultaDespachoVentas;
+use App\Models\DetalleDespacho;
 use App\Models\DetalleVenta;
 use App\Models\Venta;
 use Illuminate\Support\Facades\DB;
@@ -102,34 +103,16 @@ class DespachoComponent extends Component
     }
 
     public function update($venta){
-        
-
-        //VERIFICAR QUE SE DESCUENTA DEL INVENTARIO CUANDO SE CREA EL ABONO
         $datosc = DespachoMaterial::find($venta);
-        $datosc->update([
-            'idestatusd' => 2
-        ]);
-
-        /* $datosdc = AbonoMaterialNegociacionVentas::where('negociacion_id', $this->negociacion_id)
-                    ->where('idproducton', $productoabonado['idproducton']);
-                $datosdc->update(['iddespacho' => $despacho->id, 'iddespacho' => 'NO']); */
-
-        /* $datosc = Venta::find($venta);
-        $datosc->update([
-            'despachado' => 'SI',
-        ]); */
-
+        $datosc->update(['idestatusd' => 2]);
+        $v=Venta::where('iddespacho', $venta);
+        if($v->count()){ $v->update(['despachado' => 'SI']); }
+        $a=AbonoMaterialNegociacionVentas::where('iddespacho', $venta);
+        if($a->count()){ $a->update(['despachado' => 'SI']); }
         $this->mostrar = "false"; $this->mostrarm = "false";
         auditar('ENTREGA DE MATERIAL #: '.$venta, 'ENTREGAR');
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Material Despachado!']);
-        //$this->dispatchBrowserEvent('hide-delete-modal', ['message' => 'Se actualizó el Inventário!']);
-        $this->reset(['cedulav', 'nombre', 'observacionesv', 'recepcionmaterial_id', 'iddespacho']);
-    }
-
-    public function traedesmaterial($id){
-        $probc=Producto::find($id);
-        $this->muesdesmaterial=$probc['descripcion'];
-        return $this->muesdesmaterial;
+        $this->reset(['cedulav', 'nombre', /* 'observacionesv', */ 'recepcionmaterial_id', 'iddespacho']);
     }
     
     public function traeprematerial($id){
@@ -142,7 +125,12 @@ class DespachoComponent extends Component
         $this->reset(['compra', 'cedulav', 'nombre', 'idlugar', 'pesofull', 'pesovacio', 'pesoneto', 'pesocalculado', 'state', 'almacen_id', 'producto_id', 'cantidadprorecmat', "recepcionmaterial_id", 'pesodisponible', 'pesodisponiblec', 'acumulado', 'acumuladoc', ]);
     }
 
-    /* public $despachos; */
+    public function traedesmaterial($id){
+        $probc=Producto::find($id);
+        $this->muesdesmaterial=$probc['descripcion'];
+        return $this->muesdesmaterial;
+    }
+
     public function render(){
         $vendedores = Proveedores::all();
         $lugares = Sucursal::all();
@@ -152,22 +140,19 @@ class DespachoComponent extends Component
         $este=$this->recepcion;
         $productosrecepcion=Detallealmacen::all()->where('recepcionmaterial_id', 
         $this->recepcionmaterial_id);
-        
+
         $despachos = DespachoMaterial::all()->where('idestatusd', 1);
-        $productosabonos = AbonoMaterialNegociacionVentas::all();
-        /* dd($this->iddespacho); */
-        //$despachar = ConsultaDespachoAbonoMaterialVentas::where('despacho', $this->iddespacho);
-        $despachar = ConsultaDespachoAbonoMaterialVentas::all()->where('despacho', $this->iddespacho);
-
-        /* $despacharventas = ConsultaDespachoVentas::all();
-        $despacharabono = ConsultaDespachoAbono::all(); */
-        /* $productosventas = ConsultaProductosVentas::all()->where('despacho', $this->iddespacho); */
-        //dd($despachar);
-
-        //$despacharV = ConsultaDespachoVentas::where('despacho', $this->iddespacho)->get();
+        if(is_null($this->iddespacho)!="null"){
+            if($this->iddespacho>0){
+                $this->cedulav=$despachos->where('id', $this->iddespacho)->pluck('cedula')[0];
+                $probn=Cliente::where('cedulac', $despachos->where('id', $this->iddespacho)->pluck('cedula')    [0])->pluck('nombrec')[0];
+                $this->nombre=$probn;
+            }
+        }
+        $productosdespachos = DetalleDespacho::all()->where('iddespacho', $this->iddespacho);
        
         return view('livewire.despacho-component', [
                     'materiales'=>$materiales,
-            ], compact('vendedores', 'lugares', 'productos', 'recepcion', 'productosrecepcion', 'despachos', 'productosabonos', 'despachar'/* , 'despacharventas', 'despacharabono' */));
+            ], compact('vendedores', 'lugares', 'productos', 'recepcion', 'productosrecepcion', 'despachos', 'productosdespachos', /* 'clientes' */));
     }
 }
