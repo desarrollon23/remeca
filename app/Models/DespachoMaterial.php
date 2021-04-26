@@ -9,5 +9,5 @@ class DespachoMaterial extends Model
 {
     use HasFactory;
     public $table = "despacho_material";
-    protected $fillable = ['fechaventad', 'horaventad', 'idlugard', 'idestatusd'];
+    protected $fillable = ['id', 'fechaventad', 'horaventad', 'idlugard', 'idestatusd'];
 }

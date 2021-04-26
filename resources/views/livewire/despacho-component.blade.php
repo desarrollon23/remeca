@@ -29,7 +29,7 @@
                 
                     @php
                     //$datalm = $recibir->where('id', $this->recepcionmaterial_id)
-dd($despachar);
+//dd($despachar->where('despacho', $iddespacho));
                 //dd($despachar->where('despacho', $this->iddespacho)->pluck('cedula'));
                     //dd($despachar->where('despacho', $iddespacho)->pluck('cedula')[0]);
                         

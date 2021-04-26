@@ -27,6 +27,8 @@ use App\Models\Inventario;
 use Illuminate\Http\Request;
 use App\Http\Livewire\Compras;
 use App\Models\Cliente;
+use App\Models\ConsultaDespachoAbono;
+use App\Models\ConsultaDespachoVentas;
 use App\Models\DetalleVenta;
 use App\Models\Venta;
 use Illuminate\Support\Facades\DB;
@@ -108,6 +110,10 @@ class DespachoComponent extends Component
             'idestatusd' => 2
         ]);
 
+        /* $datosdc = AbonoMaterialNegociacionVentas::where('negociacion_id', $this->negociacion_id)
+                    ->where('idproducton', $productoabonado['idproducton']);
+                $datosdc->update(['iddespacho' => $despacho->id, 'iddespacho' => 'NO']); */
+
         /* $datosc = Venta::find($venta);
         $datosc->update([
             'despachado' => 'SI',
@@ -153,6 +159,8 @@ class DespachoComponent extends Component
         //$despachar = ConsultaDespachoAbonoMaterialVentas::where('despacho', $this->iddespacho);
         $despachar = ConsultaDespachoAbonoMaterialVentas::all()->where('despacho', $this->iddespacho);
 
+        /* $despacharventas = ConsultaDespachoVentas::all();
+        $despacharabono = ConsultaDespachoAbono::all(); */
         /* $productosventas = ConsultaProductosVentas::all()->where('despacho', $this->iddespacho); */
         //dd($despachar);
 
@@ -160,6 +168,6 @@ class DespachoComponent extends Component
        
         return view('livewire.despacho-component', [
                     'materiales'=>$materiales,
-            ], compact('vendedores', 'lugares', 'productos', 'recepcion', 'productosrecepcion', 'despachos', 'productosabonos', 'despachar'));
+            ], compact('vendedores', 'lugares', 'productos', 'recepcion', 'productosrecepcion', 'despachos', 'productosabonos', 'despachar'/* , 'despacharventas', 'despacharabono' */));
     }
 }

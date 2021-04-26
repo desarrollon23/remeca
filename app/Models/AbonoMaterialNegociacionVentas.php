@@ -9,5 +9,5 @@ class AbonoMaterialNegociacionVentas extends Model
 {
     use HasFactory;
     public $table = "abono_material_negociacion_ventas";
-    protected $fillable = ['id', 'negociacion_id', 'idproducton', 'cantidadpron', 'iddespacho'];
+    protected $fillable = ['id', 'negociacion_id', 'idproducton', 'cantidadpron', 'iddespacho', 'despachado'];
 }

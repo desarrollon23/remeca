@@ -28,6 +28,7 @@ use App\Models\PagoNegociacionVenta;
 use App\Models\Liquidez;
 use App\Models\CuentasPorCobrarVentas;
 use App\Models\DetalleCuentasPorCobrarVentas;
+use App\Models\DetalleDespacho;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 //use Illuminate\Http\Request;
@@ -283,7 +284,7 @@ class VentaComponent extends Component
                     'totalpagadov' => (double)$this->totalpagoven,
                     'diferenciapagov' => (double)$this->restapagoven,
                     'observacionesv' => $this->observacionesv,
-                    'iddespacho' => $iddespacho
+                    'iddespacho' => $iddespacho->id
                 ]); //ACTUALIZA LA LIQUIDEZ
                 $liquidez = Liquidez::find(1);
                 $this->actefectivo=(double)$liquidez->efectivo+(double)$this->pagoefectivoven;
@@ -293,7 +294,14 @@ class VentaComponent extends Component
                     'banco' => (double)$this->acttransferencia
                 ]); //ACTUALIZA EL INVENTARIO
                 $productosventa=DetalleVenta::all()->where('idventa',$venta);
-                foreach ($productosventa as $productoventa){ //guardar la compra en el inventario //buscar la existena del producto en la tabla producto
+                foreach ($productosventa as $productoventa){
+                    DetalleDespacho::create([
+                        'iddespacho' => $iddespacho->id,
+                        'idproducto' => $productoventa['idproductov'],
+                        'cantidadpro' => (double)$productoventa['cantidadprov'],
+                        'despachado' => 'NO'
+                    ]);
+                    //guardar la compra en el inventario //buscar la existena del producto en la tabla producto
                     $existenciapro=Producto::find($productoventa->idproductov);
                     $datosInventario = Inventario::create([
                         'fecha' => date('d-m-Y'),
@@ -315,6 +323,7 @@ class VentaComponent extends Component
                     'idestatusd' => 1
                 ]); //ACTUALIZA LA VENTA
                 $iddespacho = DespachoMaterial::latest('id')->first();
+
                 if($this->pagoefectivoven>0){ $idtipoabonoven=1; }
                 if($this->pagotransfven>0){ $idtipoabonoven=2; }
                 if($this->pagotransfven>0 and $this->pagoefectivoven>0){ $idtipoabonoven=3; }
@@ -336,10 +345,17 @@ class VentaComponent extends Component
                     'totalpagadov' => (double)$this->totalpagoven,
                     'diferenciapagov' => (double)$this->restapagoven,
                     'observacionesv' => $this->observacionesv,
-                    'iddespacho' => $iddespacho
+                    'iddespacho' => $iddespacho->id
                 ]); //ACTUALIZA EL INVENTARIO
                 $productosventa=DetalleVenta::all()->where('idventa',$venta);
-                foreach ($productosventa as $productoventa){ //guardar la compra en el inventario //buscar la   existena del producto en la tabla producto
+                foreach ($productosventa as $productoventa){ 
+                    DetalleDespacho::create([
+                        'iddespacho' => $iddespacho->id,
+                        'idproducto' => $productoventa['idproductov'],
+                        'cantidadpro' => (double)$productoventa['cantidadprov'],
+                        'despachado' => 'NO'
+                    ]);
+                    //guardar la compra en el inventario //buscar la   existena del producto en la tabla producto
                     $existenciapro=Producto::find($productoventa->idproductov);
                     $datosInventario = Inventario::create([
                         'fecha' => date('d-m-Y'),
@@ -550,7 +566,15 @@ class VentaComponent extends Component
             foreach ($productosabonados as $productoabonado){
                 $datosdc = AbonoMaterialNegociacionVentas::where('negociacion_id', $this->negociacion_id)
                     ->where('idproducton', $productoabonado['idproducton']);
-                $datosdc->update(['iddespacho' => $despacho->id]);
+                $datosdc->update(['iddespacho' => $despacho->id, 'despachado' => 'NO']);
+                /* detalle despacho */ 
+                DetalleDespacho::create([
+                    'iddespacho' => $despacho->id,
+                    'idproducto' => $productoabonado['idproducton'],
+                    'cantidadpro' => (double)$productoabonado['cantidadpron'],
+                    'despachado' => 'NO'
+                ]);
+                /* detalle despacho */
                 $existenciapro=Producto::find($productoabonado['idproducton']);
                 $datosInventario = Inventario::create([
                     'fecha' => date('d-m-Y'),
