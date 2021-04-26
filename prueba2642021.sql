@@ -1,11 +1,11 @@
--- phpMyAdmin SQL Dump
+Ôªø-- phpMyAdmin SQL Dump
 -- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generaciÛn: 26-04-2021 a las 15:41:40
--- VersiÛn del servidor: 10.4.17-MariaDB
--- VersiÛn de PHP: 7.4.15
+-- Tiempo de generaci√≥n: 26-04-2021 a las 15:41:40
+-- Versi√≥n del servidor: 10.4.17-MariaDB
+-- Versi√≥n de PHP: 7.4.15
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -669,7 +669,7 @@ CREATE TABLE `permissions` (
 --
 
 INSERT INTO `permissions` (`id`, `name`, `description`, `guard_name`, `created_at`, `updated_at`) VALUES
-(1, 'admin.dashboard', 'Ver la P·gina Principal', 'web', '2021-03-25 03:02:55', '2021-03-25 03:02:55'),
+(1, 'admin.dashboard', 'Ver la P√°gina Principal', 'web', '2021-03-25 03:02:55', '2021-03-25 03:02:55'),
 (2, 'livewire.sales.index', 'Ver la Lista de Ventas', 'web', '2021-03-25 03:02:55', '2021-03-25 03:02:55'),
 (3, 'livewire.inventory.index', 'Ver el Inventario', 'web', '2021-03-25 03:02:55', '2021-03-25 03:02:55'),
 (4, 'livewire.purchases.index', 'Ver la Lista de Compras', 'web', '2021-03-25 03:02:55', '2021-03-25 03:02:55'),
@@ -1124,7 +1124,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `two_factor_secret`, `two_factor_recovery_codes`, `remember_token`, `current_team_id`, `profile_photo_path`, `created_at`, `updated_at`) VALUES
-(1, 'Julio H NuÒez A', 'julion23@gmail.com', NULL, '$2y$10$UhzFmfisI5TTLZjpRukh4.6EaJ96NCO6eZPUe/A6IPu6aXcVXoNbi', NULL, NULL, 'R7BrMv1jS0vG9rzXM6m1MskYWCpOjbrGFUWxv5Uyd2SvKzagblwmyiEN28sc', NULL, 'profile-photos/BYBkXlFVbR1CJS2pHEfsnba575kBOVSjDG9pEtVI.png', '2021-03-25 07:02:59', '2021-04-19 07:05:48'),
+(1, 'Julio H Nu√±ez A', 'julion23@gmail.com', NULL, '$2y$10$UhzFmfisI5TTLZjpRukh4.6EaJ96NCO6eZPUe/A6IPu6aXcVXoNbi', NULL, NULL, 'R7BrMv1jS0vG9rzXM6m1MskYWCpOjbrGFUWxv5Uyd2SvKzagblwmyiEN28sc', NULL, 'profile-photos/BYBkXlFVbR1CJS2pHEfsnba575kBOVSjDG9pEtVI.png', '2021-03-25 07:02:59', '2021-04-19 07:05:48'),
 (2, 'Auditor', 'auditor@remeca.test', NULL, '$2y$10$Mix4D8Ahr53GYDa9.HjsqO4NSPJiBAqQfeO7QpgwRDw89o/WNlAHi', NULL, NULL, NULL, NULL, NULL, '2021-03-25 07:03:00', '2021-03-25 07:03:00'),
 (3, 'Mantenimiento', 'mantenimiento@remeca.test', NULL, '$2y$10$XobXbgPqbGJvI342bTvu7.vyTl4j3dHVj1QiDy5B.2iF5iPpeDVAG', NULL, NULL, NULL, NULL, NULL, '2021-03-25 07:03:00', '2021-03-25 07:03:00'),
 (4, 'Sr Miguel', 'miguel@remeca.test', NULL, '$2y$10$ojlsVPm6XaFB5PIvybGZre.6.8mMMsDBnjluifHq7zM1skOqsyufO', NULL, NULL, 'sLmJaTi01frVoxuDa2cosKotIfaXmkCoHWroFotooySv36EjmGDSrmgwv1Dm', NULL, NULL, '2021-03-25 07:03:00', '2021-03-25 07:03:00'),
@@ -1167,7 +1167,7 @@ CREATE TABLE `ventas` (
 
 --
 -- Estructura Stand-in para la vista `vista_abono_negociacion_compra`
--- (VÈase abajo para la vista actual)
+-- (V√©ase abajo para la vista actual)
 --
 CREATE TABLE `vista_abono_negociacion_compra` (
 `negociacion` bigint(20) unsigned
@@ -1182,7 +1182,7 @@ CREATE TABLE `vista_abono_negociacion_compra` (
 
 --
 -- Estructura Stand-in para la vista `vista_abono_negociacion_venta`
--- (VÈase abajo para la vista actual)
+-- (V√©ase abajo para la vista actual)
 --
 CREATE TABLE `vista_abono_negociacion_venta` (
 `negociacion` bigint(20) unsigned
@@ -1197,7 +1197,7 @@ CREATE TABLE `vista_abono_negociacion_venta` (
 
 --
 -- Estructura Stand-in para la vista `vista_amortizaciones`
--- (VÈase abajo para la vista actual)
+-- (V√©ase abajo para la vista actual)
 --
 CREATE TABLE `vista_amortizaciones` (
 `cedula` varchar(15)
@@ -1220,7 +1220,7 @@ CREATE TABLE `vista_amortizaciones` (
 
 --
 -- Estructura Stand-in para la vista `vista_amortizaciones_compras`
--- (VÈase abajo para la vista actual)
+-- (V√©ase abajo para la vista actual)
 --
 CREATE TABLE `vista_amortizaciones_compras` (
 `cedula` varchar(15)
@@ -1243,7 +1243,7 @@ CREATE TABLE `vista_amortizaciones_compras` (
 
 --
 -- Estructura Stand-in para la vista `vista_amortizacion_negociacion_compra`
--- (VÈase abajo para la vista actual)
+-- (V√©ase abajo para la vista actual)
 --
 CREATE TABLE `vista_amortizacion_negociacion_compra` (
 `negociacion` bigint(20)
@@ -1263,7 +1263,7 @@ CREATE TABLE `vista_amortizacion_negociacion_compra` (
 
 --
 -- Estructura Stand-in para la vista `vista_amortizacion_negociacion_venta`
--- (VÈase abajo para la vista actual)
+-- (V√©ase abajo para la vista actual)
 --
 CREATE TABLE `vista_amortizacion_negociacion_venta` (
 `negociacion` bigint(20)
@@ -1283,7 +1283,7 @@ CREATE TABLE `vista_amortizacion_negociacion_venta` (
 
 --
 -- Estructura Stand-in para la vista `vista_cantidad_productos_pagar`
--- (VÈase abajo para la vista actual)
+-- (V√©ase abajo para la vista actual)
 --
 CREATE TABLE `vista_cantidad_productos_pagar` (
 `id` bigint(20) unsigned
@@ -1295,7 +1295,7 @@ CREATE TABLE `vista_cantidad_productos_pagar` (
 
 --
 -- Estructura Stand-in para la vista `vista_cpc_cedula_nombre_monto`
--- (VÈase abajo para la vista actual)
+-- (V√©ase abajo para la vista actual)
 --
 CREATE TABLE `vista_cpc_cedula_nombre_monto` (
 `cedula` varchar(15)
@@ -1307,7 +1307,7 @@ CREATE TABLE `vista_cpc_cedula_nombre_monto` (
 
 --
 -- Estructura Stand-in para la vista `vista_cpp_cedula_nombre_monto`
--- (VÈase abajo para la vista actual)
+-- (V√©ase abajo para la vista actual)
 --
 CREATE TABLE `vista_cpp_cedula_nombre_monto` (
 `cedula` varchar(15)
@@ -1319,7 +1319,7 @@ CREATE TABLE `vista_cpp_cedula_nombre_monto` (
 
 --
 -- Estructura Stand-in para la vista `vista_despachar_todo`
--- (VÈase abajo para la vista actual)
+-- (V√©ase abajo para la vista actual)
 --
 CREATE TABLE `vista_despachar_todo` (
 `despacho` bigint(11)
@@ -1334,7 +1334,7 @@ CREATE TABLE `vista_despachar_todo` (
 
 --
 -- Estructura Stand-in para la vista `vista_despacho_abono_material_negociacion_ventas`
--- (VÈase abajo para la vista actual)
+-- (V√©ase abajo para la vista actual)
 --
 CREATE TABLE `vista_despacho_abono_material_negociacion_ventas` (
 `despacho` bigint(11)
@@ -1349,7 +1349,7 @@ CREATE TABLE `vista_despacho_abono_material_negociacion_ventas` (
 
 --
 -- Estructura Stand-in para la vista `vista_despacho_ventas`
--- (VÈase abajo para la vista actual)
+-- (V√©ase abajo para la vista actual)
 --
 CREATE TABLE `vista_despacho_ventas` (
 `despacho` bigint(20)
@@ -1364,7 +1364,7 @@ CREATE TABLE `vista_despacho_ventas` (
 
 --
 -- Estructura Stand-in para la vista `vista_id_cedula_nombre_recepcion`
--- (VÈase abajo para la vista actual)
+-- (V√©ase abajo para la vista actual)
 --
 CREATE TABLE `vista_id_cedula_nombre_recepcion` (
 `id` bigint(20) unsigned
@@ -1377,7 +1377,7 @@ CREATE TABLE `vista_id_cedula_nombre_recepcion` (
 
 --
 -- Estructura Stand-in para la vista `vista_inventario`
--- (VÈase abajo para la vista actual)
+-- (V√©ase abajo para la vista actual)
 --
 CREATE TABLE `vista_inventario` (
 `id` bigint(20) unsigned
@@ -1395,7 +1395,7 @@ CREATE TABLE `vista_inventario` (
 
 --
 -- Estructura Stand-in para la vista `vista_neg_com_monto_por_pagar`
--- (VÈase abajo para la vista actual)
+-- (V√©ase abajo para la vista actual)
 --
 CREATE TABLE `vista_neg_com_monto_por_pagar` (
 `cedula` varchar(15)
@@ -1407,7 +1407,7 @@ CREATE TABLE `vista_neg_com_monto_por_pagar` (
 
 --
 -- Estructura Stand-in para la vista `vista_neg_ven_monto_por_cobrar`
--- (VÈase abajo para la vista actual)
+-- (V√©ase abajo para la vista actual)
 --
 CREATE TABLE `vista_neg_ven_monto_por_cobrar` (
 `cedula` varchar(15)
@@ -1419,7 +1419,7 @@ CREATE TABLE `vista_neg_ven_monto_por_cobrar` (
 
 --
 -- Estructura Stand-in para la vista `vista_precio_prod_cedu`
--- (VÈase abajo para la vista actual)
+-- (V√©ase abajo para la vista actual)
 --
 CREATE TABLE `vista_precio_prod_cedu` (
 `idprecio` bigint(20)
@@ -1700,7 +1700,7 @@ DROP TABLE IF EXISTS `vista_precio_prod_cedu`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_precio_prod_cedu`  AS SELECT `precios_productos_prov_clie`.`id` AS `idprecio`, `precios_productos_prov_clie`.`cedula` AS `cedula`, `precios_productos_prov_clie`.`idproducto` AS `idproducto`, `_pproductos`.`descripcion` AS `descripcion`, `precios_productos_prov_clie`.`precio` AS `precio` FROM (`precios_productos_prov_clie` join `_pproductos` on(`_pproductos`.`id` = `precios_productos_prov_clie`.`idproducto`)) ;
 
 --
--- Õndices para tablas volcadas
+-- √çndices para tablas volcadas
 --
 
 --
