@@ -270,13 +270,17 @@
                           <input x-bind:disabled="!{{ $mostrar }}" type="number" wire:model="pagotransfven" id="pagotransfven" name="pagotransfven" aria-describedby="pagotransfven" placeholder="Transferencia" wire:keyup="calrestaven({{$acumulado}})" size="9" maxlength="9" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%;">
                         </td>
                         <td><a><i class="color danger fas fa-equals text-success"></i></a></td>
-                        <td><h1 style="font-weight:900; color:red">{{ $formatter->formatCurrency(round($totalpagoven,2), ''), PHP_EOL }}</h1></td>
+                        <td style="text-align: right;"><h1 style="font-weight:900; color:red">{{ $formatter->formatCurrency(round($totalpagoven,2), ''), PHP_EOL }}</h1></td>
                       </tr>
 
                       <tr><td></td>
                         <td colspan=3><h1 style="font-weight:900; color:red">{{ $validamontotv }}</h1></td>
                         <td><label>Resta</label></td>
-                        <td colspan="2"><h1 style="font-weight:900; color:red">{{ $formatter->formatCurrency($restapagoven, ''), PHP_EOL }}</h1></td>
+                        <td colspan="2" style="text-align: right;">
+                          @php $this->calrestaven(session('totalacumulado')); @endphp
+                          <h1 style="font-weight:900; color:red">{{ $formatter->formatCurrency(round($this->restapagoven,2), ''), PHP_EOL }}</h1>
+                          @php $this->render(); @endphp
+                        </td>
                       </tr>
                     @endif
 

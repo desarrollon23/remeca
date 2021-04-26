@@ -585,8 +585,7 @@ class CompradorComponent extends Component
         return view('livewire.purchases.show', compact('compras'));
     }
 
-    public function render()
-    {
+    public function render(){
         $vendedores = Proveedores::all();
         $lugares = Sucursal::all();
         $productos = Producto::all();
