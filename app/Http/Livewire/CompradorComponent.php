@@ -74,22 +74,22 @@ class CompradorComponent extends Component
     protected $rules = [
         'state.idestatuspago' => 'required',
         'state.idtipopago' => 'required',
-        'state.observacionesc' => 'required',
+        /* 'state.observacionesc' => 'required', */
         'state.totalpagado' => 'required'
     ];
 
     protected $validationattributs = [
         'state.idestatuspago' => 'Estatus de Pago',
         'state.idtipopago' => 'Tipo de Pago',
-        'state.observacionesc' => 'Observaciones',
+        /* 'state.observacionesc' => 'Observaciones', */
         'state.totalpagado' => 'Total a Pagar'
     ];
 
     protected $messages = [
         'state.idestatuspago.required' => 'Seleccione Estatus de Pago.',
         'state.idtipopago.required' => 'Seleccione Tipo de Pago.',
-        'state.observacionesc.required' => 'Ingrese Observaciones',
-        'state.observacionesc.max' => 'Máximo 250 letras',
+        /* 'state.observacionesc.required' => 'Ingrese Observaciones',
+        'state.observacionesc.max' => 'Máximo 250 letras', */
         'state.totalpagado.required' => 'Ingrese Total a Pagar'
     ];
 
