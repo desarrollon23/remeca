@@ -80,7 +80,7 @@
                   
               <div style="width: 100%; margin-right: 2px;">
               <label for="observacionesc">Observaciones
-              <textarea x-bind:disabled="!{{ $mostrar }}" id="observacionesc" name="observacionesc" wire:model="observacionesc" rows="1" style="width: 100%; margin-right: 2px;" required>Ninguna</textarea>@error('observacionesc')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</label></div> {{--  --}}
+              <textarea x-bind:disabled="!{{ $mostrar }}" id="observacionesc" name="observacionesc" {{-- wire:model="observacionesc" --}} rows="1" style="width: 100%; margin-right: 2px;" required>Ninguna</textarea>@error('observacionesc')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror</label></div> {{--  --}}
                 {{-- <div style="width: 100%;"> --}}
               {{-- <div style="width: 100%; margin-right: 2px;"> --}}
                 @if($mostrarabonocompra!='true')
