@@ -216,7 +216,39 @@
               </div>
             </div>
           </div>
-        </div>    
+        </div>
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-xs-12 mt-2">{{-- INVENTARIO --}}
+            <div class="card">
+              <div class="card-header bg-warning" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;">RELACION DIARIA&nbsp;
+                <h2>{{-- {{ $inventarios->count() }} --}}</h2></label></h3>
+              </div>
+              <div class="card-body">
+                @if ($inventarios->count())
+                <div style="width: 100%; margin-right: 2px;">
+                <table id="#example2" class="table table-bordered table-striped"><thead><tr> 
+                    <th scope="col" style="font-size: 10px;">NOMBRE</th>
+                    @foreach ($productosrd as $productord)    
+                      <th scope="col" style="font-size: 10px;">{{$productord->descripcion}}</th>
+                    @endforeach
+                  </tr></thead><tbody>
+                    @foreach ($clientesrd as $clienterd) {{-- datos del cliente --}}
+                      <tr scope="col"><td style="font-size: 10px;">{{$clienterd->nombrec}}</td>
+                        @foreach ($productosrd as $productordcliente) {{-- datos de la venta --}}
+                          <td>{{traecantidadventasrd($clienterd->cedulac, $productordcliente->id)}}</td>
+                        @endforeach
+                      </tr>
+                    @endforeach
+                  </tr></tbody>
+                </table>
+                @else
+                    {{ 'No tiene Materiales en Inventario' }}
+                @endif
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

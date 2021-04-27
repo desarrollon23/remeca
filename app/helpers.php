@@ -4,6 +4,7 @@
 use Illuminate\Http\Request;
 use App\Models\AuditorSeguridad;
 use App\Models\ClaveMaestra;
+use App\Models\ConsultaRdVentas;
 
 if (! function_exists('current_user')) {
     function current_user()
@@ -31,5 +32,13 @@ if (! function_exists('auditar')) {
 if (! function_exists('buscarclavemaestra')) {
   function buscarclavemaestra(){
     session(['clavemaestraactual'.auth()->user()->id => ClaveMaestra::where('idusuario', auth()->user()->id)->get()->pluck('clave')[0]]);
+  }
+}
+
+if (! function_exists('traecantidadventasrd')) {
+  function traecantidadventasrd($cedula, $idproducto){
+    $cantidad=ConsultaRdVentas::where('cedula', $cedula)
+                ->where('idproducto', $idproducto)->get()->pluck('cantidad');
+    return $cantidad;
   }
 }

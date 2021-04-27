@@ -4,9 +4,11 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\almacen;
+use App\Models\Cliente;
 use App\Models\Compra;
 use App\Models\ConsultaNegComMontoPorPagar;
 use App\Models\ConsultaNegVenMontoPorCobrar;
+use App\Models\ConsultaRdVentas;
 use App\Models\CuentasMaterial;
 use App\Models\NegociacionVenta;
 use App\Models\Producto;
@@ -29,8 +31,13 @@ class DashBoardController extends Controller
 
     /* protected $listeners = ['__invoke' => '__invoke']; */ //este es un oyente
 
-    public function __invoke(Request $request)
-    {
+    public function traecantidadventasrd($cedula, $idproducto){
+        $cantidad=ConsultaRdVentas::where('cedula', $cedula)
+                    ->where('idproducto', $idproducto)->pluck('cantidad');
+        return $cantidad;
+    }
+
+    public function __invoke(Request $request){
         //dd('Aquí');
         //return view('dashboard');
         /* $ccpp = DB::select('SELECT proveedores.nombre, _ccompras.diferenciapago FROM `_ccompras` INNER JOIN proveedores ON proveedores.cedula = _ccompras.cedula WHERE _ccompras.idestatuspago = 2');
@@ -59,6 +66,12 @@ class DashBoardController extends Controller
         $banco = Liquidez::where('id', 1)->get()->pluck('banco');
         /* dd($efectivo[0]); */
         /* $efectivo; */
-        return view('admin.dashboard', compact(['emd', 'dmd' ,'inventarios', 'materialcppcpc', 'ccpp', 'ccpc', 'efectivo', 'banco']));
+
+        /* RELACION DIARIA */
+        $productosrd = Producto::all();
+        $clientesrd = Cliente::all();
+        //dd($clientesrd);
+        $ventasrdclientes = ConsultaRdVentas::all();
+        return view('admin.dashboard', compact(['emd', 'dmd' ,'inventarios', 'materialcppcpc', 'ccpp', 'ccpc', 'efectivo', 'banco', 'productosrd', 'clientesrd', 'ventasrdclientes']));
     }
 }

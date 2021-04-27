@@ -122,7 +122,7 @@
               <i class="nav-icon fas fa-cart-arrow-down"></i></i><p @php echo $textos; @endphp>Ventas</p></a>
           </li><li class="nav-item">
             <a href="{{ route('livewire.ventas.negociacion') }}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
-              <i class="nav-icon fas fa-cart-arrow-down"></i></i><p @php echo $textos; @endphp>Negociación de Ventas</p></a>
+              <i class="nav-icon fas fa-cart-arrow-down"></i></i><p @php echo $textos; @endphp>Cierre de Ventas</p></a>
           </li></ul>
         </li>@endrole<div></div>{{-- ALMACEN --}}@role('Admin|Auditor|Almacen')
         <li class="nav-item">
