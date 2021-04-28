@@ -6,6 +6,7 @@ use App\Models\AuditorSeguridad;
 use App\Models\ClaveMaestra;
 use App\Models\ConsultaRdVentas;
 use App\Models\CuentasMaterial;
+use App\Models\PrecioProducto;
 use App\Models\Producto;
 
 if (! function_exists('current_user')) {
@@ -28,6 +29,16 @@ if (! function_exists('auditar')) {
       'programa' => $programa,
       'operacion' => $operacion
     ]);
+  }
+}
+
+if (! function_exists('traeprecio')) {
+  function traerprecio($cedulaproveedorprecios, $productoid){
+    $tp = PrecioProducto::where('cedula', $cedulaproveedorprecios)
+                         ->where('idproducto', $productoid)->count();
+    if($tp!=0){ return PrecioProducto::where('cedula', $cedulaproveedorprecios)
+                         ->where('idproducto', $productoid)->get()->pluck('precio')[0];
+    }else{ return 0; }
   }
 }
 

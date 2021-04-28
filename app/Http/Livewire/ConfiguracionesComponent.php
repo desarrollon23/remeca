@@ -90,12 +90,6 @@ class ConfiguracionesComponent extends Component
     /* FIN PRECIOS PROVEEDOR */
 
     public function render(){
-        /* dd(PrecioProducto::where('cedula', 'v77777777')
-        ->where('idproducto', 2)->get()->pluck('precio')[0]); */
-
-        /* $this->clavemaestra = ClaveMaestra::where('idusuario', auth()->user()->id)->get()->pluck('clave');
-        session(['clavemaestraactual' => $this->clavemaestra]);
-        $this->clavemaestra=""; */
         $proveedores = Proveedores::all();
         $productos = Producto::all();
         return view('livewire.configuraciones-component'

@@ -39,20 +39,17 @@
               <div class="card-body">
                 <div class="form-group" style="display: flex; flex-wrap: wrap; text-align: center; margin-right: 2px; width: 100%;">
                     <div style="width: 100%; margin-right: 2px;"><label for="cedulaproveedorprecios" style="width: 100%; margin-right: 2px;">Seleccione el Proveedor</label>
-                      <select name="cedulaproveedorprecios" wire:model="cedulaproveedorprecios" id="cedulaproveedorprecios" style="width: 100%; text-transform: uppercase;" wire:onchange="cambioidcpc({{$this->cedulaproveedorprecios}})">
+                      <select name="cedulaproveedorprecios" wire:model="cedulaproveedorprecios" id="cedulaproveedorprecios" style="width: 100%; text-transform: uppercase;" wire:onchange="edit({{$this->cedulaproveedorprecios}})" {{-- wire:onchange="cambioidcpc({{$this->cedulaproveedorprecios}})" --}}>
                         <option value="NULL" style="width: 100%;" selected>(SELECCIONE)</option>
                         @foreach ($proveedores as $proveedor)
                             <option value="{{$proveedor->cedula}}" style="width: 100%;">
                                 {{$proveedor->cedula." ".$proveedor->nombre}}
                             </option>
                         @endforeach
-                      </select>@error('cedulaproveedorprecios')<p class="text-x text-red-500 italic">{{$message}}</p>@enderror
+                      </select>
                     </div>
                     @if (is_null($this->cedulaproveedorprecios)!="true" or $this->cedulaproveedorprecios>1)
                       <label for="claveactual" style="width: 100%">Lista de Precios</label>
-                      @if(session('cedulaactual')!=$this->cedulaproveedorprecios)
-                          @php session(['cedulaactual' => $this->cedulaproveedorprecios]); @endphp
-                      @endif
                       @foreach ($productos as $producto)
                         @if ($producto->id>1)
                             @php
@@ -62,10 +59,8 @@
                             @endphp
                             <div style="width: 90px; text-align: center; margin-right: 3px;">
                             <label style="width: 100%;">{{$producto->descripcion}}</label>
-                            <label style="width: 100%;">{{$this->traeprecio($this->cedulaproveedorprecios, $producto->id)}}$</label>
-                                <input type="text" wire:model="p{{$producto->id}}"
-                                id="p{{$producto->id}}" name="p{{$producto->id}}" placeholder="Ingresar" size="9" maxlength="9" min="0" max="99999999999" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%; /* border-color: white white green white; */ font-weight:900; color:red; padding-top: 0px;"
-                                value="{{$this->traeprecio($this->cedulaproveedorprecios, $producto->id)}}">
+                                <input type="text" wire:model.defer="p{{$producto->id}}"
+                                id="p{{$producto->id}}" name="p{{$producto->id}}" placeholder="Ingresar" size="9" maxlength="9" min="0" max="99999999999" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%; /* border-color: white white green white; */ font-weight:900; color:red; padding-top: 0px;">
                             </div>
                         @endif
                       @endforeach

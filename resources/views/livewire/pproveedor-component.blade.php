@@ -34,6 +34,20 @@
                   <button wire:click="default" class="btn btn-secondary mt-2"><i class="fa fa-times mr-1"></i>Cancelar</button>
                 @endif
                 </div>
+                <div class="d-flex justify-content-center mt-2">
+                  @if ($this->mostrartraerprecios=="true")
+                    @foreach ($productos as $producto)
+                      @if ($producto->id>1)
+                        <div style="width: 90px; text-align: center; margin-right: 3px;">
+                        <label style="width: 100%;">{{$producto->descripcion}}</label>
+                                <input type="text" wire:model.defer="p{{$producto->id}}"
+                                id="p{{$producto->id}}" name="p{{$producto->id}}" placeholder="Ingresar" size="9" maxlength="9" min="0" max="99999999999" onkeypress="mascara(this,cpf)" onpaste="return false" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" style="width: 100%; /* border-color: white white green white; */ font-weight:900; color:red; padding-top: 0px;">
+                        </div>
+                      @endif
+                    @endforeach
+                    <button wire:click="crearprecios" class="btn btn-primary mt-2 formulario-cambiarprecio" style="width: 20%;"><i class="fa fa-save mr-1"></i>Agregar Precios</button>    
+                  @endif
+                </div>
               </div>
             </div>
           </div>
@@ -41,43 +55,54 @@
         <div class="col-lg-12 col-md-6 col-xs-4 mt-2">
           <div class="card">
             <div class="card-header" @php echo $fondoo; @endphp><h3 class="card-title" style="color: #fff; margin-right: 2px;"><label>Lista de Proveedores</label></h3></div>
-            <div class="card-body bg-gray-180">
-              <div class="px-6 py-4">
-                {{-- <input type="text" wire:model="buscarproveedor"> --}}
+            <div class="card-body">
+              {{-- <div class="px-6 py-4">
+                {{-- <input type="text" wire:model="buscarproveedor"> --} }
                 <x-jet-input class="flex-1" placeholder="Buscar por Cédula, Rif o Nombre" wire:model="buscarproveedor" />
-              </div>
+              </div> --}}
               
               @if ($pproveedores->count())
-              <table id="#example1" class="table table-bordered table-striped"{{-- class="table table-striped" --}}><thead><tr> 
+              <table id="example1" class="table table-bordered table-striped">
+                <thead><tr> 
                     <th scope="col">#</th>
                     <th scope="col">Cédula</th>
                     <th scope="col">Nombre</th>
-                    <th scope="col">Precios</th>
                     <th scope="col">Dirección</th>
                     <th scope="col">Teléfono</th>
                     <th scope="col">Correo</th>
                     <th scope="col"></th>
                   </tr></thead><tbody>
                   @foreach ($pproveedores as $proveedor)<tr class="hover:bg-green-200">
-                    <td class="px-1 py-1">{{$proveedor->id}}</td>
-                        <td class="px-1 py-1">{{$proveedor->cedula}}</td>
-                        <td class="px-1 py-1">{{$proveedor->nombre}}</td>
-                        {{-- <td class="px-1 py-1" style="text-align: right;">
+                    <td>{{$proveedor->id}}</td>
+                        <td>{{$proveedor->cedula}}</td>
+                        <td>{{$proveedor->nombre}}</td>
+                        {{-- <td style="text-align: right;">
                           @livewire('precio-producto', ['proveedor' => $proveedor, 'cedula' => $proveedor->cedula], key($proveedor->id))
                         </td> --}}
-                        <td class="px-1 py-1"></td>
-                        <td class="px-1 py-1">{{$proveedor->direccion}}</td>
-                        <td class="px-1 py-1">{{$proveedor->telefono}}</td>
-                        <td class="px-1 py-1">{{$proveedor->correo}}</td>
-                        <td class="px-1 py-1">
+                        <td>{{$proveedor->direccion}}</td>
+                        <td>{{$proveedor->telefono}}</td>
+                        <td>{{$proveedor->correo}}</td>
+                        <td>
                       <a href="" wire:click.prevent="edit({{ $proveedor }})"><i class="fa fa-edit mr-2"></i></a>
                       <a href="" wire:click.prevent="{{-- confirmUserRemoval({{ $proveedor->id }}) --}}destroy({{ $proveedor->id }})"><i class="fa fa-trash text-danger"></i></a>
                     </td></tr>
-                    <tr>
-                      <td class="px-1 py-1" style="text-align: right;" col-span="7" >
-                        @livewire('precio-producto', ['proveedor' => $proveedor, 'cedula' => $proveedor->cedula], key($proveedor->id))
+                    <tr><td colspan="8">
+                      <label for="claveactual" style="width: 100%; text-align: center;">Lista de Precios</label>
+                      @foreach ($productos as $producto)
+                        @if ($producto->id>1)
+                          {{-- <div style="width: 100%; text-align: center; margin-right: 3px;"> --}}
+                            <label style="width: 120px;">{{$producto->descripcion."= ".
+                              traerprecio($proveedor->cedula, $producto->id)}}
+                            </label>
+                          {{-- </div> --}}
+                        @endif
+                      @endforeach
+                    </td></tr>
+                    {{-- <tr>
+                      <td class="px-1 py-1" {{-- style="text-align: right;" --} } colspan="8" >
+                        {{-- @livewire('precio-producto', ['proveedor' => $proveedor, 'cedula' => $proveedor->cedula], key($proveedor->id)) --} }
                       </td>
-                    </tr>
+                    </tr> --}}
                   @endforeach</tbody>
               </table>
               @else

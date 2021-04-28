@@ -6,8 +6,8 @@
         {{-- {{$proveedor->nombre}} --}}
     @php $this->{"open".$proveedor->id}="false"; @endphp
     @foreach ($precios as $precio)
-        <label x-show="open{{-- {{$proveedor->id}} --}}" style="width: 98%;">{{$precio->descripcion}}
-        <input type="text" id="precio{{$precio->idprecio}}" value="{{$precio->precio}}" style="width: 50%;" x-bind:disabled="!{{ $open.$proveedor->id }}"></label>
+        <label x-show="open{{-- {{$proveedor->id}}  --}}" style="width: 10%;">{{$precio->descripcion}}
+        <input type="text" id="precio{{$precio->idprecio}}" value="{{$precio->precio}}" style="width: 100%;" x-bind:disabled="!{{ $open.$proveedor->id }}"></label>
     @endforeach
     <x-jet-danger-button wire:click="open{{-- {{$proveedor->id}} --}}=true">
         MODIFICAR {{ $this->{"open".$proveedor->id} }}

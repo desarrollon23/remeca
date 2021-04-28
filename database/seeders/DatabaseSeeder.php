@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         //Sucursal::factory(20)->create();
         $this->call(RoleSeeder::class);
-        $this->call(UserSeeder::class);
+        /* $this->call(UserSeeder::class);
         $this->call(ProductoSeeder::class);
-        $this->call(SucursalSeeder::class);
+        $this->call(SucursalSeeder::class); */
     }
 }

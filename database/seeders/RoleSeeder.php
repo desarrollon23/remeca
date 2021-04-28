@@ -43,6 +43,10 @@ class RoleSeeder extends Seeder
                             'description' =>'Ver el Inventario'])->syncRoles([$role1, $role2, $role4, $role5, $role7]);
         /* Permission::create(['name' => 'livewire.almacen.material-reception.destroy',
                             'description' =>'Eliminar una Compra'])->syncRoles([$role1, $role2, $role4, $role5]); */
+                            
+        //******************PERMISOS DE LOGISTICA
+        Permission::create(['name' => 'livewire.configuraciones',
+                            'description' =>'Establecer Configuraciones'])->syncRoles([$role1, $role2, $role4, $role6]);
 
         //******************PERMISOS DE ADMINISTRACION
         Permission::create(['name' => 'livewire.purchases.index',

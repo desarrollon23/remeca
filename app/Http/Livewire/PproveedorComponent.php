@@ -2,19 +2,34 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\PrecioProducto;
+use App\Models\PreciosProductosProvClie;
 use Livewire\Component;
 use App\Models\Proveedores;
-use App\Models\PreciosProveedores;
+use App\Models\Producto;
 use Livewire\WithPagination;
+use Illuminate\Pagination\Paginator;
 
 class PproveedorComponent extends Component
 {
     use WithPagination;
+    protected $paginationTheme = 'bootstrap';
 
     public $cedula, $nombre, $direccion, $telefono, $correo, $pproveedor_id, $visible;
     public $accion = "store";
 
+    public $p, $p1, $p2, $p3, $p4, $p5, $p6, $p7, $p8, $p9, $p10,
+    $p11, $p12, $p13, $p14, $p15, $p16, $p17, $p18, $p19, $p20,
+    $p21, $p22, $p23, $p24, $p25, $p26, $p27, $p28, $p29, $p30,
+    $p31, $p32, $p33, $p34, $p35, $p36, $p37, $p38, $p39, $p40,
+    $p41, $p42, $p43, $p44, $p45, $p46, $p47, $p48, $p49, $p50;
+
     public $buscarproveedor;
+
+    public function boot()
+    {
+        Paginator::useBootstrap();
+    }
 
     protected $rules = [
         'cedula' => 'required|max:12',
@@ -49,14 +64,13 @@ class PproveedorComponent extends Component
     public function render(){
         $pproveedores = Proveedores::where('cedula', 'like', '%'.$this->buscarproveedor.'%')
                         ->orwhere('nombre', 'like', '%'.$this->buscarproveedor.'%')->get();
-        
+        $productos = Producto::all();
         /* $precios = PreciosProveedores::where('cedula', $pproveedores->cedula)->get(); */
-
-
-        return view('livewire.pproveedor-component', compact('pproveedores'));
+        return view('livewire.pproveedor-component', compact('pproveedores', 'productos'));
     }
-
-    public function store()    {
+    
+    public $mostrartraerprecios="false";
+    public function store(){
         $this->validate([
             'cedula' => 'required|max:15',
             'nombre' => 'required|max:100',
@@ -71,13 +85,41 @@ class PproveedorComponent extends Component
             'telefono' => $this->telefono,
             'correo' => $this->correo
         ]);
-        auditar('PROVEEDOR - DATOS: '.
+        /* $pro = Producto::all();
+        foreach($pro as $pppc){
+            PreciosProductosProvClie::create([
+                'cedula' => $this->cedula,
+                'idproducto' => $pppc->id,
+                'precio' => (double)0
+            ]);
+        } */
+        $this->mostrartraerprecios="true";
+        auditar('MANTENIMIENTOS - CREAR PROVEEDOR - DATOS: '.
             ' Cedula: '.$this->cedula.
             ' Nombre: '.$this->nombre.
             ' Direccion: '.$this->direccion.
             ' Telefono: '.$this->telefono.
-            ' Correo: '.$this->correo, 'CREAR');
-        $this->reset(['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'accion', 'pproveedor_id']);
+            ' Correo: '.$this->correo, 'CREADO');
+        //$this->reset(['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'accion', 'pproveedor_id']);
+    }
+
+    public function crearprecios(){
+        for ($i=2; $i <= Producto::count(); $i++) {
+            $cp = PrecioProducto::where('cedula', $this->cedula)->where('idproducto', $i)->count();
+            if($cp!=0){
+                 $idp = PrecioProducto::where('cedula', $this->cedula)->where('idproducto', $i)->get()->pluck('id')[0];
+                $np = PrecioProducto::find($idp);
+                $np->update(['precio' => round((double)$this->{"p".$i}, 2)]);
+            }else{
+                PrecioProducto::create([
+                    'cedula' => $this->cedula,
+                    'idproducto' => $i,
+                    'precio' => round((double)$this->{"p".$i}, 2) ]);
+            }
+        }
+        auditar('MANTENIMIENTOS - PROVEEDOR #: '.$this->pproveedor->id, 'PRECIOS CREADOS');
+        $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'SE HAN CAMBIADO LOS PRECIOS']);
+        $this->reset(['mostrartraerprecios', 'p', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15', 'p16', 'p17', 'p18', 'p19', 'p20', 'p21', 'p22', 'p23', 'p24', 'p25', 'p26', 'p27', 'p28', 'p29', 'p30', 'p31', 'p32', 'p33', 'p34', 'p35', 'p36', 'p37', 'p38', 'p39', 'p40', 'p41', 'p42', 'p43', 'p44', 'p45', 'p46', 'p47', 'p48', 'p49', 'p50']);        
     }
 
     public function edit(Proveedores $pproveedor)    {
@@ -89,7 +131,7 @@ class PproveedorComponent extends Component
         $this->visible = 'SI';
         $this->pproveedor_id = $pproveedor->id;
         $this->accion = "update";
-        auditar('CLIENTE #: '.$pproveedor->id.' DATOS ACTUALES: '.
+        auditar('MANTENIMIENTOS - PROVEEDOR #: '.$pproveedor->id.' EDITAR DATOS ACTUALES: '.
             ' Cedula: '.$pproveedor->cedula.
             ' Nombre: '.$pproveedor->nombre.
             ' Direccion: '.$pproveedor->direccion.
@@ -108,7 +150,7 @@ class PproveedorComponent extends Component
             'correo' => $this->correo,
             $this->visible = 'SI'
         ]);
-        auditar('PROVEEDOR #: '.$pproveedor->id.' NUEVOS DATOS: '.
+        auditar('MANTENIMIENTOS - PROVEEDOR #: '.$pproveedor->id.' NUEVOS DATOS: '.
             ' Cedula: '.$this->cedula.
             ' Nombre: '.$this->nombre.
             ' Direccion: '.$this->direccion.
@@ -121,11 +163,13 @@ class PproveedorComponent extends Component
         $pproveedor->delete();
         auditar('PROVEEDOR #: '.$pproveedor->id, 'ELIMINAR');
         $this->reset(['cedula', 'nombre','direccion', 'telefono', 'correo']);
-        $this->reset(['cedula', 'nombre','direccion', 'telefono', 'correo', 'accion', 'pproveedor_id']);
+        $this->reset(['cedula', 'nombre','direccion', 'telefono', 'correo', 'accion', 'pproveedor_id',
+        'mostrartraerprecios', 'p', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15', 'p16', 'p17', 'p18', 'p19', 'p20', 'p21', 'p22', 'p23', 'p24', 'p25', 'p26', 'p27', 'p28', 'p29', 'p30', 'p31', 'p32', 'p33', 'p34', 'p35', 'p36', 'p37', 'p38', 'p39', 'p40', 'p41', 'p42', 'p43', 'p44', 'p45', 'p46', 'p47', 'p48', 'p49', 'p50']);
     }
     
     public function default()    {
-        auditar('PROVEEDOR', 'CANCELAR');
-        $this->reset(['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'accion', 'pproveedor_id']);
+        auditar('MANTENIMIENTOS - PROVEEDOR', 'CANCELAR');
+        $this->reset(['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'accion', 'pproveedor_id',
+        'mostrartraerprecios', 'p', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15', 'p16', 'p17', 'p18', 'p19', 'p20', 'p21', 'p22', 'p23', 'p24', 'p25', 'p26', 'p27', 'p28', 'p29', 'p30', 'p31', 'p32', 'p33', 'p34', 'p35', 'p36', 'p37', 'p38', 'p39', 'p40', 'p41', 'p42', 'p43', 'p44', 'p45', 'p46', 'p47', 'p48', 'p49', 'p50']);
     }
 }

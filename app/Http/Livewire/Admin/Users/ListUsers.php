@@ -68,8 +68,6 @@ class ListUsers extends Component
     {
         /* $users = User::latest()->paginate(); */
         $users = User::all();
-        return view('livewire.admin.users.list-users', [
-            'users'=>$users,
-        ]);
+        return view('livewire.admin.users.list-users', ['users'=>$users,]);
     }
 }
