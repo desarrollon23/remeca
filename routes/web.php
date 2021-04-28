@@ -27,6 +27,8 @@ use App\Http\Livewire\VentasComponent;
 use App\Http\Livewire\AbonoVentaComponent;
 use App\Http\Livewire\ConfiguracionesComponent;
 use App\Http\Livewire\InventarioComponent;
+use App\Mail\ContactoMailable;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +52,16 @@ Route::resource('users', UserController::class)/* ->middleware('can:admin.users'
 
 //este controlador se crea con php artisan make:controller Adnim\RoleController -r
 Route::resource('roles', RoleController::class)->except('show')->names('admin.roles'); 
+
+Route::get('contacto', function () {
+   $correo = new ContactoMailable; Mail::to('julion23@gmail.com')->send($correo); return 'Mensaje enviado';
+});
+
+Route::get('contacto', function () {
+    $correo = new ContactoMailable;
+    Mail::to('julion23@gmail.com')->send($correo);
+    return 'Mensaje enviado';
+ })->name('contacto.index');
 
 //Route::resource('purchases', PurchaseController::class)->names('livewire.purchases'); 
 
