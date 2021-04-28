@@ -9,6 +9,7 @@ use App\Models\Proveedores;
 use App\Models\Producto;
 use Livewire\WithPagination;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Request;
 
 class PproveedorComponent extends Component
 {
@@ -26,8 +27,7 @@ class PproveedorComponent extends Component
 
     public $buscarproveedor;
 
-    public function boot()
-    {
+    public function boot(){
         Paginator::useBootstrap();
     }
 
@@ -49,6 +49,7 @@ class PproveedorComponent extends Component
 
     protected $messages = [
         'cedula.required' => 'Por favor ingrese la Cédula o Rif.',
+        'cedula.unique' => 'La Cédula o Rif ya existe, por favor ingrese otra.',
         'cedula.max' => 'La Cédula o Rif no puede tener más de 15 caracteres.',
         /* 'cedula.unique' => 'La Cédula o Rif ya exixte.', */
         'nombre.required' => 'Por favor ingrese el Nombre.',
@@ -69,10 +70,10 @@ class PproveedorComponent extends Component
         return view('livewire.pproveedor-component', compact('pproveedores', 'productos'));
     }
     
-    public $mostrartraerprecios="false";
+    public $mostrartraerprecios="false"; public $bloqueado="false";
     public function store(){
         $this->validate([
-            'cedula' => 'required|max:15',
+            'cedula' => 'required|unique:proveedores|max:15',
             'nombre' => 'required|max:100',
             'direccion' => 'required|max:250',
             'telefono' => 'required|max:30',
@@ -85,41 +86,44 @@ class PproveedorComponent extends Component
             'telefono' => $this->telefono,
             'correo' => $this->correo
         ]);
-        /* $pro = Producto::all();
-        foreach($pro as $pppc){
-            PreciosProductosProvClie::create([
-                'cedula' => $this->cedula,
-                'idproducto' => $pppc->id,
-                'precio' => (double)0
-            ]);
-        } */
-        $this->mostrartraerprecios="true";
+        $this->mostrartraerprecios="true"; $this->bloqueado="true";
+        $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'PROVEEDOR CREADO, INGRESE LOS PRECIOS']);
         auditar('MANTENIMIENTOS - CREAR PROVEEDOR - DATOS: '.
             ' Cedula: '.$this->cedula.
             ' Nombre: '.$this->nombre.
             ' Direccion: '.$this->direccion.
             ' Telefono: '.$this->telefono.
             ' Correo: '.$this->correo, 'CREADO');
-        //$this->reset(['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'accion', 'pproveedor_id']);
     }
 
     public function crearprecios(){
-        for ($i=2; $i <= Producto::count(); $i++) {
-            $cp = PrecioProducto::where('cedula', $this->cedula)->where('idproducto', $i)->count();
-            if($cp!=0){
-                 $idp = PrecioProducto::where('cedula', $this->cedula)->where('idproducto', $i)->get()->pluck('id')[0];
-                $np = PrecioProducto::find($idp);
-                $np->update(['precio' => round((double)$this->{"p".$i}, 2)]);
-            }else{
-                PrecioProducto::create([
-                    'cedula' => $this->cedula,
-                    'idproducto' => $i,
-                    'precio' => round((double)$this->{"p".$i}, 2) ]);
-            }
+        $cantidad=Producto::count(); $totalno=1;
+        for ($i=2; $i <= $cantidad; $i++) {    
+            if($this->{"p".$i}==""){ $totalno--;
+            }elseif($this->{"p".$i}>0){ $totalno++; }
         }
-        auditar('MANTENIMIENTOS - PROVEEDOR #: '.$this->pproveedor->id, 'PRECIOS CREADOS');
-        $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'SE HAN CAMBIADO LOS PRECIOS']);
-        $this->reset(['mostrartraerprecios', 'p', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15', 'p16', 'p17', 'p18', 'p19', 'p20', 'p21', 'p22', 'p23', 'p24', 'p25', 'p26', 'p27', 'p28', 'p29', 'p30', 'p31', 'p32', 'p33', 'p34', 'p35', 'p36', 'p37', 'p38', 'p39', 'p40', 'p41', 'p42', 'p43', 'p44', 'p45', 'p46', 'p47', 'p48', 'p49', 'p50']);        
+        if($totalno==$cantidad){
+            for ($i=2; $i <= Producto::count(); $i++) {
+                $cp = PrecioProducto::where('cedula', $this->cedula)->where('idproducto', $i)->count();
+                if($cp!=0){
+                    $idp = PrecioProducto::where('cedula', $this->cedula)->where('idproducto', $i)->get()->pluck('id')[0];
+                    $np = PrecioProducto::find($idp);
+                    $np->update(['precio' => round((double)$this->{"p".$i}, 2)]);
+                }else{
+                    PrecioProducto::create([
+                        'cedula' => $this->cedula,
+                        'idproducto' => $i,
+                        'precio' => round((double)$this->{"p".$i}, 2) ]);
+                }
+            }
+            $idp = Proveedores::where('cedula', $this->cedula)->get()->pluck('id')[0];
+            $this->mostrartraerprecios="true"; $this->bloqueado="false";
+            auditar('MANTENIMIENTOS - PROVEEDOR #: '.$idp, 'PRECIOS CREADOS');
+            $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'LOS PRECIOS SE HAN CREADO']);
+            $this->reset(['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'accion', 'pproveedor_id','mostrartraerprecios', 'bloqueado', 'p', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15', 'p16', 'p17', 'p18', 'p19', 'p20', 'p21', 'p22', 'p23', 'p24', 'p25', 'p26', 'p27', 'p28', 'p29', 'p30', 'p31', 'p32', 'p33', 'p34', 'p35', 'p36', 'p37', 'p38', 'p39', 'p40', 'p41', 'p42', 'p43', 'p44', 'p45', 'p46', 'p47', 'p48', 'p49', 'p50']);
+        }else{
+            $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'DEBE AGREGAR TODOS LOS PRECIOS']);
+        }
     }
 
     public function edit(Proveedores $pproveedor)    {
@@ -156,20 +160,21 @@ class PproveedorComponent extends Component
             ' Direccion: '.$this->direccion.
             ' Telefono: '.$this->telefono.
             ' Correo: '.$this->correo, 'GUARDAR');
+        $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'PROVEEDOR MODIFICADO']);
         $this->reset(['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'accion', 'pproveedor_id']);
     }
 
     public function destroy(Proveedores $pproveedor)    {
         $pproveedor->delete();
         auditar('PROVEEDOR #: '.$pproveedor->id, 'ELIMINAR');
-        $this->reset(['cedula', 'nombre','direccion', 'telefono', 'correo']);
+        $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'PROVEEDOR ELIMINADO']);
         $this->reset(['cedula', 'nombre','direccion', 'telefono', 'correo', 'accion', 'pproveedor_id',
-        'mostrartraerprecios', 'p', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15', 'p16', 'p17', 'p18', 'p19', 'p20', 'p21', 'p22', 'p23', 'p24', 'p25', 'p26', 'p27', 'p28', 'p29', 'p30', 'p31', 'p32', 'p33', 'p34', 'p35', 'p36', 'p37', 'p38', 'p39', 'p40', 'p41', 'p42', 'p43', 'p44', 'p45', 'p46', 'p47', 'p48', 'p49', 'p50']);
+        'mostrartraerprecios', 'bloqueado', 'p', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15', 'p16', 'p17', 'p18', 'p19', 'p20', 'p21', 'p22', 'p23', 'p24', 'p25', 'p26', 'p27', 'p28', 'p29', 'p30', 'p31', 'p32', 'p33', 'p34', 'p35', 'p36', 'p37', 'p38', 'p39', 'p40', 'p41', 'p42', 'p43', 'p44', 'p45', 'p46', 'p47', 'p48', 'p49', 'p50']);
     }
     
     public function default()    {
         auditar('MANTENIMIENTOS - PROVEEDOR', 'CANCELAR');
         $this->reset(['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'accion', 'pproveedor_id',
-        'mostrartraerprecios', 'p', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15', 'p16', 'p17', 'p18', 'p19', 'p20', 'p21', 'p22', 'p23', 'p24', 'p25', 'p26', 'p27', 'p28', 'p29', 'p30', 'p31', 'p32', 'p33', 'p34', 'p35', 'p36', 'p37', 'p38', 'p39', 'p40', 'p41', 'p42', 'p43', 'p44', 'p45', 'p46', 'p47', 'p48', 'p49', 'p50']);
+        'mostrartraerprecios', 'bloqueado', 'p', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15', 'p16', 'p17', 'p18', 'p19', 'p20', 'p21', 'p22', 'p23', 'p24', 'p25', 'p26', 'p27', 'p28', 'p29', 'p30', 'p31', 'p32', 'p33', 'p34', 'p35', 'p36', 'p37', 'p38', 'p39', 'p40', 'p41', 'p42', 'p43', 'p44', 'p45', 'p46', 'p47', 'p48', 'p49', 'p50']);
     }
 }

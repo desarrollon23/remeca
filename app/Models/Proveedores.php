@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Proveedores extends Model
 {
     use HasFactory;
-
+    protected $table = "proveedores";
     protected $fillable = ['cedula', 'nombre', 'direccion', 'telefono', 'correo', 'visible'];
 
     //Relacion uno a muchos con recepcion de material recepcionmaterial
