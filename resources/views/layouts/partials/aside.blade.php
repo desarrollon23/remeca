@@ -144,6 +144,14 @@
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-wrench"></i><p @php echo $textom; @endphp>MANTENIMIENTOS<i class="fas fa-angle-left right"></i></p>
           </a><ul class="nav nav-treeview">
+            
+            @can('livewire.configuraciones')
+            <li class="nav-item">
+              <a href="{{ route('livewire.configuraciones') }}" class="nav-link request()->is('admin/users') ? 'active' : '' ">
+                <i class="fab fa-whmcs"></i><p @php echo $textos; @endphp>Configuraciones</p></a>
+            </li>
+            @endcan
+
             <li class="nav-item">
               <a href="{{ route('livewire.pproveedores') }}" class="nav-link">
                 <i class="nav-icon fas fa-user-tie"></i><p @php echo $textos; @endphp>Proveedores</p></a>

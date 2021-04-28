@@ -244,6 +244,11 @@ return [
             'icon'        => 'far fa-users fa-fw',
         ],
         [
+            'text'        => 'Usuarios',
+            'url'         => 'admin.users',
+            'icon'        => 'far fa-users fa-fw',
+        ],
+        [
             'text'        => 'pages',
             'url'         => 'admin/pages',
             'icon'        => 'far fa-fw fa-file',

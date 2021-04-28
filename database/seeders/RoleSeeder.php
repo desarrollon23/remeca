@@ -81,6 +81,8 @@ class RoleSeeder extends Seeder
 
         //******************PERMISOS DE MANTENIMIENTOS
         //PROVEEDORES
+        Permission::create(['name' => 'livewire.configuraciones',
+                            'description' =>'Establecer Configuraciones'])->syncRoles([$role1, $role2, $role3, $role4, $role6]);
         Permission::create(['name' => 'livewire.pproveedores.index',
                             'description' =>'Ver la Lista de Proveedores'])->syncRoles([$role1, $role2, $role3]);
         Permission::create(['name' => 'livewire.pproveedores.create',
