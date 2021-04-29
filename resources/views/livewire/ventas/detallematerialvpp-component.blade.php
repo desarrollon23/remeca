@@ -5,7 +5,7 @@
       <div class="content">
         <div class="container-fluid">
           <div class="row aling: center">
-            <div class="col-lg-12 col-md-6 col-xs-6 mt-2">
+            <div class="col-lg-12 col-md-12 col-xs-6 mt-2">
               <div class="card">
                 <div class="card-header bg-info"><h3 class="card-title" style="color: #000;"><label class="d-flex justify-content-center">Material:&nbsp;</label></h3>
                   <h3 class="card-title" style="color: #fff;"><label>
@@ -16,7 +16,7 @@
                   &nbsp;KG</label></h3></div>
                 <div class="card-body">
                   @if ($cdmvpp->count())
-                  <table id="example" class="table table-bordered table-striped"><thead>
+                  <table id="example" class="table table-bordered table-striped" style="width: 100%;"><thead>
                     <tr>
                       <td colspan="5" style="text-align: center;">
                         <strong>
@@ -41,7 +41,7 @@
                       <tfoot>
                         <tr>
                           <td colspan="5" style="text-align: right;"><strong>
-                            TOTAL POR PAGAR: {{ $formatter->formatCurrency($cdmvpp->sum('debe'), ''), PHP_EOL }}</strong>
+                            TOTAL POR PAGAR: {{ $formatter->formatCurrency($cdmvpp->sum('debe'), ''), PHP_EOL }} KG</strong>
                           </td>
                         </tr>
                       </tfoot>

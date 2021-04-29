@@ -5,7 +5,7 @@
       <div class="content">
         <div class="container-fluid">
           <div class="row aling: center">
-            <div class="col-lg-12 col-md-6 col-xs-6 mt-2">
+            <div class="col-lg-12 col-md-12 col-xs-6 mt-2">
               <div class="card">
                 <div class="card-header bg-danger"><h3 class="card-title" style="color: #000;"><label class="d-flex justify-content-center">Material:&nbsp;</label></h3>
                   <h3 class="card-title" style="color: #fff;"><label>
@@ -41,7 +41,7 @@
                       <tfoot>
                         <tr>
                           <td colspan="5" style="text-align: right;"><strong>
-                            TOTAL POR COBRAR: {{ $formatter->formatCurrency($cdmcpc->sum('debe'), ''), PHP_EOL }}</strong>
+                            TOTAL POR COBRAR: {{ $formatter->formatCurrency($cdmcpc->sum('debe'), ''), PHP_EOL }} KG</strong>
                           </td>
                         </tr>
                       </tfoot>

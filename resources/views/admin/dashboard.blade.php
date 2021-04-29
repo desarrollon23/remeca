@@ -227,10 +227,9 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-12 col-md-12 col-xs-12 mt-2">{{-- RELACION DE COMPRAS --}}
+          <div class="col-lg-12 col-md-12 col-xs-12 mt-2">{{-- RECEPCION DIARIA DE MATERIALES --}}
             <div class="card">
-              <div class="card-header bg-danger" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;">RELACION DE COMPRAS&nbsp;
-                <h2>{{-- {{ $inventarios->count() }} --}}</h2></label></h3>
+              <div class="card-header bg-danger"><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;">RECEPCION DIARIA DE MATERIALES (KG)&nbsp;</label></h3>
               </div>
               <div class="card-body">
                 @if ($inventarios->count())
@@ -240,20 +239,17 @@
                     @foreach ($productosrd as $productord)
                       @if ($productord->id>1)
                         <th scope="col" style="font-size: 10px;">
-                          <label>{{$productord->descripcion}}: {{traetotalcantidadcomprasrd($productord->id, date('d-m-Y'))}}{{-- : {{traemcventasrd($productord->id)}} --}}</label>
+                          <label>{{$productord->descripcion}}: {{ traetotalcantidadcomprasrd($productord->id, date('d-m-Y')) }}{{-- : {{traemcventasrd($productord->id)}} --}}</label>
                           {{-- <label>CPC:{{traemcpcventasrd($productord->id)}}</label><label>CPP:{{traemcppventasrd($productord->id)}}</label> --}}
-                        @endif
+                        @endif 
                       </th>
                     @endforeach
                   </tr></thead><tbody>
-                    {{-- @php
-                        dd($proveedoresrd);
-                    @endphp --}}
                     @foreach ($proveedoresrd as $proveedor) {{-- dtos del cliente --}}
                       <tr scope="col"><td style="font-size: 10px;">{{$proveedor->nombre." ".$proveedor->cedula}}</td>
                         @foreach ($productosrd as $productordproveedor) {{-- datos de la venta --}}
                           @if ($productordproveedor->id>1)
-                            <td style="text-align: right;">{{traecantidadcomprasrd($proveedor->cedula, $productordproveedor->id, date('d-m-Y'))}}</td>
+                            <td style="text-align: right;">{{ traecantidadcomprasrd($proveedor->cedula, $productordproveedor->id, date('d-m-Y')) }}</td>
                           @endif
                         @endforeach
                       </tr>
@@ -264,7 +260,7 @@
                       @foreach ($productosrd as $productord)
                         @if ($productord->id>1)
                           <td style="text-align: right;">
-                            {{traetotalcantidadcomprasrd($productord->id, date('d-m-Y'))}}
+                            {{ traetotalcantidadcomprasrd($productord->id, date('d-m-Y')) }}
                           </td>
                         @endif
                       @endforeach
@@ -280,10 +276,9 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-12 col-md-12 col-xs-12 mt-2">{{-- RELACION DE VENTAS --}}
+          <div class="col-lg-12 col-md-12 col-xs-12 mt-2">{{-- ENTREGA DIARIA DE MATEERIALES  --}}
             <div class="card">
-              <div class="card-header bg-info" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;">RELACION DE VENTAS&nbsp;
-                <h2>{{-- {{ $inventarios->count() }} --}}</h2></label></h3>
+              <div class="card-header bg-info"><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;">ENTREGA DIARIA DE MATERIALES (KG)&nbsp;</label></h3>
               </div>
               <div class="card-body">
                 @if ($inventarios->count())
@@ -293,7 +288,7 @@
                     @foreach ($productosrd as $productord)
                       @if ($productord->id>1)
                         <th scope="col" style="font-size: 10px;">
-                          <label>{{$productord->descripcion}}: {{traetotalcantidadventasrd($productord->id, date('d-m-Y'))}}{{-- : {{traemcventasrd($productord->id)}} --}}</label>
+                          <label>{{$productord->descripcion}}: {{ traetotalcantidadventasrd($productord->id, date('d-m-Y')) }}{{-- : {{traemcventasrd($productord->id)}} --}}</label>
                           {{-- <label>CPC:{{traemcpcventasrd($productord->id)}}</label><label>CPP:{{traemcppventasrd($productord->id)}}</label> --}}
                         @endif
                       </th>
@@ -303,7 +298,7 @@
                       <tr scope="col"><td style="font-size: 10px;">{{$clienterd->nombrec." ".$clienterd->cedulac}}</td>
                         @foreach ($productosrd as $productordcliente) {{-- datos de la venta --}}
                           @if ($productordcliente->id>1)
-                            <td style="text-align: right;">{{traecantidadventasrd($clienterd->cedulac, $productordcliente->id, date('d-m-Y'))}}</td>
+                            <td style="text-align: right;">{{ traecantidadventasrd($clienterd->cedulac, $productordcliente->id, date('d-m-Y')) }}</td>
                           @endif
                         @endforeach
                       </tr>
@@ -314,7 +309,7 @@
                       @foreach ($productosrd as $productord)
                         @if ($productord->id>1)
                           <td style="text-align: right;">
-                            {{traetotalcantidadventasrd($productord->id, date('d-m-Y'))}}
+                            {{ traetotalcantidadventasrd($productord->id, date('d-m-Y')) }}
                           </td>
                         @endif
                       @endforeach
