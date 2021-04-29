@@ -220,7 +220,7 @@
         <div class="row">
           <div class="col-lg-12 col-md-12 col-xs-12 mt-2">{{-- RELACION DE COMPRAS --}}
             <div class="card">
-              <div class="card-header bg-warning" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;">RELACION DE COMPRAS&nbsp;
+              <div class="card-header bg-danger" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;">RELACION DE COMPRAS&nbsp;
                 <h2>{{-- {{ $inventarios->count() }} --}}</h2></label></h3>
               </div>
               <div class="card-body">
@@ -273,7 +273,7 @@
         <div class="row">
           <div class="col-lg-12 col-md-12 col-xs-12 mt-2">{{-- RELACION DE VENTAS --}}
             <div class="card">
-              <div class="card-header bg-warning" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;">RELACION DE VENTAS&nbsp;
+              <div class="card-header bg-info" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;">RELACION DE VENTAS&nbsp;
                 <h2>{{-- {{ $inventarios->count() }} --}}</h2></label></h3>
               </div>
               <div class="card-body">
