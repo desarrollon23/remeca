@@ -138,7 +138,7 @@
                     <td class="px-1 py-1" style="text-align: right;">
                       {{$formatter->formatCurrency($materialcppcpc->where('idproducto', $inventario->id)->pluck('cpc')[0], ''), PHP_EOL}}</td>
                     <td class="px-1 py-1" style="text-align: right;">
-              {{-- @php dd($materialcpp->where('idproducto', $inventario->id)->pluck('cpp')[0]); @endphp --}}
+                   {{-- @php dd($materialcpp->where('idproducto', $inventario->id)->pluck('cpp')[0]); @endphp --}}
                       {{$formatter->formatCurrency($materialcppcpc->where('idproducto', $inventario->id)->pluck('cpp')[0], ''), PHP_EOL}}
                       {{-- {{$formatter->formatCurrency($inventario->pagar, ''), PHP_EOL}} --}}
                     </td><td>
@@ -218,7 +218,60 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-12 col-md-12 col-xs-12 mt-2">{{-- INVENTARIO --}}
+          <div class="col-lg-12 col-md-12 col-xs-12 mt-2">{{-- RELACION DE COMPRAS --}}
+            <div class="card">
+              <div class="card-header bg-warning" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;">RELACION DE COMPRAS&nbsp;
+                <h2>{{-- {{ $inventarios->count() }} --}}</h2></label></h3>
+              </div>
+              <div class="card-body">
+                @if ($inventarios->count())
+                <div style="width: 100%; margin-right: 2px;">
+                <table id="example" name="tbl_compras" class="table table-bordered table-striped"><thead><tr> 
+                    <th scope="col" style="font-size: 10px; text-align: center;">NOMBRE</th>
+                    @foreach ($productosrd as $productord)
+                      @if ($productord->id>1)
+                        <th scope="col" style="font-size: 10px;">
+                          <label>{{$productord->descripcion}}: {{traetotalcantidadcomprasrd($productord->id, date('d-m-Y'))}}{{-- : {{traemcventasrd($productord->id)}} --}}</label>
+                          {{-- <label>CPC:{{traemcpcventasrd($productord->id)}}</label><label>CPP:{{traemcppventasrd($productord->id)}}</label> --}}
+                        @endif
+                      </th>
+                    @endforeach
+                  </tr></thead><tbody>
+                    {{-- @php
+                        dd($proveedoresrd);
+                    @endphp --}}
+                    @foreach ($proveedoresrd as $proveedor) {{-- dtos del cliente --}}
+                      <tr scope="col"><td style="font-size: 10px;">{{$proveedor->nombre." ".$proveedor->cedula}}</td>
+                        @foreach ($productosrd as $productordproveedor) {{-- datos de la venta --}}
+                          @if ($productordproveedor->id>1)
+                            <td style="text-align: right;">{{traecantidadcomprasrd($proveedor->cedula, $productordproveedor->id, date('d-m-Y'))}}</td>
+                          @endif
+                        @endforeach
+                      </tr>
+                    @endforeach
+                  </tr></tbody>
+                  <tfoot>
+                    <tr><td>TOTAL</td>
+                      @foreach ($productosrd as $productord)
+                        @if ($productord->id>1)
+                          <td style="text-align: right;">
+                            {{traetotalcantidadcomprasrd($productord->id, date('d-m-Y'))}}
+                          </td>
+                        @endif
+                      @endforeach
+                    </tr>        
+                  </tfoot>
+                </table>
+                @else
+                    {{ 'No tiene Materiales en Inventario' }}
+                @endif
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-xs-12 mt-2">{{-- RELACION DE VENTAS --}}
             <div class="card">
               <div class="card-header bg-warning" {{-- @php echo $fondoo; @endphp --}}><h3 class="card-title" style="color: #fff;"><label class="d-flex justify-content-center" style="text-shadow: 2px 2px 2px black;">RELACION DE VENTAS&nbsp;
                 <h2>{{-- {{ $inventarios->count() }} --}}</h2></label></h3>
@@ -226,33 +279,43 @@
               <div class="card-body">
                 @if ($inventarios->count())
                 <div style="width: 100%; margin-right: 2px;">
-                <table id="#example2" class="table table-bordered table-striped"><thead><tr> 
+                <table id="exampl" name="tbl_ventas" class="table table-bordered table-striped"><thead><tr> 
                     <th scope="col" style="font-size: 10px; text-align: center;">NOMBRE</th>
-                    @foreach ($productosrd as $productord)    
-                      <th scope="col" style="font-size: 10px;"><label>{{$productord->descripcion}}:
-  {{-- {{$formatter->formatCurrency(traemcventasrd($productord->id), ''), PHP_EOL}} --}}
-  {{traemcventasrd($productord->id)}}</label><label>CPC: 
-  {{-- {{$formatter->formatCurrency(traemcpcventasrd('id',$productord->id), ''), PHP_EOL}} --}}
-  {{traemcpcventasrd($productord->id)}}</label>
-<label>CPP: 
-  {{-- {{$formatter->formatCurrency(traemcppventasrd($productord->id), ''), PHP_EOL}} --}}
-  {{traemcppventasrd($productord->id)}}
-</label>
+                    @foreach ($productosrd as $productord)
+                      @if ($productord->id>1)
+                        <th scope="col" style="font-size: 10px;">
+                          <label>{{$productord->descripcion}}: {{traetotalcantidadventasrd($productord->id, date('d-m-Y'))}}{{-- : {{traemcventasrd($productord->id)}} --}}</label>
+                          {{-- <label>CPC:{{traemcpcventasrd($productord->id)}}</label><label>CPP:{{traemcppventasrd($productord->id)}}</label> --}}
+                        @endif
+                      </th>
                     @endforeach
                   </tr></thead><tbody>
                     @foreach ($clientesrd as $clienterd) {{-- datos del cliente --}}
                       <tr scope="col"><td style="font-size: 10px;">{{$clienterd->nombrec." ".$clienterd->cedulac}}</td>
                         @foreach ($productosrd as $productordcliente) {{-- datos de la venta --}}
-                          <td>{{traecantidadventasrd($clienterd->cedulac, $productordcliente->id)}}</td>
+                          @if ($productordcliente->id>1)
+                            <td style="text-align: right;">{{traecantidadventasrd($clienterd->cedulac, $productordcliente->id, date('d-m-Y'))}}</td>
+                          @endif
                         @endforeach
                       </tr>
                     @endforeach
                   </tr></tbody>
+                  <tfoot>
+                    <tr><td>TOTAL</td>
+                      @foreach ($productosrd as $productord)
+                        @if ($productord->id>1)
+                          <td style="text-align: right;">
+                            {{traetotalcantidadventasrd($productord->id, date('d-m-Y'))}}
+                          </td>
+                        @endif
+                      @endforeach
+                    </tr>        
+                  </tfoot>
                 </table>
                 @else
                     {{ 'No tiene Materiales en Inventario' }}
                 @endif
-              </div>
+                </div>
               </div>
             </div>
           </div>

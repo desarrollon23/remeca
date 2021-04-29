@@ -9,6 +9,8 @@ use App\Models\Compra;
 use App\Models\ConsultaNegComMontoPorPagar;
 use App\Models\ConsultaNegVenMontoPorCobrar;
 use App\Models\ConsultaRdVentas;
+use App\Models\ConsultaRelcomnegRecepcionDiario;
+use App\Models\ConsultaRelvennegDespachoDiario;
 use App\Models\CuentasMaterial;
 use App\Models\NegociacionVenta;
 use App\Models\Producto;
@@ -16,6 +18,7 @@ use App\Models\Venta;
 use App\Models\Liquidez;
 use App\Models\DespachoMaterial;
 use App\Models\DetalleNegociacionVenta;
+use App\Models\Proveedores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -70,8 +73,12 @@ class DashBoardController extends Controller
         /* RELACION DIARIA */
         $productosrd = Producto::all();
         $clientesrd = Cliente::all();
-        //dd($clientesrd);
-        $ventasrdclientes = ConsultaRdVentas::all();
-        return view('admin.dashboard', compact(['emd', 'dmd' ,'inventarios', 'materialcppcpc', 'ccpp', 'ccpc', 'efectivo', 'banco', 'productosrd', 'clientesrd', 'ventasrdclientes']));
+        $proveedoresrd = Proveedores::all();
+        //dd($proveedoresrd);
+        
+        /* $ventasrdclientes = ConsultaRdVentas::all(); */
+        $ventasrdclientes = ConsultaRelvennegDespachoDiario::all();
+        $comprasproveedores = ConsultaRelcomnegRecepcionDiario::all();
+        return view('admin.dashboard', compact(['emd', 'dmd' ,'inventarios', 'materialcppcpc', 'ccpp', 'ccpc', 'efectivo', 'banco', 'productosrd', 'clientesrd', 'ventasrdclientes', 'proveedoresrd', 'comprasproveedores']));
     }
 }

@@ -82,7 +82,7 @@
       </div>
     </div>
     <!-- Notifications Dropdown Menu -->
-    <li class="nav-item dropdown">
+    {{-- <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell"></i>
           <span class="badge badge-warning navbar-badge">15</span>
@@ -92,17 +92,17 @@
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
             <i class="fas fa-envelope mr-2"></i> {{ 4 }} new messages
-            {{-- <span class="float-right text-muted text-sm">3 minutoss</span> --}}
+            {{-- <span class="float-right text-muted text-sm">3 minutoss</span> --} }
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
             <i class="fas fa-users mr-2"></i> {{ 8 }} friend requests
-            {{-- <span class="float-right text-muted text-sm">12 horas</span> --}}
+            {{-- <span class="float-right text-muted text-sm">12 horas</span> --} }
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
             <i class="fas fa-file mr-2"></i> {{ 3 }} new reports
-            {{-- <span class="float-right text-muted text-sm">2 días</span> --}}
+            {{-- <span class="float-right text-muted text-sm">2 días</span> --} }
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item dropdown-footer">Ver todas las Notificaciones</a>
@@ -112,7 +112,7 @@
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
         </a>
-      </li>
+      </li> --}}
       {{-- <li class="nav-item">
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
           <i class="fas fa-th-large"></i>
