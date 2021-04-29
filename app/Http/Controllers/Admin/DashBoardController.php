@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\almacen;
 use App\Models\Cliente;
 use App\Models\Compra;
+use App\Models\ConsultaDetalleMaterialCpc;
+use App\Models\ConsultaDetalleMaterialVpp;
 use App\Models\ConsultaNegComMontoPorPagar;
 use App\Models\ConsultaNegVenMontoPorCobrar;
 use App\Models\ConsultaRdVentas;
@@ -64,6 +66,7 @@ class DashBoardController extends Controller
                         ->get(); */
         $ccpp = ConsultaNegComMontoPorPagar::all(); //la estructura de esta consula está en la BBDD
         $ccpc = ConsultaNegVenMontoPorCobrar::all(); //la estructura de esta consula está en la BBDD
+
         //dd($ccpc);
         $efectivo = Liquidez::where('id', 1)->get()->pluck('efectivo');
         $banco = Liquidez::where('id', 1)->get()->pluck('banco');

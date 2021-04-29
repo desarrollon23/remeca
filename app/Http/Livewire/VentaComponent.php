@@ -496,7 +496,6 @@ class VentaComponent extends Component
         $this->dispatchBrowserEvent('hide-delete-modal', ['message' => '¡Negociación Actualizada! '.$datos->idnegociacionventa]);
         $this->reset(['totalfectivoneg', 'totaltransfneg', 'restapagoneg', 'pagoefectivoneg', 'pagotransfneg', 'totalpagoneg', 'restapagoneg']);
     }
-
     
     public function render()
     {

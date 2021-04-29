@@ -50,6 +50,13 @@ if (! function_exists('buscarclavemaestra')) {
   }
 }
 
+if (! function_exists('traerdescripcionproducto')) {
+  function traerdescripcionproducto($id){
+    $dp = Producto::where('id', $id)->pluck('descripcion')[0];
+    return $dp;
+  }
+}
+
 /*    INICIO RELACION DE VENTAS DIARIAS       */
 if (! function_exists('traecantidadventasrd')) {
   function traecantidadventasrd($cedula, $idproducto, $fecha){

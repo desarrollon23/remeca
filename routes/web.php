@@ -26,6 +26,8 @@ use App\Http\Livewire\VentaComponent;
 use App\Http\Livewire\VentasComponent;
 use App\Http\Livewire\AbonoVentaComponent;
 use App\Http\Livewire\ConfiguracionesComponent;
+use App\Http\Livewire\DetallematerialcpcComponent;
+use App\Http\Livewire\DetallematerialvppComponent;
 use App\Http\Livewire\InventarioComponent;
 use App\Mail\ContactoMailable;
 use Illuminate\Support\Facades\Mail;
@@ -100,6 +102,8 @@ Route::get('livewire/almacen', AlmacenComponent::class)->name('livewire.almacen'
 Route::get('livewire/almacen/material-reception', MaterialReception::class)->name('almacen.material-reception');
 
 Route::get('livewire/almacen/inventario/{material}', [InventarioComponent::class, 'show'])->name('livewire.almacen.inventario');
+Route::get('livewire/ventas/materialporpagar/{material}', [DetallematerialvppComponent::class, 'show'])->name('livewire.ventas.materialporpagar');
+Route::get('livewire/compras/materialporcobrar/{material}', [DetallematerialcpcComponent::class, 'show'])->name('livewire.compras.materialporcobrar');
 
 Route::put('livewire/almacen/material-reception{material}', [MaterialReception::class, 'updatematerial'])->name('almacen.material-reception.updatematerial');
 Route::delete('livewire/almacen/material-reception{material}', [MaterialReception::class, 'destroy'])->name('almacen.material-reception.destroy');

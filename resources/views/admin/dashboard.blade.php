@@ -136,10 +136,19 @@
                     <td class="px-1 py-1">{{$inventario->descripcion}}</td>
                     <td class="px-1 py-1" style="text-align: right;">{{$formatter->formatCurrency($inventario->cantidad, ''), PHP_EOL}}</td>
                     <td class="px-1 py-1" style="text-align: right;">
-                      {{$formatter->formatCurrency($materialcppcpc->where('idproducto', $inventario->id)->pluck('cpc')[0], ''), PHP_EOL}}</td>
+                      {{-- {{$formatter->formatCurrency($materialcppcpc->where('idproducto', $inventario->id)->pluck('cpc')[0], ''), PHP_EOL}} --}}
+                      @if ($materialcppcpc->where('idproducto', $inventario->id)->pluck('cpc')[0]>0)
+                         <a href="{{ route('livewire.compras.materialporcobrar', $inventario->id) }}">{{$formatter->formatCurrency($materialcppcpc->where('idproducto', $inventario->id)->pluck('cpc')[0], ''), PHP_EOL}}</a>
+                      @else
+                         {{$formatter->formatCurrency($materialcppcpc->where('idproducto', $inventario->id)->pluck('cpc')[0], ''), PHP_EOL}}
+                      @endif
+                    </td>
                     <td class="px-1 py-1" style="text-align: right;">
-                   {{-- @php dd($materialcpp->where('idproducto', $inventario->id)->pluck('cpp')[0]); @endphp --}}
-                      {{$formatter->formatCurrency($materialcppcpc->where('idproducto', $inventario->id)->pluck('cpp')[0], ''), PHP_EOL}}
+                      @if ($materialcppcpc->where('idproducto', $inventario->id)->pluck('cpp')[0]>0)
+                         <a href="{{ route('livewire.ventas.materialporpagar', $inventario->id) }}">{{$formatter->formatCurrency($materialcppcpc->where('idproducto', $inventario->id)->pluck('cpp')[0], ''), PHP_EOL}}</a>
+                      @else
+                         {{$formatter->formatCurrency($materialcppcpc->where('idproducto', $inventario->id)->pluck('cpp')[0], ''), PHP_EOL}}
+                      @endif
                       {{-- {{$formatter->formatCurrency($inventario->pagar, ''), PHP_EOL}} --}}
                     </td><td>
                       <a href="{{ route('livewire.almacen.inventario', $inventario->id) }}"><i class="fa fa-edit mr-2"></i></a>
