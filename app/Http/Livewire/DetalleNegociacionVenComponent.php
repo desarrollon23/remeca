@@ -19,7 +19,10 @@ class DetalleNegociacionVenComponent extends Component
     public function show($cedula){
         $totalnegov = ConsultaNegVenMontoPorCobrar::where('cedula', $cedula)->get();
         //dd($totalnegov);
-        $negociaciones = NegociacionVenta::where('cedulan', $cedula)
+        $datosnegociaciones = NegociacionVenta::where('cedulan', $cedula)
+                                            ->where('finalizada','NO')->get();
+        $negociaciones = CuentasPorCobrarVentas::where('cedula', $cedula)
+                                            ->where('idventa', '=', 0)
                                             ->where('finalizada','NO')->get();
         $creditos = CuentasPorCobrarVentas::where('cedula', $cedula)
                                             ->where('idnegociacionventa', '=', 0)
@@ -35,11 +38,17 @@ class DetalleNegociacionVenComponent extends Component
         $productosrecepcion=DB::table('detalle_negociacion_ventas')
             ->join('_pproductos', 'detalle_negociacion_ventas.producto_idn', '=', '_pproductos.id')
             ->get();
+
+        $productosrecepcioncreditos=DB::table('detalle_ventas')
+            ->join('_pproductos', 'detalle_ventas.idproductov', '=', '_pproductos.id')
+            ->get();
+        //dd($productosrecepcioncreditos);
+
         $productosabonados=ConsultaAbonoNegociacionVenta::all();
         $amortizacionesdepago=ConsultaAmortizacionNegociacionVenta::all();
         
         return view('livewire.ventas.detallenegociacion', 
-                compact('totalnegov', 'negociaciones', 'creditos', 'productosrecepcion', 'productosabonados', 'amortizacionesdepago'));
+                compact('totalnegov', 'negociaciones', 'datosnegociaciones', 'creditos', 'productosrecepcion', 'productosrecepcioncreditos', 'productosabonados', 'amortizacionesdepago'));
     }
 
     /* public function crearabono(){
