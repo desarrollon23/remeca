@@ -467,9 +467,9 @@ class VentaComponent extends Component
         if($this->totalpagoneg==0){ $this->ocultarboton="false"; }
     }
 
-    public $pagoefectivoneg, $pagotransfneg, $totalfectivoneg, $totaltransfneg, $totalpagoneg, $totalrestapagoneg, $restapagoneg, $validamontotn, $finalizada; //$mostrarpagoneg='false';
+    public $pagoefectivoneg, $pagotransfneg, $totalfectivoneg, $totaltransfneg, $totalpagoneg, $totalrestapagoneg, $restapagoneg, $validamontotn, $finalizada, $negociacion_idc; //$mostrarpagoneg='false';
     public function guardaramortizacion(){ //dd($this->negociacion_id);
-        $datos = CuentasPorCobrarVentas::find($this->negociacion_id);
+        $datos = CuentasPorCobrarVentas::find($this->negociacion_idc);
         $this->totalfectivoneg = (double)$datos->totalefectivo+(double)$this->pagoefectivoneg;
         $this->totaltransfneg = (double)$datos->totaltransferencia+(double)$this->pagotransfneg;
         $totalpagado=(double)$datos->totalpagado+(double)$this->pagoefectivoneg+(double)$this->pagotransfneg;
@@ -490,6 +490,7 @@ class VentaComponent extends Component
             'resta' => (double)$this->restapagoneg
         ]); //LA FACTURA SE GENERA DESDE LA BASE DE DATOS CON UN TRIGER $
         /* $this->mostrar = "false"; */ $this->mostrarm = "false"; $this->mostrarpagoneg = 'false';
+        $this->ocultarboton='false';
         if($datos->idventa==0){ 
             auditar('VENTA - NEGOCIACION #: '.$datos->idnegociacionventa, 'ABONO A CREDITO');
         }else{ auditar('VENTA - CREDITO #: '.$datos->idventa, 'AMORTIZACION A CREDITO'); }
@@ -533,14 +534,21 @@ class VentaComponent extends Component
         if($this->muesdesmaterial<$this->cantidadprov){
             $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'No puede agregar esa cantidad, actualmente tiene '.$this->muesdesmaterial.' KG disponible(s)']);
         }else{ /* $despacho = DespachoMaterial::latest('id')->first(); */
-            AbonoMaterialNegociacionVentas::create([
+            /* AbonoMaterialNegociacionVentas::create([
                 'negociacion_id' => $negociacion_id,
                 'idproducton' => $this->idproductov,
-                'cantidadpron' => (double)$this->cantidadprov /* 'despachado' => $despacho->id */
-            ]);
+                'cantidadpron' => (double)$this->cantidadprov /* 'despachado' => $despacho->id * /
+            ]); */
             $datosc = DetalleNegociacionVenta::where('negociacion_id', $this->negociacion_id)
                                 ->where('producto_idn', $this->idproductov)->get()->pluck('cantidadprorecmatndebe');
             $debe = (double)$datosc[0]-(double)$this->cantidadprov;
+            AbonoMaterialNegociacionVentas::create([
+                'negociacion_id' => $negociacion_id,
+                'idproducton' => $this->idproductov,
+                'cantidadpron' => (double)$this->cantidadprov,
+                'debepron' => (double)$debe,
+                'iddespacho' => 0
+            ]);
             $datosc = DetalleNegociacionVenta::where('negociacion_id', $this->negociacion_id)
                                 ->where('producto_idn', $this->idproductov)->get();
             $datosc[0]->update(['cantidadprorecmatndebe' => (double)$debe]);
@@ -553,7 +561,9 @@ class VentaComponent extends Component
 
     public function generardespacho(){ //ABONO DE MATERIALES
         //$this->validate();
-        $nc = AbonoMaterialNegociacionVentas::where('negociacion_id',$this->negociacion_id)->get()->count();
+        $nc = AbonoMaterialNegociacionVentas::where('negociacion_id',$this->negociacion_id)
+                            ->where('iddespacho', 0)->get()->count();
+                            /* dd($nc); */
         if($nc==0){ 
             $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'Agrege Materiales para Generar el Despacho']);
         }else{//GENERAR DESPACHO
@@ -561,15 +571,20 @@ class VentaComponent extends Component
                 'fechaventad'=> date('d-m-Y'),
                 'horaventad' => date("H:i:s"),
                 'cedula' => $this->cedulav,
-                'idestatusd' => 1
+                'idestatusd' => 1,
+                'observaciones' => $this->observacionesv
             ]);
             $despacho = DespachoMaterial::latest('id')->first();
             $productosabonados = AbonoMaterialNegociacionVentas::where('negociacion_id',$this->negociacion_id)->get();
-            foreach ($productosabonados as $productoabonado){
+            foreach ($productosabonados->where('iddespacho', 0) as $productoabonado){
                 $datosdc = AbonoMaterialNegociacionVentas::where('negociacion_id', $this->negociacion_id)
                     ->where('idproducton', $productoabonado['idproducton']);
-                $datosdc->update(['iddespacho' => $despacho->id, 'despachado' => 'NO']);
-                /* detalle despacho */ 
+                /* if($datosdc->iddespacho==$despacho){ */
+                    $datosdc->update(['iddespacho' => $despacho->id, 'despachado' => 'NO']);
+                /* }
+                dd($datosdc); */
+                /* detalle despacho */
+                
                 DetalleDespacho::create([
                     'iddespacho' => $despacho->id,
                     'idproducto' => $productoabonado['idproducton'],

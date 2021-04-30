@@ -167,13 +167,14 @@ div.detalle.show { display: block !important; }
                                 <th scope="col">FECHA</th>
                                 <th scope="col">MATERIAL</th>
                                 <th scope="col">ABONO KG</th>
+                                <th scope="col">DEBE KG</th>
                                 </tr></thead><tbody>
                                 @foreach ($productosabonados->where('negociacion',$negociacion->id)->where('despacho', '>', 0) as $productoabonado)
                                   <tr>{{-- <td scope="row">{{ $productoabonado->despacho }}</td> --}}
                                     <td>{{ $productoabonado->fecha }}</td>
                                     <td>{{ $productoabonado->material }}</td>
                                     <td>{{ $formatter->formatCurrency($productoabonado->abono, ''), PHP_EOL }}</td>
-                                    </td>
+                                    <td>{{ $formatter->formatCurrency($productoabonado->debe, ''), PHP_EOL }}</td>
                                   </tr>
                                 @endforeach</tbody>
                               </table>
