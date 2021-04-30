@@ -526,36 +526,37 @@ class VentaComponent extends Component
     }
 
     public function abonar($negociacion_id){
-        if($this->cantidadprov==""){
-            $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'Ingrese una cantidad']);
+        /* if(is_null($this->idproductov)==true or $this->cantidadprov==""){ */
+        if($this->idproductov=='null' or $this->idproductov=='NULL' or $this->cantidadprov==""){
+            $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'Seleccione un Material e Ingrese el Peso']);
         }else{
             $existencia=Producto::find($this->idproductov);
             $this->muesdesmaterial=$existencia['cantidad'];
-        if($this->muesdesmaterial<$this->cantidadprov){
-            $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'No puede agregar esa cantidad, actualmente tiene '.$this->muesdesmaterial.' KG disponible(s)']);
-        }else{ /* $despacho = DespachoMaterial::latest('id')->first(); */
-            /* AbonoMaterialNegociacionVentas::create([
-                'negociacion_id' => $negociacion_id,
-                'idproducton' => $this->idproductov,
-                'cantidadpron' => (double)$this->cantidadprov /* 'despachado' => $despacho->id * /
-            ]); */
-            $datosc = DetalleNegociacionVenta::where('negociacion_id', $this->negociacion_id)
-                                ->where('producto_idn', $this->idproductov)->get()->pluck('cantidadprorecmatndebe');
-            $debe = (double)$datosc[0]-(double)$this->cantidadprov;
-            AbonoMaterialNegociacionVentas::create([
-                'negociacion_id' => $negociacion_id,
-                'idproducton' => $this->idproductov,
-                'cantidadpron' => (double)$this->cantidadprov,
-                'debepron' => (double)$debe,
-                'iddespacho' => 0
-            ]);
-            $datosc = DetalleNegociacionVenta::where('negociacion_id', $this->negociacion_id)
-                                ->where('producto_idn', $this->idproductov)->get();
-            $datosc[0]->update(['cantidadprorecmatndebe' => (double)$debe]);
-            $this->cantidadprov="";
-            auditar('VENTAS - NEGOCIACION #: '.$this->negociacion_id, 'ABONO DE MATERIAL');
-            $this->dispatchBrowserEvent('hide-form', ['message' => 'Material Abonado']);
-        }
+            if($this->muesdesmaterial<$this->cantidadprov){
+                $this->dispatchBrowserEvent('busnumalmacen', ['message' => 'No puede agregar esa cantidad, actualmente tiene '.$this->muesdesmaterial.' KG disponible(s)']);
+            }else{ /* $despacho = DespachoMaterial::latest('id')->first(); */
+                /* AbonoMaterialNegociacionVentas::create([
+                    'negociacion_id' => $negociacion_id,
+                    'idproducton' => $this->idproductov,
+                    'cantidadpron' => (double)$this->cantidadprov /* 'despachado' => $despacho->id * /
+                ]); */
+                $datosc = DetalleNegociacionVenta::where('negociacion_id', $this->negociacion_id)
+                                    ->where('producto_idn', $this->idproductov)->get()->pluck('cantidadprorecmatndebe');
+                $debe = (double)$datosc[0]-(double)$this->cantidadprov;
+                AbonoMaterialNegociacionVentas::create([
+                    'negociacion_id' => $negociacion_id,
+                    'idproducton' => $this->idproductov,
+                    'cantidadpron' => (double)$this->cantidadprov,
+                    'debepron' => (double)$debe,
+                    'iddespacho' => 0
+                ]);
+                $datosc = DetalleNegociacionVenta::where('negociacion_id', $this->negociacion_id)
+                                    ->where('producto_idn', $this->idproductov)->get();
+                $datosc[0]->update(['cantidadprorecmatndebe' => (double)$debe]);
+                $this->cantidadprov="";
+                auditar('VENTAS - NEGOCIACION #: '.$this->negociacion_id, 'ABONO DE MATERIAL');
+                $this->dispatchBrowserEvent('hide-form', ['message' => 'Material Abonado']);
+            }
         }
     }
 
